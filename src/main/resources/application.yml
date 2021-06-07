@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+    url:
+    username:
+    password:
+    dbcp2:
+      default-schema:
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+logging:
+  level:
+    web: Info
+
+bot:
+  api:
+    username:
+    token:
