@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 public @interface InquiryId {
     InquiryType type();
 
-    String command();
+    String command() default "";
 }

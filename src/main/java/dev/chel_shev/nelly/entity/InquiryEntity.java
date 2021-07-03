@@ -24,7 +24,9 @@ public class InquiryEntity {
     private String massage;
     private boolean closed;
     private LocalDateTime date;
-    private String command;
+
+    @ManyToOne
+    private CommandEntity command;
 
     @ManyToOne
     private UserEntity user;

@@ -14,7 +14,7 @@ public class UserService {
     private final UserRepository repository;
 
     public UserEntity getUserByChatId(Long chatId) {
-        return repository.findByChatId(chatId).orElseThrow(() -> new TelegramBotException("Пользователь не найден!", KeyboardType.CANCEL));
+        return repository.findByChatId(chatId);
     }
 
     public boolean isExist(Long chatId) {
@@ -22,7 +22,7 @@ public class UserService {
     }
 
     public void save(UserEntity user) {
-        repository.save(user);
+        repository.saveAndFlush(user);
     }
 
     public void delete(UserEntity user) {

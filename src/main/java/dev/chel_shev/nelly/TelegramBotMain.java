@@ -53,14 +53,19 @@ public class TelegramBotMain extends TelegramLongPollingBot {
         Message message = update.getMessage();
         try {
             InquiryAnswer answer = inquiryHandler.execute(message);
-            sendMessage(answer.getUser(), answer.getKeyboardType(), answer.getMessage());
+            sendMessage(answer);
         } catch (TelegramBotException e) {
             log.debug(e.getMessage());
             sendMessage(message, e.getResponse().getKeyboardType(), e.getMessage());
         }
     }
 
-    private void sendMessage(UserEntity user, KeyboardType keyboardType, String text) {
+    public void sendMessage(InquiryAnswer answer) {
+        SendMessage sendMessage = SendMessage.builder().chatId(String.valueOf(answer.getUser().getChatId())).text(answer.getMessage()).build();
+        sendMessage(sendMessage, answer.getKeyboardType(), answer.getUser());
+    }
+
+    public void sendMessage(UserEntity user, KeyboardType keyboardType, String text) {
         SendMessage sendMessage = SendMessage.builder().chatId(String.valueOf(user.getChatId())).text(text).build();
         sendMessage(sendMessage, keyboardType, user);
     }

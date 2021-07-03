@@ -8,11 +8,12 @@
 		<version>2.5.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>dev.chel_shev</groupId>
 	<artifactId>Nelly</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Nelly</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Nelly not bot</description>
 	<properties>
 		<java.version>16</java.version>
 	</properties>

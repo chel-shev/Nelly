@@ -1,14 +1,22 @@
 package dev.chel_shev.nelly.inquiry;
 
 
+import dev.chel_shev.nelly.entity.CommandEntity;
 import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
+import dev.chel_shev.nelly.inquiry.command.CommandLevel;
+import dev.chel_shev.nelly.service.AnswerService;
+import dev.chel_shev.nelly.service.CommandService;
 import dev.chel_shev.nelly.service.InquiryService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Data
 public abstract class Inquiry {
@@ -18,12 +26,19 @@ public abstract class Inquiry {
     private LocalDateTime date;
     private boolean closed = false;
 
+    private Map<CommandLevel, Set<String>> answer = new HashMap<>();
+
     private UserEntity user;
+    private CommandEntity command;
 
-    protected final InquiryService service;
+    protected final InquiryService inquiryService;
+    protected final CommandService commandService;
+    protected final AnswerService answerService;
 
-    protected Inquiry(InquiryService service) {
-        this.service = service;
+    protected Inquiry(InquiryService inquiryService, CommandService commandService, AnswerService answerService) {
+        this.inquiryService = inquiryService;
+        this.commandService = commandService;
+        this.answerService = answerService;
     }
 
     public void generate(InquiryEntity entity, UserEntity user) {
@@ -48,7 +63,7 @@ public abstract class Inquiry {
         }
     }
 
-    public String getCommand() {
+    public String getCommandFromAnnotation() {
         if (getType() == InquiryType.COMMAND)
             return this.getClass().getAnnotation(InquiryId.class).command();
         throw new TelegramBotException("The inquiry must be of the Command type!");
@@ -56,7 +71,10 @@ public abstract class Inquiry {
 
     @Autowired
     public void registerMyself(InquiryService inquiryService) {
-        inquiryService.register(getCommand(), this);
+        inquiryService.register(getCommandFromAnnotation(), this);
+        command = commandService.save(getCommandFromAnnotation());
+        initAnswers();
+        answerService.saveAnswers(getAnswer(), command);
     }
 
     public InquiryAnswer process() {
@@ -66,12 +84,23 @@ public abstract class Inquiry {
     }
 
     public void save() {
-        service.save(this);
+        inquiryService.save(this);
     }
+
+    public abstract void initAnswers();
 
     public abstract InquiryAnswer logic();
 
     public String getArgFromMassage(int index) {
-        return getMassage().split(" ")[index];
+        try {
+            return getMassage().split(" ")[index];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new TelegramBotException("Неверное кол-во аргументов :(");
+        }
+    }
+
+    public void validationArgs(int count) {
+        if (getMassage().split(" ").length != count)
+            throw new TelegramBotException("Неверное кол-во аргументов :(");
     }
 }

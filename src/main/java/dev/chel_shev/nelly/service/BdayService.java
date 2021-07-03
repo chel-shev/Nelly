@@ -13,11 +13,19 @@ public class BdayService {
 
     private final BdayRepository repository;
 
-    public boolean isExist(String name, String date) {
-        return repository.existsByNameAndDate(name, LocalDate.parse(date));
+    public boolean isExist(String name, LocalDate date) {
+        return repository.existsByNameAndDate(name, date);
+    }
+
+    public boolean isExist(String name) {
+        return repository.existsByName(name);
     }
 
     public void save(BdayEntity entity) {
         repository.save(entity);
+    }
+
+    public void remove(String name) {
+        repository.deleteAllByName(name);
     }
 }
