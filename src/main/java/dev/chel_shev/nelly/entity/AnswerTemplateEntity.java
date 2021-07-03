@@ -23,6 +23,6 @@ public class AnswerTemplateEntity {
     @Enumerated(EnumType.STRING)
     private CommandLevel level;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private CommandEntity command;
 }

@@ -23,12 +23,11 @@ public class AnswerService {
     }
 
     public void saveAnswers(Map<CommandLevel, Set<String>> answer, CommandEntity command) {
-        List<AnswerTemplateEntity> all = repository.findAllByCommand(command);
-        List<AnswerTemplateEntity> collect = answer.entrySet().stream()
+        Set<AnswerTemplateEntity> all = repository.findAllByCommand(command);
+        Set<AnswerTemplateEntity> collect = answer.entrySet().stream()
                 .flatMap(e -> e.getValue().stream().map(a -> new AnswerTemplateEntity(null, a, e.getKey(), command)))
-                .collect(Collectors.toList());
-        Set<AnswerTemplateEntity> toSave = new HashSet<>(all);
-        toSave.addAll(collect);
-        repository.saveAll(toSave);
+                .collect(Collectors.toSet());
+        all.addAll(collect);
+        repository.saveAll(all);
     }
 }
