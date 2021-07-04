@@ -10,13 +10,12 @@ import dev.chel_shev.nelly.service.AnswerService;
 import dev.chel_shev.nelly.service.CommandService;
 import dev.chel_shev.nelly.service.InquiryService;
 import lombok.Data;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 public abstract class Inquiry {
@@ -91,6 +90,10 @@ public abstract class Inquiry {
 
     public abstract InquiryAnswer logic();
 
+    public void done() {
+        this.closed = true;
+    }
+
     public String getArgFromMassage(int index) {
         try {
             return getMassage().split(" ")[index];
@@ -99,8 +102,39 @@ public abstract class Inquiry {
         }
     }
 
-    public void validationArgs(int count) {
-        if (getMassage().split(" ").length != count)
+    public String getLastArgsPast(int index) {
+        try {
+            List<String> skip = Arrays.stream(getMassage().split(" ")).skip(index + 1).collect(Collectors.toList());
+            return Strings.join(skip, ' ');
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new TelegramBotException("Неверное кол-во аргументов :(");
+        }
+    }
+
+    public void validationArgs(int count, String sign) {
+        if (!"> >= < <= ==".contains(sign))
+            throw new TelegramBotException("Обратись к админу :(");
+        switch (sign) {
+            case ">":
+                if (getMassage().split(" ").length <= count)
+                    throw new TelegramBotException("Неверное кол-во аргументов :(");
+                break;
+            case ">=":
+                if (getMassage().split(" ").length < count)
+                    throw new TelegramBotException("Неверное кол-во аргументов :(");
+                break;
+            case "<":
+                if (getMassage().split(" ").length >= count)
+                    throw new TelegramBotException("Неверное кол-во аргументов :(");
+                break;
+            case "<=":
+                if (getMassage().split(" ").length > count)
+                    throw new TelegramBotException("Неверное кол-во аргументов :(");
+                break;
+            case "==":
+                if (getMassage().split(" ").length != count)
+                    throw new TelegramBotException("Неверное кол-во аргументов :(");
+                break;
+        }
     }
 }

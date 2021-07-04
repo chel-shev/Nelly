@@ -1,20 +1,20 @@
 package dev.chel_shev.nelly.inquiry.command;
 
 import dev.chel_shev.nelly.entity.BdayEntity;
-import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.inquiry.*;
+import dev.chel_shev.nelly.inquiry.Inquiry;
+import dev.chel_shev.nelly.inquiry.InquiryAnswer;
+import dev.chel_shev.nelly.inquiry.InquiryId;
+import dev.chel_shev.nelly.inquiry.InquiryType;
 import dev.chel_shev.nelly.keyboard.KeyboardType;
 import dev.chel_shev.nelly.service.AnswerService;
 import dev.chel_shev.nelly.service.BdayService;
 import dev.chel_shev.nelly.service.CommandService;
 import dev.chel_shev.nelly.service.InquiryService;
+import dev.chel_shev.nelly.util.DateTimeUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -57,15 +57,11 @@ public class BdayInquiry extends Inquiry {
 
     @Override
     public InquiryAnswer logic() {
-        validationArgs(2);
+        validationArgs(2, ">=");
         if (getArgFromMassage(0).equals("remove")) {
             return removeBday(getArgFromMassage(1));
         } else {
-            try {
-                return addBday(getArgFromMassage(0), LocalDate.parse(getArgFromMassage(1), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-            } catch (Exception e) {
-                throw new TelegramBotException("Проверь дату, мне кажется ты ошибся");
-            }
+            return addBday(getLastArgsPast(0), DateTimeUtils.tryToParse(getArgFromMassage(0)));
         }
     }
 

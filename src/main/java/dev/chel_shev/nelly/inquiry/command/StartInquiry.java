@@ -44,11 +44,12 @@ public class StartInquiry extends Inquiry {
 
     @Override
     public InquiryAnswer logic() {
-        if (!userService.isExist(getUser().getChatId())) {
+        done();
+        if (userService.isExist(getUser().getChatId())) {
+            return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.SECOND, this), KeyboardType.NONE);
+        } else {
             userService.save(getUser());
             return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.FIRST, this), KeyboardType.NONE);
-        } else {
-            return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.SECOND, this), KeyboardType.NONE);
         }
     }
 }
