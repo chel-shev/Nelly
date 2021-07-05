@@ -1,6 +1,7 @@
 package dev.chel_shev.nelly.inquiry.command;
 
 import dev.chel_shev.nelly.entity.BdayEntity;
+import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.inquiry.Inquiry;
 import dev.chel_shev.nelly.inquiry.InquiryAnswer;
 import dev.chel_shev.nelly.inquiry.InquiryId;
@@ -57,7 +58,9 @@ public class BdayInquiry extends Inquiry {
 
     @Override
     public InquiryAnswer logic() {
-        validationArgs(2, ">=");
+        if (!validationArgs(2, ">=")) {
+            throw new TelegramBotException("Неверное кол-во аргументов :(");
+        }
         if (getArgFromMassage(0).equals("remove")) {
             return removeBday(getArgFromMassage(1));
         } else {
@@ -66,6 +69,7 @@ public class BdayInquiry extends Inquiry {
     }
 
     private InquiryAnswer removeBday(String name) {
+        done();
         if (service.isExist(name)) {
             service.remove(name);
             return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.THIRD, this), KeyboardType.NONE);
@@ -75,6 +79,7 @@ public class BdayInquiry extends Inquiry {
     }
 
     private InquiryAnswer addBday(String name, LocalDate date) {
+        done();
         if (service.isExist(name, date)) {
             return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.SECOND, this), KeyboardType.NONE);
         } else {

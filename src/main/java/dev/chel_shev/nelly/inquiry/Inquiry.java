@@ -111,30 +111,27 @@ public abstract class Inquiry {
         }
     }
 
-    public void validationArgs(int count, String sign) {
+    public boolean validationArgs(int count, String sign) {
         if (!"> >= < <= ==".contains(sign))
             throw new TelegramBotException("Обратись к админу :(");
+        int length = getMassage().split(" ").length;
         switch (sign) {
             case ">":
-                if (getMassage().split(" ").length <= count)
-                    throw new TelegramBotException("Неверное кол-во аргументов :(");
+                if (length <= count) return false;
                 break;
             case ">=":
-                if (getMassage().split(" ").length < count)
-                    throw new TelegramBotException("Неверное кол-во аргументов :(");
+                if (length < count) return false;
                 break;
             case "<":
-                if (getMassage().split(" ").length >= count)
-                    throw new TelegramBotException("Неверное кол-во аргументов :(");
+                if (length >= count) return false;
                 break;
             case "<=":
-                if (getMassage().split(" ").length > count)
-                    throw new TelegramBotException("Неверное кол-во аргументов :(");
+                if (length > count) return false;
                 break;
             case "==":
-                if (getMassage().split(" ").length != count)
-                    throw new TelegramBotException("Неверное кол-во аргументов :(");
+                if (length != count) return false;
                 break;
         }
+        return true;
     }
 }
