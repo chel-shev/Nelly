@@ -1,25 +1,22 @@
 package dev.chel_shev.nelly.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "bday")
 @AllArgsConstructor
 @NoArgsConstructor
-public class BdayEntity {
+public class BdayEntity extends EventEntity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
     private String name;
-    private LocalDate date;
-
-    @ManyToOne
-    private UserEntity user;
+    private LocalDateTime date;
 }

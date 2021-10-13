@@ -1,7 +1,8 @@
 package dev.chel_shev.nelly.exception;
 
+import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.inquiry.InquiryAnswer;
-import dev.chel_shev.nelly.keyboard.KeyboardType;
+import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,13 +12,18 @@ public class TelegramBotException extends RuntimeException {
 
     private InquiryAnswer response;
 
-    public TelegramBotException(String massage, KeyboardType keyboardType) {
-        super(massage);
-        this.response = new InquiryAnswer(null, massage, keyboardType);
+    public TelegramBotException(String message, KeyboardType keyboardType) {
+        super(message);
+        this.response = new InquiryAnswer(null, message, keyboardType);
     }
 
-    public TelegramBotException(String massage) {
-        this(massage, KeyboardType.NONE);
+    public TelegramBotException(UserEntity user, String message, KeyboardType keyboardType) {
+        super(message);
+        this.response = new InquiryAnswer(user, message, keyboardType);
+    }
+
+    public TelegramBotException(String message) {
+        this(message, KeyboardType.NONE);
     }
 }
 

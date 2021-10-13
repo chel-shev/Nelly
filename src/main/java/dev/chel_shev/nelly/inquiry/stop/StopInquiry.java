@@ -1,26 +1,27 @@
-package dev.chel_shev.nelly.inquiry.command;
+package dev.chel_shev.nelly.inquiry.stop;
 
-import dev.chel_shev.nelly.inquiry.*;
-import dev.chel_shev.nelly.keyboard.KeyboardType;
+import dev.chel_shev.nelly.inquiry.Inquiry;
+import dev.chel_shev.nelly.inquiry.InquiryAnswer;
+import dev.chel_shev.nelly.inquiry.InquiryId;
+import dev.chel_shev.nelly.type.InquiryType;
+import dev.chel_shev.nelly.inquiry.command.CommandLevel;
 import dev.chel_shev.nelly.service.AnswerService;
 import dev.chel_shev.nelly.service.CommandService;
 import dev.chel_shev.nelly.service.InquiryService;
 import dev.chel_shev.nelly.service.UserService;
+import dev.chel_shev.nelly.type.KeyboardType;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
-@InquiryId(type = InquiryType.COMMAND, command = "/stop")
+@InquiryId(type = InquiryType.STOP, command = "/stop")
 public class StopInquiry extends Inquiry {
 
     private final UserService userService;
 
-    public StopInquiry(UserService userService, CommandService commandService, AnswerService answerService, InquiryService inquiryService) {
-        super(inquiryService, commandService, answerService);
+    public StopInquiry(UserService userService) {
         this.userService = userService;
     }
 
@@ -31,6 +32,9 @@ public class StopInquiry extends Inquiry {
             add("ВСЕ-ГО ХО-РО-ШЕ-ГО");
             add("Ты меня огорчаешь, удачи..");
             add("Удачи!");
+            add("Ну и ладно, ну и пожалуйста..");
+            add("Не очень-то и хотелось (:");
+            add("Поматросил и бросил?");
         }};
         getAnswer().put(CommandLevel.FIRST, firstLevel);
     }

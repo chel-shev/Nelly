@@ -1,33 +1,45 @@
 package dev.chel_shev.nelly.entity;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import javax.persistence.*;
+import java.time.ZoneOffset;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
-@Data
 @Table(name = "user")
 @NoArgsConstructor
 public class UserEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String firstName;
     private String lastName;
     private String userName;
-
+    private String email;
     private Long chatId;
 
-    @OneToMany(mappedBy = "user", cascade=CascadeType.ALL, orphanRemoval = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
+    private ZoneOffset zoneOffset = ZoneOffset.of("+3");
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<AccountEntity> accountList;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InquiryEntity> inquiryList;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
-    private List<BdayEntity> bdayList;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CalendarEntity> calendarList;
 
     public UserEntity(Long id, String firstName, String lastName, String userName, Long chatId) {
         this.id = id;

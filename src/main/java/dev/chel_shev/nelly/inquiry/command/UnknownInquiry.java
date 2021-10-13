@@ -3,22 +3,15 @@ package dev.chel_shev.nelly.inquiry.command;
 import dev.chel_shev.nelly.inquiry.Inquiry;
 import dev.chel_shev.nelly.inquiry.InquiryAnswer;
 import dev.chel_shev.nelly.inquiry.InquiryId;
-import dev.chel_shev.nelly.inquiry.InquiryType;
-import dev.chel_shev.nelly.service.AnswerService;
-import dev.chel_shev.nelly.service.CommandService;
-import dev.chel_shev.nelly.service.InquiryService;
+import dev.chel_shev.nelly.type.InquiryType;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Component
-@InquiryId(type = InquiryType.COMMAND, command = "/unknown")
+@InquiryId(type = InquiryType.NONE, command = "/unknown")
 public class UnknownInquiry extends Inquiry {
-
-    protected UnknownInquiry(InquiryService inquiryService, AnswerService answerService, CommandService commandService) {
-        super(inquiryService, commandService, answerService);
-    }
 
     @Override
     public void initAnswers() {

@@ -6,9 +6,8 @@ import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.inquiry.command.CommandLevel;
-import dev.chel_shev.nelly.service.AnswerService;
-import dev.chel_shev.nelly.service.CommandService;
-import dev.chel_shev.nelly.service.InquiryService;
+import dev.chel_shev.nelly.service.*;
+import dev.chel_shev.nelly.type.InquiryType;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 public abstract class Inquiry {
 
     private Long id;
-    private String massage;
+    private String message;
     private LocalDateTime date;
     private boolean closed = false;
 
@@ -30,26 +29,25 @@ public abstract class Inquiry {
     private UserEntity user;
     private CommandEntity command;
 
-    protected final InquiryService inquiryService;
-    protected final CommandService commandService;
-    protected final AnswerService answerService;
-
-    protected Inquiry(InquiryService inquiryService, CommandService commandService, AnswerService answerService) {
-        this.inquiryService = inquiryService;
-        this.commandService = commandService;
-        this.answerService = answerService;
-    }
+    @Autowired
+    protected InquiryService inquiryService;
+    @Autowired
+    protected CommandService commandService;
+    @Autowired
+    protected AnswerService answerService;
+    @Autowired
+    protected UserService userService;
 
     public void generate(InquiryEntity entity, UserEntity user) {
         this.id = entity.getId();
-        this.massage = entity.getMassage();
+        this.message = entity.getMessage();
         this.closed = entity.isClosed();
         this.date = entity.getDate();
         this.user = user;
     }
 
-    public void generate(String massage, LocalDateTime date, UserEntity user) {
-        this.massage = massage;
+    public void generate(String message, LocalDateTime date, UserEntity user) {
+        this.message = message;
         this.date = date;
         this.user = user;
     }
@@ -63,9 +61,7 @@ public abstract class Inquiry {
     }
 
     public String getCommandFromAnnotation() {
-        if (getType() == InquiryType.COMMAND)
-            return this.getClass().getAnnotation(InquiryId.class).command();
-        throw new TelegramBotException("The inquiry must be of the Command type!");
+        return this.getClass().getAnnotation(InquiryId.class).command();
     }
 
     @Autowired
@@ -82,8 +78,8 @@ public abstract class Inquiry {
         return answer;
     }
 
-    public void save() {
-        inquiryService.save(this);
+    public InquiryEntity save() {
+        return inquiryService.save(this);
     }
 
     public abstract void initAnswers();
@@ -96,7 +92,7 @@ public abstract class Inquiry {
 
     public String getArgFromMassage(int index) {
         try {
-            return getMassage().split(" ")[index];
+            return getMessage().split(" ")[index];
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new TelegramBotException("Неверное кол-во аргументов :(");
         }
@@ -104,7 +100,7 @@ public abstract class Inquiry {
 
     public String getLastArgsPast(int index) {
         try {
-            List<String> skip = Arrays.stream(getMassage().split(" ")).skip(index + 1).collect(Collectors.toList());
+            List<String> skip = Arrays.stream(getMessage().split(" ")).skip(index + 1).collect(Collectors.toList());
             return Strings.join(skip, ' ');
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new TelegramBotException("Неверное кол-во аргументов :(");
@@ -112,26 +108,14 @@ public abstract class Inquiry {
     }
 
     public boolean validationArgs(int count, String sign) {
-        if (!"> >= < <= ==".contains(sign))
-            throw new TelegramBotException("Обратись к админу :(");
-        int length = getMassage().split(" ").length;
-        switch (sign) {
-            case ">":
-                if (length <= count) return false;
-                break;
-            case ">=":
-                if (length < count) return false;
-                break;
-            case "<":
-                if (length >= count) return false;
-                break;
-            case "<=":
-                if (length > count) return false;
-                break;
-            case "==":
-                if (length != count) return false;
-                break;
-        }
-        return true;
+        int length = getMessage().split(" ").length;
+        return switch (sign) {
+            case ">" -> length > count;
+            case ">=" -> length >= count;
+            case "<" -> length < count;
+            case "<=" -> length <= count;
+            case "==" -> length == count;
+            default -> throw new TelegramBotException("Обратись к админу :(");
+        };
     }
 }

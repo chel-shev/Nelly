@@ -1,9 +1,9 @@
-package dev.chel_shev.nelly.keyboard;
+package dev.chel_shev.nelly.type;
 
 public enum KeyboardType {
 
     NONE,
     INQUIRIES,
     CANCEL,
-    ACCOUNTS
+    ACCOUNTS,
 }

@@ -1,12 +1,15 @@
 package dev.chel_shev.nelly.service;
 
+import dev.chel_shev.nelly.bot.BotSender;
 import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.inquiry.Inquiry;
 import dev.chel_shev.nelly.inquiry.command.CommandLevel;
-import dev.chel_shev.nelly.inquiry.command.StartInquiry;
+import dev.chel_shev.nelly.inquiry.finance.InquiryFinance;
+import dev.chel_shev.nelly.inquiry.start.StartInquiry;
 import dev.chel_shev.nelly.repository.InquiryRepository;
+import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.TelegramBotUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,7 +57,11 @@ public class InquiryService {
             inquiry.generate(TelegramBotUtils.getArgs(message.getText()), LocalDateTime.now(), !isNull(user) ? user : new UserEntity(message));
             return inquiry;
         }
-        inquiry.generate(TelegramBotUtils.getArgs(message.getText()), LocalDateTime.now(), user);
+        if (inquiry instanceof InquiryFinance) {
+            ((InquiryFinance) inquiry).generate(user);
+            throw new TelegramBotException(user, "Выберите счет, с которым будет производится операция:", KeyboardType.ACCOUNTS);
+        } else
+            inquiry.generate(TelegramBotUtils.getArgs(message.getText()), LocalDateTime.now(), user);
         return inquiry;
     }
 
@@ -66,7 +73,11 @@ public class InquiryService {
         }
     }
 
-    public void save(Inquiry inquiry) {
-        repository.save(new InquiryEntity(inquiry));
+    public InquiryEntity save(Inquiry inquiry) {
+        return repository.save(new InquiryEntity(inquiry));
+    }
+
+    public void delete(InquiryEntity entity) {
+        repository.delete(entity);
     }
 }

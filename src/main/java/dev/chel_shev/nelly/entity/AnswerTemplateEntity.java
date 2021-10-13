@@ -1,15 +1,13 @@
 package dev.chel_shev.nelly.entity;
 
 import dev.chel_shev.nelly.inquiry.command.CommandLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "answer_template")
@@ -17,7 +15,7 @@ import javax.persistence.*;
 public class AnswerTemplateEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String template;
     @Enumerated(EnumType.STRING)
