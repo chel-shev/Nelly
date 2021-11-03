@@ -4,7 +4,6 @@ import dev.chel_shev.nelly.entity.AccountEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.service.AccountService;
-import dev.chel_shev.nelly.service.UserService;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.ApplicationContextUtils;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +31,29 @@ public final class KeyboardFactory {
         keyboardMarkup.setResizeKeyboard(true);
         keyboardMarkup.setOneTimeKeyboard(false);
         switch (type) {
-            case INQUIRIES -> {
+            case COMMON -> {
                 KeyboardRow inquiriesFirstRow = new KeyboardRow();
                 KeyboardRow inquiriesSecondRow = new KeyboardRow();
+                inquiriesFirstRow.addAll(Arrays.asList("Финансы", "ДР"));
+//                inquiriesSecondRow.addAll(Arrays.asList("Спорт", "Английский"));
+//                inquiriesSecondRow.addAll(Arrays.asList("Напоминания"));
+                keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow));
+            }
+            case BDAY -> {
+                KeyboardRow inquiriesFirstRow = new KeyboardRow();
+                KeyboardRow inquiriesSecondRow = new KeyboardRow();
+                inquiriesFirstRow.addAll(Arrays.asList(BDAY.label, BDAY_REMOVE.label));
+                inquiriesSecondRow.addAll(Arrays.asList("Назад"));
+                keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow));
+            }
+            case FINANCE -> {
+                KeyboardRow inquiriesFirstRow = new KeyboardRow();
+                KeyboardRow inquiriesSecondRow = new KeyboardRow();
+                KeyboardRow inquiriesThirdRow = new KeyboardRow();
                 inquiriesFirstRow.addAll(Arrays.asList(EXPENSE.label, INCOME.label));
                 inquiriesSecondRow.addAll(Arrays.asList(LOAN.label, TRANSFER.label));
-                keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow));
+                inquiriesThirdRow.addAll(Arrays.asList("Назад"));
+                keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow, inquiriesThirdRow));
             }
             case CANCEL -> keyboardMarkup.setKeyboard(Collections.singletonList(getCancelRow()));
             case ACCOUNTS -> {
@@ -46,7 +62,7 @@ public final class KeyboardFactory {
                 keyboardMarkup.setKeyboard(rowList);
             }
             case NONE -> keyboardMarkup.setKeyboard(new ArrayList<>());
-            default -> throw new TelegramBotException("Неверный тип клавиатуры!", KeyboardType.INQUIRIES);
+            default -> throw new TelegramBotException("Неверный тип клавиатуры!", KeyboardType.COMMON);
         }
         return keyboardMarkup;
     }

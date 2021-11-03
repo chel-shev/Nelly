@@ -46,10 +46,10 @@ public class StartInquiry extends Inquiry {
     public InquiryAnswer logic() {
         done();
         if (userService.isExist(getUser().getChatId())) {
-            return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.SECOND, this), KeyboardType.NONE);
+            return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.SECOND, this), KeyboardType.COMMON);
         } else {
             userService.save(getUser());
-            return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.FIRST, this), KeyboardType.NONE);
+            return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.FIRST, this), KeyboardType.COMMON);
         }
     }
 }

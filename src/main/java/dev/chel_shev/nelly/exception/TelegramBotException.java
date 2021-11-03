@@ -25,5 +25,9 @@ public class TelegramBotException extends RuntimeException {
     public TelegramBotException(String message) {
         this(message, KeyboardType.NONE);
     }
+
+    public TelegramBotException(UserEntity user, String message) {
+        this(user, message, KeyboardType.NONE);
+    }
 }
 

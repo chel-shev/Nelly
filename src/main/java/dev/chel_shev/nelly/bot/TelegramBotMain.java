@@ -28,14 +28,14 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class TelegramBotMain extends TelegramLongPollingBot {
 
+    private final InquiryHandler inquiryHandler;
+    private final ExerciseRepository exerciseRepository;
+    private final BotSender sender;
+
     @Value("${bot.api.username}")
     private String botUsername;
     @Value("${bot.api.token}")
     private String botToken;
-
-    private final InquiryHandler inquiryHandler;
-    private final ExerciseRepository exerciseRepository;
-    private final BotSender sender;
 
     @PostConstruct
     private void register() {

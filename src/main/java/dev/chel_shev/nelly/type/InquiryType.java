@@ -18,11 +18,13 @@ public enum InquiryType {
                  "Текущие займы (₽):\r\n" +
                  "%s"),
     TRANSFER("Перевод", "Напишите сумму перевода:\r\n"),
-    BDAY("День Рождения", ""),
+    BDAY("Добавить ДР", ""),
+    BDAY_REMOVE("Удалить ДР", ""),
     START("Старт", ""),
     STOP("Стоп", ""),
     WORKOUT("Воркаут", ""),
-    NONE("Не определено", "");
+    NONE("Не определено", ""),
+    KEYBOARD("Клавиатура", "");
 
     @Getter
     public final String label;

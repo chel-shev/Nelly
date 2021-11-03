@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-@InquiryId(type = InquiryType.BDAY, command = "/bday_remove")
+@InquiryId(type = InquiryType.BDAY, command = "Добавить ДР")
 public class BdayRemoveInquiry extends Inquiry {
 
     private final BdayService service;

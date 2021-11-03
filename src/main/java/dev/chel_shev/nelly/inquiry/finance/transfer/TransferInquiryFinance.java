@@ -11,10 +11,8 @@ import dev.chel_shev.nelly.inquiry.InquiryId;
 import dev.chel_shev.nelly.service.TransferService;
 import dev.chel_shev.nelly.type.InquiryType;
 import dev.chel_shev.nelly.type.KeyboardType;
-import dev.chel_shev.nelly.util.ApplicationContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -68,7 +66,7 @@ public class TransferInquiryFinance extends InquiryFinance {
         TransferEntity transferEntity = new TransferEntity(accountOut, getAccount(), value, LocalDateTime.now());
         transferService.save(transferEntity);
         complete();
-        return new InquiryAnswer(getUser(), "Перевод добавлен!", KeyboardType.INQUIRIES);
+        return new InquiryAnswer(getUser(), "Перевод добавлен!", KeyboardType.FINANCE);
     }
 
     @Override

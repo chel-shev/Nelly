@@ -59,7 +59,7 @@ public class ExpenseInquiryFinance extends InquiryFinance {
         ExpenseEntity expenseEntity = new ExpenseEntity(LocalDateTime.now(), value, expenseProductEntity);
         expenseService.save(expenseEntity, getAccount(), getAmount());
         complete();
-        return new InquiryAnswer(getUser(), "Расход добавлен!", KeyboardType.INQUIRIES);
+        return new InquiryAnswer(getUser(), "Расход добавлен!", KeyboardType.FINANCE);
     }
 
     private InquiryAnswer saveReceipt() throws JSONException {
@@ -69,6 +69,6 @@ public class ExpenseInquiryFinance extends InquiryFinance {
         expenseService.saveAll(expenses, getAccount(), getAmount());
         complete();
         receipt.clear();
-        return new InquiryAnswer(getUser(), "Чек добавлен!", KeyboardType.INQUIRIES);
+        return new InquiryAnswer(getUser(), "Чек добавлен!", KeyboardType.FINANCE);
     }
 }

@@ -1,5 +1,6 @@
 package dev.chel_shev.nelly.util;
 
+import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,14 +51,14 @@ public class DateTimeUtils {
         return dateTime.getMonth() == now.getMonth() && dateTime.getDayOfMonth() == now.getDayOfMonth();
     }
 
-    public static LocalDateTime tryToParse(String date) {
+    public static LocalDateTime tryToParse(String date, UserEntity user) {
         for (DateTimeFormatter formatter : DATE_FORMATTER) {
             try {
                 return LocalDateTime.parse(date, formatter);
             } catch (DateTimeParseException ignore) {
             }
         }
-        throw new TelegramBotException("Проверь дату, мне кажется ты ошибся");
+        throw new TelegramBotException(user, "Проверь дату, мне кажется ты ошибся");
     }
 
     public static boolean isNextHour(LocalDateTime dateTime, ZoneOffset offset) {

@@ -19,4 +19,6 @@ public interface BdayRepository extends JpaRepository<BdayEntity, Long> {
     void deleteAllByName(String name);
 
     List<BdayEntity> findByName(String name);
+
+    BdayEntity findByNameAndDate(String name, LocalDateTime date);
 }

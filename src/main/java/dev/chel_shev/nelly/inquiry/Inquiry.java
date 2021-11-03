@@ -6,7 +6,10 @@ import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.inquiry.command.CommandLevel;
-import dev.chel_shev.nelly.service.*;
+import dev.chel_shev.nelly.service.AnswerService;
+import dev.chel_shev.nelly.service.CommandService;
+import dev.chel_shev.nelly.service.InquiryService;
+import dev.chel_shev.nelly.service.UserService;
 import dev.chel_shev.nelly.type.InquiryType;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
@@ -85,6 +88,10 @@ public abstract class Inquiry {
     public abstract void initAnswers();
 
     public abstract InquiryAnswer logic();
+
+    public boolean isReadyForProcess() {
+        return true;
+    }
 
     public void done() {
         this.closed = true;

@@ -76,7 +76,7 @@ public abstract class InquiryFinance extends Inquiry {
     public InquiryAnswer cancel() {
         getInquiryService().delete(this.getEntity());
         log.info("CANCEL Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", getId(), getMessage(), getType(), getDate(), isClosed());
-        return new InquiryAnswer(getUser(), "Действие отменено!", KeyboardType.INQUIRIES);
+        return new InquiryAnswer(getUser(), "Действие отменено!", KeyboardType.FINANCE);
     }
 
     public String getTextInfo() {

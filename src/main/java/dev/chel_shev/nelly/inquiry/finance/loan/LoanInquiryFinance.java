@@ -73,6 +73,6 @@ public class LoanInquiryFinance extends InquiryFinance {
         LoanEntity loanEntity = new LoanEntity(name, value, LocalDateTime.now(), null, direction, getAccount());
         loanService.save(loanEntity, getAccount());
         complete();
-        return new InquiryAnswer(getUser(),"Займ добавлен!", KeyboardType.INQUIRIES);
+        return new InquiryAnswer(getUser(),"Займ добавлен!", KeyboardType.FINANCE);
     }
 }

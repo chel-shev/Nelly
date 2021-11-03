@@ -52,6 +52,6 @@ public class IncomeInquiryFinance extends InquiryFinance {
         IncomeEntity incomeEntity = new IncomeEntity(name, value, LocalDateTime.now(), null, getAccount());
         incomeService.save(incomeEntity, getAccount());
         complete();
-        return new InquiryAnswer(getUser(), "Доход добавлен!", KeyboardType.INQUIRIES);
+        return new InquiryAnswer(getUser(), "Доход добавлен!", KeyboardType.FINANCE);
     }
 }

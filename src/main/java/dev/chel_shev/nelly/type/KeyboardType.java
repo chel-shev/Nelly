@@ -3,7 +3,9 @@ package dev.chel_shev.nelly.type;
 public enum KeyboardType {
 
     NONE,
-    INQUIRIES,
+    FINANCE,
     CANCEL,
     ACCOUNTS,
+    BDAY,
+    COMMON;
 }

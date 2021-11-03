@@ -1,6 +1,5 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.bot.BotSender;
 import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
@@ -20,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static dev.chel_shev.nelly.util.TelegramBotUtils.isCommandInquiry;
+import static dev.chel_shev.nelly.util.TelegramBotUtils.isKeyboardInquiry;
 import static java.util.Objects.isNull;
 
 @Service
@@ -48,7 +48,7 @@ public class InquiryService {
 
     public Inquiry getCommandInquiry(Message message) {
         UserEntity user = userService.getUserByChatId(message.getChatId());
-        Inquiry inquiry = inquiryList.get(TelegramBotUtils.getCommand(message.getText()));
+        Inquiry inquiry = inquiryList.get(message.getText());
         if (isNull(user) && !(inquiry instanceof StartInquiry))
             throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, inquiryList.get("/unknown_user")));
         if (isNull(inquiry))
@@ -65,8 +65,17 @@ public class InquiryService {
         return inquiry;
     }
 
+    private Inquiry getKeyboardInquiry(Message message) {
+        UserEntity user = userService.getUserByChatId(message.getChatId());
+        Inquiry inquiry = inquiryList.get("/keyboard");
+        inquiry.generate(message.getText(), LocalDateTime.now(), user);
+        return inquiry;
+    }
+
     public Inquiry getInquiry(Message message) {
-        if (isCommandInquiry(message.getText())) {
+        if (isKeyboardInquiry(message.getText())) {
+            return getKeyboardInquiry(message);
+        } else if (isCommandInquiry(message.getText())) {
             return getCommandInquiry(message);
         } else {
             return getLast(message);

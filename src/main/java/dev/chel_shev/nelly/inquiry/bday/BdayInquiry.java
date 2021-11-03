@@ -19,12 +19,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 @Component
-@InquiryId(type = InquiryType.BDAY, command = "/bday")
+@InquiryId(type = InquiryType.BDAY, command = "Добавить ДР")
 public class BdayInquiry extends Inquiry {
 
     private final BdayService service;
     private final CalendarService calendarService;
+    private String name;
+    private LocalDateTime date;
+
 
     protected BdayInquiry(BdayService service, CalendarService calendarService) {
         this.service = service;
@@ -42,25 +47,44 @@ public class BdayInquiry extends Inquiry {
             add("День Рождения уже существует!");
             add("Такое уже знаем :)");
         }};
+        Set<String> thirdLevel = new HashSet<>() {{
+            add("Введите 'дата (в формате `дд.мм.гггг` или `дд.мм`) имя', чтоб добавить день рождения!");
+        }};
         getAnswer().put(CommandLevel.FIRST, firstLevel);
         getAnswer().put(CommandLevel.SECOND, secondLevel);
+        getAnswer().put(CommandLevel.THIRD, thirdLevel);
     }
 
     @Override
     public InquiryAnswer logic() {
-        if (!validationArgs(2, ">=")) {
-            throw new TelegramBotException("Неверное кол-во аргументов :(");
-        }
-        String name = getLastArgsPast(0);
-        LocalDateTime date = DateTimeUtils.tryToParse(getArgFromMassage(0));
-        done();
-        if (service.isExist(name, date, getUser())) {
+        if (validationArgs(2, "=="))
+            throw new TelegramBotException(getUser(), "Неверное кол-во аргументов :(");
+        else if (validationArgs(1, "=="))
+            return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.THIRD, this), KeyboardType.NONE);
+        return setData();
+    }
+
+    public InquiryAnswer setData() {
+        this.name = getLastArgsPast(0);
+        this.date = DateTimeUtils.tryToParse(getArgFromMassage(0), getUser());
+        return saveBday();
+    }
+
+    private InquiryAnswer saveBday(){
+        if (calendarService.isExist(name, date, getUser())) {
+            done();
             return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.SECOND, this), KeyboardType.NONE);
         } else {
             BdayEntity save = service.save(new BdayEntity(name, date));
             List<CalendarEntity> calendarEntities = service.getCalendarEntities(save, getUser());
             calendarService.addEvents(calendarEntities);
+            done();
             return new InquiryAnswer(getUser(), answerService.generateAnswer(CommandLevel.FIRST, this), KeyboardType.NONE);
         }
+    }
+
+    @Override
+    public boolean isReadyForProcess() {
+        return !isNullOrEmpty(name) && date != null;
     }
 }

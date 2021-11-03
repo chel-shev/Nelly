@@ -8,6 +8,7 @@ import dev.chel_shev.nelly.repository.CalendarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,11 @@ public class CalendarService {
     }
 
     public void addEvents(List<CalendarEntity> calendarEntities) {
-        calendarEntities.forEach(repository::save);
+        repository.saveAll(calendarEntities);
+    }
+
+    public boolean isExist(String name, LocalDateTime date, UserEntity user) {
+        BdayEntity byNameAndDate = bdayRepository.findByNameAndDate(name, date);
+        return repository.existsByEventAndUser(byNameAndDate, user);
     }
 }
