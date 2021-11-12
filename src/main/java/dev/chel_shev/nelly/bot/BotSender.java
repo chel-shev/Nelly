@@ -2,6 +2,7 @@ package dev.chel_shev.nelly.bot;
 
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.inquiry.InquiryAnswer;
+import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
 import dev.chel_shev.nelly.keyboard.KeyboardFactory;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.ApplicationContextUtils;
@@ -18,9 +19,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class BotSender {
 
-    public void sendMessage(InquiryAnswer answer) {
-        SendMessage sendMessage = SendMessage.builder().chatId(String.valueOf(answer.getUser().getChatId())).text(answer.getMessage()).build();
-        sendMessage(sendMessage, answer.getKeyboardType(), answer.getUser());
+    public void sendMessage(Inquiry inquiry) {
+        SendMessage sendMessage = SendMessage.builder().chatId(String.valueOf(inquiry.getUser().getChatId())).text(inquiry.getAnswerMessage()).build();
+        sendMessage(sendMessage, inquiry.getKeyboardType(), inquiry.getUser());
     }
 
     public void sendMessage(UserEntity user, KeyboardType keyboardType, String text) {

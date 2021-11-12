@@ -4,7 +4,9 @@ import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface InquiryRepository extends JpaRepository<InquiryEntity, Long> {
-    InquiryEntity findTopByUserOrderByDateDesc(UserEntity user);
+    Optional<InquiryEntity> findTopByUserOrderByDateDesc(UserEntity user);
 }
 

@@ -43,10 +43,10 @@ public class AccountEntity {
     private List<TransferEntity> outTransferList;
 
     @OneToMany(mappedBy = "in")
-    private List<InquiryEntity> accountInList;
+    private List<FinanceInquiryEntity> accountInList;
 
     @OneToMany(mappedBy = "out")
-    private List<InquiryEntity> accountOutList;
+    private List<FinanceInquiryEntity> accountOutList;
 
     @OneToMany(mappedBy = "account")
     private List<AccountHistoryEntity> userHistoryList;

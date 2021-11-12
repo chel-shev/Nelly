@@ -2,7 +2,6 @@ package dev.chel_shev.nelly.task;
 
 import dev.chel_shev.nelly.bot.BotSender;
 import dev.chel_shev.nelly.entity.UserEntity;
-import dev.chel_shev.nelly.inquiry.InquiryAnswer;
 import dev.chel_shev.nelly.type.KeyboardType;
 
 import java.util.TimerTask;
@@ -22,7 +21,7 @@ public class BdayTask extends TimerTask {
     @Override
     public void run() {
         try {
-            sender.sendMessage(new InquiryAnswer(user, name + " празднует свой День Рождения, поздравь, если уместно!", KeyboardType.NONE));
+            sender.sendMessage(user, KeyboardType.NONE, name + " празднует свой День Рождения, поздравь, если уместно!");
         } catch (Exception ex) {
             System.out.println("error running thread " + ex.getMessage());
         }

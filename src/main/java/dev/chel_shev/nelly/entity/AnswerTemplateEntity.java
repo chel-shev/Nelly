@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.entity;
 
-import dev.chel_shev.nelly.inquiry.command.CommandLevel;
+import dev.chel_shev.nelly.type.CommandLevel;
 import lombok.*;
 
 import javax.persistence.*;

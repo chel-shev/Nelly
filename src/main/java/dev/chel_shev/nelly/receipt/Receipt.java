@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ import static java.util.Objects.isNull;
  * Вид кода: t=20200517T1429&s=2711.51&fn=9251440300024356&i=108404&fp=357526947&n=1
  */
 @Data
+@Scope("prototype")
 @Component
 public class Receipt {
 

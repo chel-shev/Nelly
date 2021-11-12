@@ -2,8 +2,8 @@ package dev.chel_shev.nelly.service;
 
 import dev.chel_shev.nelly.entity.AnswerTemplateEntity;
 import dev.chel_shev.nelly.entity.CommandEntity;
-import dev.chel_shev.nelly.inquiry.Inquiry;
-import dev.chel_shev.nelly.inquiry.command.CommandLevel;
+import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
+import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.repository.AnswerTemplateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

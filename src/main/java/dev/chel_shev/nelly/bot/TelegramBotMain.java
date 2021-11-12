@@ -2,7 +2,8 @@ package dev.chel_shev.nelly.bot;
 
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.inquiry.InquiryAnswer;
-import dev.chel_shev.nelly.inquiry.InquiryHandler;
+import dev.chel_shev.nelly.inquiry.handler.MainInquiryHandler;
+import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
 import dev.chel_shev.nelly.repository.ExerciseRepository;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,7 +29,7 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class TelegramBotMain extends TelegramLongPollingBot {
 
-    private final InquiryHandler inquiryHandler;
+    private final MainInquiryHandler mainInquiryHandler;
     private final ExerciseRepository exerciseRepository;
     private final BotSender sender;
 
@@ -52,8 +53,8 @@ public class TelegramBotMain extends TelegramLongPollingBot {
         if (isNull(update.getMessage())) return;
         Message message = update.getMessage();
         try {
-            InquiryAnswer answer = inquiryHandler.execute(message);
-            sender.sendMessage(answer);
+            Inquiry inquiry = mainInquiryHandler.execute(message);
+            sender.sendMessage(inquiry);
         } catch (TelegramBotException e) {
             log.debug(e.getMessage());
             sender.sendMessage(e.getResponse().getUser(), e.getResponse().getKeyboardType(), e.getMessage());
