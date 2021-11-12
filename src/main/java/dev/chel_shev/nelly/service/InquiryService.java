@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import static dev.chel_shev.nelly.type.InquiryType.ACTION_COMMAND_MAP;
 import static dev.chel_shev.nelly.util.TelegramBotUtils.isCommandInquiry;
 import static dev.chel_shev.nelly.util.TelegramBotUtils.isKeyboardInquiry;
 import static java.util.Objects.isNull;
@@ -40,7 +41,10 @@ public class InquiryService<I extends Inquiry> {
 
     public I getCommandInquiry(Message message) {
         var user = userService.getUserByChatId(message.getChatId());
-        var commandName = InquiryType.getFromLabel(message.getText()).getCommand();
+        String commandName;
+        if (!ACTION_COMMAND_MAP.containsKey(message.getText()))
+            commandName = InquiryType.getFromLabel(message.getText()).getCommand();
+        else commandName = message.getText();
         var command = commandService.getCommand(commandName);
         var inquiry = inquiryFactory.create(command.getCommand());
         if (isNull(inquiry))

@@ -2,13 +2,14 @@ package dev.chel_shev.nelly.util;
 
 import java.util.List;
 
+import static dev.chel_shev.nelly.type.InquiryType.ACTION_COMMAND_MAP;
 import static dev.chel_shev.nelly.type.InquiryType.ACTION_LABEL_MAP;
 import static java.util.Objects.isNull;
 
 public class TelegramBotUtils {
 
     public static boolean isCommandInquiry(String text) {
-        return !isNull(text) && ACTION_LABEL_MAP.containsKey(text);
+        return !isNull(text) && (ACTION_LABEL_MAP.containsKey(text) || ACTION_COMMAND_MAP.containsKey(text));
     }
 
     public static boolean isKeyboardInquiry(String text) {
