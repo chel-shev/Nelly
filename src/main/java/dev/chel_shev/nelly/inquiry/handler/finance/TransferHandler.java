@@ -5,7 +5,6 @@ import dev.chel_shev.nelly.entity.TransferEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.inquiry.prototype.finance.TransferInquiryFinance;
 import dev.chel_shev.nelly.service.TransferService;
-import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.TelegramBotUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

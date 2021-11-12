@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class TelegramBotQuickstartApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TelegramBotQuickstartApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TelegramBotQuickstartApplication.class, args);
+    }
 }

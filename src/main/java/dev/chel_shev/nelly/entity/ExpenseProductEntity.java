@@ -26,7 +26,7 @@ public class ExpenseProductEntity {
         this.expenseCategory = expenseCategory;
     }
 
-    public String getCategoryName(){
+    public String getCategoryName() {
         return isNull(expenseCategory) ? "" : expenseCategory.getName();
     }
 }

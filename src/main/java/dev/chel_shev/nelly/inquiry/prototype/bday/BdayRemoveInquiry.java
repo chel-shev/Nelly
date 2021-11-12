@@ -1,7 +1,6 @@
 package dev.chel_shev.nelly.inquiry.prototype.bday;
 
 import dev.chel_shev.nelly.entity.BdayInquiryEntity;
-import dev.chel_shev.nelly.entity.CommonInquiryEntity;
 import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
@@ -9,7 +8,6 @@ import dev.chel_shev.nelly.inquiry.InquiryId;
 import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
 import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.InquiryType;
-import dev.chel_shev.nelly.util.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +18,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static dev.chel_shev.nelly.inquiry.InquiryUtils.getLastArgsPast;
 
 @Getter
 @Setter

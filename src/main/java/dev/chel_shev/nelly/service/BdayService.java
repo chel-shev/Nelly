@@ -2,9 +2,9 @@ package dev.chel_shev.nelly.service;
 
 import dev.chel_shev.nelly.entity.BdayEntity;
 import dev.chel_shev.nelly.entity.CalendarEntity;
-import dev.chel_shev.nelly.type.EventType;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.repository.BdayRepository;
+import dev.chel_shev.nelly.type.EventType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

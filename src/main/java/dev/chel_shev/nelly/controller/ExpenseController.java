@@ -51,7 +51,7 @@ public class ExpenseController {
     @CrossOrigin(value = "http://localhost:3000")
     @ResponseBody
     @PostMapping(value = "/confirm", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void confirmProduct(@RequestBody ExpenseWrapper expenses){
+    public void confirmProduct(@RequestBody ExpenseWrapper expenses) {
         expenseService.updateConfirmed(expenses.getExpense());
     }
 }

@@ -20,7 +20,7 @@ public class HandlerFactory<I extends Inquiry> {
 
     @PostConstruct
     @SuppressWarnings("unchecked")
-    void init(){
+    void init() {
         for (InquiryHandler<I> handlerType : inquiryHandlers) {
             Type type = handlerType.getClass().getGenericSuperclass();
             while (!(type instanceof ParameterizedType)) type = ((Class<?>) type).getGenericSuperclass();

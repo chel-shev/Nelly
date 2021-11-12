@@ -2,12 +2,8 @@ package dev.chel_shev.nelly.inquiry.handler.finance;
 
 import dev.chel_shev.nelly.entity.LoanEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.inquiry.InquiryAnswer;
 import dev.chel_shev.nelly.inquiry.prototype.finance.LoanInquiryFinance;
-import dev.chel_shev.nelly.service.AnswerService;
-import dev.chel_shev.nelly.service.InquiryService;
 import dev.chel_shev.nelly.service.LoanService;
-import dev.chel_shev.nelly.service.UserService;
 import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +31,7 @@ public class LoanHandler extends InquiryFinanceHandler<LoanInquiryFinance> {
         try {
             if (isDoubleParam(i))
                 return saveLoan(i);
-            else{
+            else {
                 i.setAnswerMessage("Неверный формат!");
                 i.setKeyboardType(CANCEL);
                 return i;
@@ -66,7 +62,7 @@ public class LoanHandler extends InquiryFinanceHandler<LoanInquiryFinance> {
     private LoanInquiryFinance saveLoan(LoanInquiryFinance i) {
         String name = getNameFromParam(i, 0);
         long value = getValueFromParam(i, 1);
-        boolean direction = getDirectionFromParam(i,1);
+        boolean direction = getDirectionFromParam(i, 1);
         i.setAmount(direction ? value : -1 * value);
         LoanEntity loanEntity = new LoanEntity(name, value, LocalDateTime.now(), null, direction, i.getAccount());
         loanService.save(loanEntity, i.getAccount());

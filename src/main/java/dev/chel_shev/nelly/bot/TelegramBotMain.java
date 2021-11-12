@@ -1,7 +1,6 @@
 package dev.chel_shev.nelly.bot;
 
 import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.inquiry.InquiryAnswer;
 import dev.chel_shev.nelly.inquiry.handler.MainInquiryHandler;
 import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
 import dev.chel_shev.nelly.repository.ExerciseRepository;

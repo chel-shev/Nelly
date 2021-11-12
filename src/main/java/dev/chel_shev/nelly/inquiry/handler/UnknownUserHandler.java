@@ -1,6 +1,5 @@
 package dev.chel_shev.nelly.inquiry.handler;
 
-import dev.chel_shev.nelly.inquiry.InquiryAnswer;
 import dev.chel_shev.nelly.inquiry.InquiryId;
 import dev.chel_shev.nelly.inquiry.prototype.UnknownUserInquiry;
 import dev.chel_shev.nelly.type.InquiryType;

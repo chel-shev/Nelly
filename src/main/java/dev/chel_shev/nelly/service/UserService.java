@@ -2,7 +2,6 @@ package dev.chel_shev.nelly.service;
 
 import dev.chel_shev.nelly.entity.AccountEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
-import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.exception.EasyFinanceException;
 import dev.chel_shev.nelly.repository.AccountRepository;
 import dev.chel_shev.nelly.repository.UserRepository;
@@ -11,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -1,6 +1,5 @@
 package dev.chel_shev.nelly.inquiry.handler;
 
-import dev.chel_shev.nelly.bot.BotResources;
 import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
 import dev.chel_shev.nelly.service.AnswerService;

@@ -39,7 +39,7 @@ public class ExpenseEntity {
         this.expenseProduct = expenseProduct;
     }
 
-    public ExpenseEntity(LocalDateTime date, Long amount, ExpenseProductEntity expenseProduct){
+    public ExpenseEntity(LocalDateTime date, Long amount, ExpenseProductEntity expenseProduct) {
         this.date = date;
         this.price = amount;
         this.amount = amount;
@@ -47,15 +47,15 @@ public class ExpenseEntity {
         this.expenseProduct = expenseProduct;
     }
 
-    public String getProductName(){
+    public String getProductName() {
         return isNull(expenseProduct) ? "" : expenseProduct.getName();
     }
 
-    public String getProductCategoryName(){
+    public String getProductCategoryName() {
         return isNull(expenseProduct) ? "" : expenseProduct.getCategoryName();
     }
 
-    public ExpenseCategoryEntity getProductCategory(){
+    public ExpenseCategoryEntity getProductCategory() {
         return isNull(expenseProduct) ? null : expenseProduct.getExpenseCategory();
     }
 }

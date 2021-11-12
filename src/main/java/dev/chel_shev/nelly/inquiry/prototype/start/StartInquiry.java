@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.inquiry.prototype.start;
 
-import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
 import dev.chel_shev.nelly.inquiry.InquiryId;
+import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
 import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.InquiryType;
 import org.springframework.context.annotation.Scope;

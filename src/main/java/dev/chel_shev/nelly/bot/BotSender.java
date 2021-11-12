@@ -1,7 +1,6 @@
 package dev.chel_shev.nelly.bot;
 
 import dev.chel_shev.nelly.entity.UserEntity;
-import dev.chel_shev.nelly.inquiry.InquiryAnswer;
 import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
 import dev.chel_shev.nelly.keyboard.KeyboardFactory;
 import dev.chel_shev.nelly.type.KeyboardType;

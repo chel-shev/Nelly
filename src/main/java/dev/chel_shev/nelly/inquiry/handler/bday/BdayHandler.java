@@ -2,7 +2,6 @@ package dev.chel_shev.nelly.inquiry.handler.bday;
 
 import dev.chel_shev.nelly.entity.BdayEntity;
 import dev.chel_shev.nelly.entity.CalendarEntity;
-import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.inquiry.handler.InquiryHandler;
 import dev.chel_shev.nelly.inquiry.prototype.bday.BdayInquiry;
 import dev.chel_shev.nelly.service.BdayService;
@@ -16,7 +15,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
 
-import static dev.chel_shev.nelly.inquiry.InquiryUtils.validationArgs;
 import static dev.chel_shev.nelly.type.KeyboardType.BDAY;
 import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
 

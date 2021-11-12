@@ -3,12 +3,15 @@ package dev.chel_shev.nelly.service;
 import dev.chel_shev.nelly.entity.AnswerTemplateEntity;
 import dev.chel_shev.nelly.entity.CommandEntity;
 import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
-import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.repository.AnswerTemplateRepository;
+import dev.chel_shev.nelly.type.CommandLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

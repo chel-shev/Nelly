@@ -7,7 +7,6 @@ import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class AccountService {
                 .stream()
                 .filter(AccountEntity::isMain)
                 .findFirst()
-                .orElseThrow(() ->  new TelegramBotException("Пользователь не найден!", KeyboardType.CANCEL));
+                .orElseThrow(() -> new TelegramBotException("Пользователь не найден!", KeyboardType.CANCEL));
     }
 
     public Collection<AccountEntity> getAccountListByChatId(Long chatId) {

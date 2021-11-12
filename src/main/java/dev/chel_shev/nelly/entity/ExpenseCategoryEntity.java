@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@Entity(name="expense_category")
+@Entity(name = "expense_category")
 public class ExpenseCategoryEntity {
 
     @Id

@@ -2,14 +2,12 @@ package dev.chel_shev.nelly.entity;
 
 import dev.chel_shev.nelly.inquiry.prototype.bday.BdayInquiry;
 import dev.chel_shev.nelly.inquiry.prototype.bday.BdayRemoveInquiry;
-import dev.chel_shev.nelly.inquiry.prototype.finance.InquiryFinance;
-import dev.chel_shev.nelly.type.InquiryType;
-import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "inquiry_bday")
 @NoArgsConstructor
-public class BdayInquiryEntity extends InquiryEntity{
+public class BdayInquiryEntity extends InquiryEntity {
 
     private LocalDateTime bdayDate;
     private String name;

@@ -1,6 +1,5 @@
 package dev.chel_shev.nelly.inquiry.handler;
 
-import dev.chel_shev.nelly.bot.BotResources;
 import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
 import dev.chel_shev.nelly.service.InquiryService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ public class MainInquiryHandler<I extends Inquiry> {
 
         if (i.isNotReadyForExecute())
             i = inquiryHandler.prepare(i, message);
-
 
 
         if (!i.isNotReadyForExecute())
