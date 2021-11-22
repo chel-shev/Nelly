@@ -4,7 +4,6 @@ import dev.chel_shev.nelly.entity.IncomeEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.inquiry.prototype.finance.IncomeInquiryFinance;
 import dev.chel_shev.nelly.service.IncomeService;
-import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
@@ -13,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 import static dev.chel_shev.nelly.inquiry.InquiryUtils.*;
+import static dev.chel_shev.nelly.type.CommandLevel.FIRST;
+import static dev.chel_shev.nelly.type.CommandLevel.SECOND;
+import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
 import static dev.chel_shev.nelly.type.KeyboardType.FINANCE;
 
 @Slf4j
@@ -29,12 +31,12 @@ public class IncomeHandler extends InquiryFinanceHandler<IncomeInquiryFinance> {
             if (isDoubleParam(i))
                 return saveIncome(i);
             else {
-                i.setAnswerMessage("Неверный формат!");
-                i.setKeyboardType(KeyboardType.CANCEL);
+                i.setAnswerMessage(answerService.generateAnswer(FIRST, i));
+                i.setKeyboardType(CANCEL);
                 return i;
             }
         } catch (JSONException | NullPointerException e) {
-            throw new TelegramBotException("Ошибка добавления!", KeyboardType.CANCEL);
+            throw new TelegramBotException("Ошибка добавления!", CANCEL);
         }
     }
 
@@ -44,7 +46,7 @@ public class IncomeHandler extends InquiryFinanceHandler<IncomeInquiryFinance> {
         String name = getNameFromParam(i, 0);
         IncomeEntity incomeEntity = new IncomeEntity(name, value, LocalDateTime.now(), null, i.getAccount());
         incomeService.save(incomeEntity, i.getAccount());
-        i.setAnswerMessage("Доход добавлен!");
+        i.setAnswerMessage(answerService.generateAnswer(SECOND, i));
         i.setKeyboardType(FINANCE);
         i.setClosed(true);
         return i;

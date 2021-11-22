@@ -30,7 +30,7 @@ public class BdayRemoveInquiry extends Inquiry {
     private String name;
 
     @Override
-    public void generate(InquiryEntity entity, UserEntity user) throws TelegramBotException {
+    public void init(InquiryEntity entity, UserEntity user) throws TelegramBotException {
         setMessage(entity.getMessage());
         setClosed(entity.isClosed());
         setDate(entity.getDate());
@@ -67,10 +67,7 @@ public class BdayRemoveInquiry extends Inquiry {
         return isNullOrEmpty(name);
     }
 
-    public void setData() {
-        this.name = getMessage();
-    }
-
+    @Override
     public InquiryEntity getEntity() {
         return new BdayInquiryEntity(this);
     }

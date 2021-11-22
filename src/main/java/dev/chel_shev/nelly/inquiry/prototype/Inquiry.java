@@ -7,14 +7,11 @@ import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.inquiry.InquiryId;
-import dev.chel_shev.nelly.service.AnswerService;
-import dev.chel_shev.nelly.service.CommandService;
 import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.InquiryType;
 import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -37,7 +34,7 @@ public abstract class Inquiry {
     private String answerMessage;
     private KeyboardType keyboardType;
 
-    public void generate(InquiryEntity entity, UserEntity user) {
+    public void init(InquiryEntity entity, UserEntity user) {
         this.message = entity.getMessage();
         this.closed = entity.isClosed();
         this.date = entity.getDate();
@@ -48,22 +45,12 @@ public abstract class Inquiry {
         log.info("INIT Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", getId(), getMessage(), getType(), getDate(), isClosed());
     }
 
-    public void generate(String message, UserEntity user, CommandEntity command) {
+    public void init(String message, UserEntity user, CommandEntity command) {
         this.message = message;
         this.date = LocalDateTime.now();
         this.user = user;
         this.command = command;
         log.info("CREATE Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", getId(), getMessage(), getType(), getDate(), isClosed());
-    }
-
-    public String getCommandName() {
-        return this.getClass().getAnnotation(InquiryId.class).command();
-    }
-
-    @Autowired
-    public void registerCommand(@Autowired CommandService commandService, @Autowired AnswerService answerService) {
-        commandService.save(getCommandName());
-        answerService.saveAnswers(answer, getCommand());
     }
 
     public InquiryType getType() {
@@ -86,7 +73,8 @@ public abstract class Inquiry {
         }
     }
 
-    public abstract void initAnswers();
+    public void initAnswers() {
+    }
 
     public InquiryEntity getEntity() {
         return new CommonInquiryEntity(this);

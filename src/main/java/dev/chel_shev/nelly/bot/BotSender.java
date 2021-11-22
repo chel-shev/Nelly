@@ -28,8 +28,8 @@ public class BotSender {
         sendMessage(sendMessage, keyboardType, user);
     }
 
-    public void sendMessage(UserEntity user, KeyboardType keyboardType, InputFile photo, String caption) {
-        SendPhoto sendPhoto = SendPhoto.builder().chatId(String.valueOf(user.getChatId())).photo(photo).caption(caption).build();
+    public void sendMessage(UserEntity user, KeyboardType keyboardType, InputFile photo, String text) {
+        SendPhoto sendPhoto = SendPhoto.builder().chatId(String.valueOf(user.getChatId())).photo(photo).caption(text).build();
         sendMessage(sendPhoto, keyboardType, user);
     }
 

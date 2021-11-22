@@ -29,13 +29,13 @@ public class InquiryService<I extends Inquiry> {
     private final InquiryFactory<I> inquiryFactory;
     private final CommandService commandService;
 
-    public I getLast(Message message) {
+    public I getLastInquiry(Message message) {
         var user = userService.getUserByChatId(message.getChatId());
         if (isNull(user))
             throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, inquiryFactory.create("/unknown_user")));
         var entity = repository.findTopByUserOrderByDateDesc(user).orElseThrow(() -> new TelegramBotException("Inquiry not found!"));
         var inquiry = inquiryFactory.create(entity.getCommand().getCommand());
-        inquiry.generate(entity, user);
+        inquiry.init(entity, user);
         return inquiry;
     }
 
@@ -51,7 +51,7 @@ public class InquiryService<I extends Inquiry> {
             throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, inquiryFactory.create("/unknown")));
         if (isNull(user) && !(inquiry instanceof StartInquiry))
             throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, inquiryFactory.create("/unknown_user")));
-        inquiry.generate(TelegramBotUtils.getArgs(message.getText()), !isNull(user) ? user : new UserEntity(message), command);
+        inquiry.init(TelegramBotUtils.getArgs(message.getText()), !isNull(user) ? user : new UserEntity(message), command);
         return inquiry;
     }
 
@@ -59,7 +59,7 @@ public class InquiryService<I extends Inquiry> {
         var user = userService.getUserByChatId(message.getChatId());
         var command = commandService.getCommand(InquiryType.KEYBOARD.getCommand());
         var inquiry = inquiryFactory.create(command.getCommand());
-        inquiry.generate(message.getText(), user, command);
+        inquiry.init(message.getText(), user, command);
         return inquiry;
     }
 
@@ -69,15 +69,11 @@ public class InquiryService<I extends Inquiry> {
         } else if (isCommandInquiry(message.getText())) {
             return getCommandInquiry(message);
         } else {
-            return getLast(message);
+            return getLastInquiry(message);
         }
     }
 
     public InquiryEntity save(InquiryEntity inquiry) {
         return repository.save(inquiry);
-    }
-
-    public void delete(InquiryEntity entity) {
-        repository.delete(entity);
     }
 }

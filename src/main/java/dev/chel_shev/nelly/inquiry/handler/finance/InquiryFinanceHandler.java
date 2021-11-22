@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import static dev.chel_shev.nelly.type.CommandLevel.SECOND;
+import static dev.chel_shev.nelly.type.CommandLevel.THIRD;
 import static dev.chel_shev.nelly.type.KeyboardType.*;
 import static java.util.Objects.nonNull;
 
@@ -50,7 +52,7 @@ public abstract class InquiryFinanceHandler<IF extends InquiryFinance> extends I
     }
 
     public String getTextInfo(IF i) {
-        return i.getType().getInfo();
+        return answerService.generateAnswer(THIRD, i);
     }
 
     public IF cancel(IF i) {

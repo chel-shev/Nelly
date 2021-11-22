@@ -21,7 +21,7 @@ public abstract class InquiryFinance extends Inquiry {
     private Long amount;
     private AccountEntity account;
 
-    public void generate(InquiryEntity entity, UserEntity user) {
+    public void init(InquiryEntity entity, UserEntity user) {
         this.setUser(user);
         this.setClosed(entity.isClosed());
         this.setAccount(((FinanceInquiryEntity) entity).getIn());

@@ -6,6 +6,7 @@ import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.inquiry.prototype.finance.ExpenseInquiryFinance;
 import dev.chel_shev.nelly.receipt.Receipt;
 import dev.chel_shev.nelly.service.ExpenseService;
+import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,6 @@ public class ExpenseHandler extends InquiryFinanceHandler<ExpenseInquiryFinance>
 
     @Override
     public ExpenseInquiryFinance executionLogic(ExpenseInquiryFinance i) {
-        log.info("PROCESS ExpenseInquiry(inquiryId: {}, text: {}, type: {}, date: {}, completed: {})", i.getId(), i.getMessage(), i.getType(), i.getDate(), i.isClosed());
         try {
             if (isDoubleParam(i)) {
                 return savePurchase(i);
@@ -48,7 +48,7 @@ public class ExpenseHandler extends InquiryFinanceHandler<ExpenseInquiryFinance>
         ExpenseEntity expenseEntity = new ExpenseEntity(LocalDateTime.now(), value, expenseProductEntity);
         expenseService.save(expenseEntity, i.getAccount(), i.getAmount());
         i.setClosed(true);
-        i.setAnswerMessage("Расход добавлен!");
+        i.setAnswerMessage(answerService.generateAnswer(CommandLevel.SECOND, i));
         i.setKeyboardType(FINANCE);
         return i;
     }
@@ -59,7 +59,7 @@ public class ExpenseHandler extends InquiryFinanceHandler<ExpenseInquiryFinance>
         i.setAmount(receipt.getSum());
         expenseService.saveAll(expenses, i.getAccount(), i.getAmount());
         i.setClosed(true);
-        i.setAnswerMessage("Чек добавлен!");
+        i.setAnswerMessage(answerService.generateAnswer(CommandLevel.SECOND, i));
         i.setKeyboardType(FINANCE);
         log.info("COMPLETE Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", i.getId(), i.getMessage(), i.getType(), i.getDate(), i.isClosed());
         return i;

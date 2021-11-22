@@ -21,6 +21,7 @@ import java.util.Set;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static dev.chel_shev.nelly.inquiry.InquiryUtils.getLastArgsPast;
+import static java.util.Objects.isNull;
 
 @Component
 @Getter
@@ -34,7 +35,7 @@ public class BdayInquiry extends Inquiry {
     private String name;
 
     @Override
-    public void generate(InquiryEntity entity, UserEntity user) throws TelegramBotException {
+    public void init(InquiryEntity entity, UserEntity user) throws TelegramBotException {
         setMessage(entity.getMessage());
         setClosed(entity.isClosed());
         setDate(entity.getDate());
@@ -68,12 +69,7 @@ public class BdayInquiry extends Inquiry {
 
     @Override
     public boolean isNotReadyForExecute() {
-        return isNullOrEmpty(name) || bdayDate == null;
-    }
-
-    public void setData() {
-        this.name = getLastArgsPast(this, 0);
-        this.bdayDate = DateTimeUtils.tryToParse(getArgFromMassage(0), getUser());
+        return isNullOrEmpty(name) || isNull(bdayDate);
     }
 
     @Override
