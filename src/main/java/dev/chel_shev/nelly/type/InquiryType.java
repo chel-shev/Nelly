@@ -6,38 +6,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum InquiryType {
-    EXPENSE("Расход", "/expense", "Выберите ОДНО из трёх действий:\r\n" +
-            "` 1. Отправьте фото QR-кода`\r\n" +
-            "` 2. Вышлите строку QR-кода`\r\n" +
-            "` 3. Напишите данные о расходах в виде: «Покупка: Сумма», без кавычек`"),
-    INCOME("Доход", "/income", "Напишите данные о доходах в виде:\r\n" +
-            "` «Название дохода: Сумма», без кавычек`"),
-    LOAN("Займ", "/loan", "Напишите данные о займе в виде:\r\n" +
-            "` «Название: -Сумма», без кавычек, знак «-», если Вы даете в долг.`\r\n" +
-            "\r\n" +
-            "Текущие займы (₽):\r\n" +
-            "%s"),
-    TRANSFER("Перевод", "/transfer", "Напишите сумму перевода:\r\n"),
-    BDAY("Добавить ДР", "/bday", ""),
-    BDAY_REMOVE("Удалить ДР", "/bday_remove", ""),
-    START("Старт", "/start", ""),
-    STOP("Стоп", "/stop", ""),
-    WORKOUT("Воркаут", "/workout", ""),
-    NONE("Неопределено", "/none", ""),
-    UNKNOWN("Неопределено", "/unknown", ""),
-    UNKNOWN_USER("Неопределено", "/unknown_user", ""),
-    KEYBOARD("Клавиатура", "/keyboard", "");
+    EXPENSE("Расход", "/expense"),
+    INCOME("Доход", "/income"),
+    LOAN("Займ", "/loan"),
+    TRANSFER("Перевод", "/transfer"),
+    BDAY("Добавить ДР", "/bday"),
+    BDAY_REMOVE("Удалить ДР", "/bday_remove"),
+    START("Старт", "/start"),
+    STOP("Стоп", "/stop"),
+    WORKOUT("Воркаут", "/workout"),
+    NONE("Нет", "/none"),
+    UNKNOWN("Неизвестно", "/unknown"),
+    UNKNOWN_USER("Неизвестный пользователь", "/unknown_user"),
+    KEYBOARD("Клавиатура", "/keyboard");
 
     @Getter
     public final String label;
     @Getter
-    public final String info;
-    @Getter
     public final String command;
 
-    InquiryType(String label, String command, String info) {
+    InquiryType(String label, String command) {
         this.label = label;
-        this.info = info;
         this.command = command;
     }
 

@@ -1,13 +1,10 @@
 package dev.chel_shev.nelly.inquiry.handler.start;
 
-import dev.chel_shev.nelly.inquiry.InquiryAnswer;
 import dev.chel_shev.nelly.inquiry.InquiryId;
 import dev.chel_shev.nelly.inquiry.handler.InquiryHandler;
-import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.inquiry.prototype.start.StartInquiry;
-import dev.chel_shev.nelly.service.AnswerService;
-import dev.chel_shev.nelly.service.InquiryService;
 import dev.chel_shev.nelly.service.UserService;
+import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.InquiryType;
 import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.RequiredArgsConstructor;

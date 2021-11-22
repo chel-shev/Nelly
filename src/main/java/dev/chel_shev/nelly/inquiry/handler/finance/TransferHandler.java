@@ -16,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.time.LocalDateTime;
 
 import static dev.chel_shev.nelly.inquiry.InquiryUtils.getValueFromParam;
+import static dev.chel_shev.nelly.type.CommandLevel.*;
 import static dev.chel_shev.nelly.type.KeyboardType.*;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -43,7 +44,7 @@ public class TransferHandler extends InquiryFinanceHandler<TransferInquiryFinanc
         TransferEntity transferEntity = new TransferEntity(i.getAccountOut(), i.getAccount(), value, LocalDateTime.now());
         transferService.save(transferEntity);
         i.setKeyboardType(FINANCE);
-        i.setAnswerMessage("Перевод добавлен!");
+        i.setAnswerMessage(answerService.generateAnswer(FIRST, i));
         i.setClosed(true);
         return i;
     }
@@ -58,18 +59,18 @@ public class TransferHandler extends InquiryFinanceHandler<TransferInquiryFinanc
             return i;
         }
         if (TelegramBotUtils.getArgs(message.getText()).isEmpty()) {
-            i.setAnswerMessage("Выберите счет, с которым будет производится операция:");
+            i.setAnswerMessage(answerService.generateAnswer(SECOND, i));
             i.setKeyboardType(ACCOUNTS);
             return i;
         }
         AccountEntity account = getAccount(i, message.getText().split(" ")[1]);
         if (isNull(i.getAccount())) {
             i.setAccount(account);
-            i.setAnswerMessage("Выберите счет, на который хотите совершить перевод:");
+            i.setAnswerMessage(answerService.generateAnswer(THIRD, i));
             i.setKeyboardType(ACCOUNTS);
         } else {
             i.setAccountOut(account);
-            i.setAnswerMessage(getTextInfo(i));
+            i.setAnswerMessage(answerService.generateAnswer(FOURTH, i));
             i.setKeyboardType(CANCEL);
         }
         return i;

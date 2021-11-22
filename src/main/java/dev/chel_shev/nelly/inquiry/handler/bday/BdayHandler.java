@@ -8,6 +8,7 @@ import dev.chel_shev.nelly.inquiry.prototype.bday.BdayInquiry;
 import dev.chel_shev.nelly.service.BdayService;
 import dev.chel_shev.nelly.service.CalendarService;
 import dev.chel_shev.nelly.type.CommandLevel;
+import dev.chel_shev.nelly.util.DateTimeUtils;
 import dev.chel_shev.nelly.util.TelegramBotUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
 
+import static dev.chel_shev.nelly.inquiry.InquiryUtils.getLastArgsPast;
 import static dev.chel_shev.nelly.inquiry.InquiryUtils.validationArgs;
 import static dev.chel_shev.nelly.type.KeyboardType.BDAY;
 import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
@@ -59,7 +61,8 @@ public class BdayHandler extends InquiryHandler<BdayInquiry> {
             i.setKeyboardType(CANCEL);
         } else {
             i.setMessage(TelegramBotUtils.getArgs(message.getText()));
-            i.setData();
+            i.setName(getLastArgsPast(i, 0));
+            i.setBdayDate(DateTimeUtils.tryToParse(i.getArgFromMassage(0), i.getUser()));
         }
         return i;
     }

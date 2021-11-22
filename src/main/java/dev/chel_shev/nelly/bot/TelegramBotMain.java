@@ -1,7 +1,6 @@
 package dev.chel_shev.nelly.bot;
 
 import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.inquiry.InquiryAnswer;
 import dev.chel_shev.nelly.inquiry.handler.MainInquiryHandler;
 import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
 import dev.chel_shev.nelly.repository.ExerciseRepository;
@@ -29,7 +28,7 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class TelegramBotMain extends TelegramLongPollingBot {
 
-    private final MainInquiryHandler mainInquiryHandler;
+    private final MainInquiryHandler<? extends Inquiry> mainInquiryHandler;
     private final ExerciseRepository exerciseRepository;
     private final BotSender sender;
 

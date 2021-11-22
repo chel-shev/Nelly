@@ -1,6 +1,5 @@
 package dev.chel_shev.nelly.inquiry.handler;
 
-import dev.chel_shev.nelly.bot.BotResources;
 import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
 import dev.chel_shev.nelly.service.AnswerService;
@@ -27,6 +26,7 @@ public abstract class InquiryHandler<I extends Inquiry> {
     protected abstract I preparationLogic(I i, Message message);
 
     public I execute(I i, Message message) {
+        log.info("EXECUTE ExpenseInquiry(inquiryId: {}, text: {}, type: {}, date: {}, completed: {})", i.getId(), i.getMessage(), i.getType(), i.getDate(), i.isClosed());
         if (message.getText().equals("Отмена"))
             return cancel(i);
         I inquiry = executionLogic(i);
