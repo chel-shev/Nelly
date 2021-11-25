@@ -23,7 +23,9 @@ public class CalendarService {
         List<BdayEntity> bdayEntities = bdayRepository.findByName(name);
         bdayEntities.forEach(e -> {
             Optional<CalendarEntity> calendarEntity = repository.findByEventAndUser(e, user);
-            calendarEntity.ifPresent(repository::delete);
+            if(calendarEntity.isPresent()) {
+                bdayRepository.delete(e);
+            }
         });
     }
 

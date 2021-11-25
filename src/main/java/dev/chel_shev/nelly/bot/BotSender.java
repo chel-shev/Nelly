@@ -1,8 +1,8 @@
 package dev.chel_shev.nelly.bot;
 
 import dev.chel_shev.nelly.entity.UserEntity;
-import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
-import dev.chel_shev.nelly.keyboard.KeyboardFactory;
+import dev.chel_shev.nelly.inquiry.Inquiry;
+import dev.chel_shev.nelly.inquiry.utils.KeyboardFactory;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.ApplicationContextUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class BotSender {
 
     private void sendMessage(SendMessage sendMessage, KeyboardType keyboardType, UserEntity user) {
         ApplicationContext appCtx = ApplicationContextUtils.getApplicationContext();
-        TelegramBotMain telegramBot = (TelegramBotMain) appCtx.getBean("telegramBotMain");
+        NellyNotBot<? extends Inquiry> telegramBot = (NellyNotBot<? extends Inquiry>) appCtx.getBean("nellyNotBot");
         try {
             sendMessage.setReplyMarkup(KeyboardFactory.createKeyboard(keyboardType, user));
             sendMessage.enableMarkdown(true);
@@ -52,7 +52,7 @@ public class BotSender {
 
     private void sendMessage(SendPhoto sendPhoto, KeyboardType keyboardType, UserEntity user) {
         ApplicationContext appCtx = ApplicationContextUtils.getApplicationContext();
-        TelegramBotMain telegramBot = (TelegramBotMain) appCtx.getBean("telegramBotMain");
+        NellyNotBot<? extends Inquiry> telegramBot = (NellyNotBot<? extends Inquiry>) appCtx.getBean("nellyNotBot");
         try {
             sendPhoto.setReplyMarkup(KeyboardFactory.createKeyboard(keyboardType, user));
             telegramBot.execute(sendPhoto);

@@ -2,7 +2,7 @@ package dev.chel_shev.nelly.service;
 
 import dev.chel_shev.nelly.entity.AnswerTemplateEntity;
 import dev.chel_shev.nelly.entity.CommandEntity;
-import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
+import dev.chel_shev.nelly.inquiry.Inquiry;
 import dev.chel_shev.nelly.repository.AnswerTemplateRepository;
 import dev.chel_shev.nelly.type.CommandLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +23,12 @@ public class AnswerService {
     public String generateAnswer(CommandLevel level, Inquiry inquiry) {
         Set<String> answers = inquiry.getAnswer().get(level);
         return new ArrayList<>(answers).get(new Random().nextInt(answers.size()));
+    }
+
+    public String generateAnswer(CommandLevel level, Inquiry inquiry, Object... value) {
+        Set<String> answers = inquiry.getAnswer().get(level);
+        String answer = new ArrayList<>(answers).get(new Random().nextInt(answers.size()));
+        return answer.formatted(value);
     }
 
     public void saveAnswers(Map<CommandLevel, Set<String>> answer, CommandEntity command) {

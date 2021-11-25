@@ -6,27 +6,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum InquiryType {
-    EXPENSE("Расход", "/expense"),
-    INCOME("Доход", "/income"),
-    LOAN("Займ", "/loan"),
-    TRANSFER("Перевод", "/transfer"),
-    BDAY("Добавить ДР", "/bday"),
-    BDAY_REMOVE("Удалить ДР", "/bday_remove"),
-    START("Старт", "/start"),
-    STOP("Стоп", "/stop"),
-    WORKOUT("Воркаут", "/workout"),
-    NONE("Нет", "/none"),
-    UNKNOWN("Неизвестно", "/unknown"),
-    UNKNOWN_USER("Неизвестный пользователь", "/unknown_user"),
-    KEYBOARD("Клавиатура", "/keyboard");
+    EXPENSE("Расход \uD83D\uDCB0", "/expense"),
+    INCOME("Доход \uD83D\uDCB0", "/income"),
+    LOAN("Займ \uD83D\uDCB0", "/loan"),
+    TRANSFER("Перевод \uD83D\uDCB0", "/transfer"),
+    BDAY_ADD("Добавить \uD83D\uDCC6", "/bday_add"),
+    BDAY_REMOVE("Удалить \uD83D\uDCC6", "/bday_remove"),
+    REMINDER_ADD("Добавить \uD83D\uDD14", "/reminder_add"),
+    REMINDER_REMOVE("Удалить \uD83D\uDD15", "/reminder_remove"),
+    START("", "/start"),
+    STOP("", "/stop"),
+    KEYBOARD("", "/keyboard"),
+    WORKOUT("", "/workout"),
+    NONE("", "/none"),
+    UNKNOWN("", "/unknown"),
+    UNKNOWN_USER("", "/unknown_user");
 
     @Getter
-    public final String label;
+    public final String keyLabel;
     @Getter
     public final String command;
 
-    InquiryType(String label, String command) {
-        this.label = label;
+    InquiryType(String keyLabel, String command) {
+        this.keyLabel = keyLabel;
         this.command = command;
     }
 
@@ -35,7 +37,7 @@ public enum InquiryType {
 
     static {
         for (InquiryType env : values()) {
-            ACTION_LABEL_MAP.put(env.label, env);
+            ACTION_LABEL_MAP.put(env.keyLabel, env);
             ACTION_COMMAND_MAP.put(env.command, env);
         }
     }

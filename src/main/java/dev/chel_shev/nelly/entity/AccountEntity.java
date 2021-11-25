@@ -53,13 +53,13 @@ public class AccountEntity {
 
     public void addAccountBalance(long difference) {
         if (!isNull(volume) && accountBalance + difference > volume)
-            throw new TelegramBotException("Сумма пополнения слишком большая!", KeyboardType.CANCEL);
+            throw new TelegramBotException(user, "Сумма пополнения слишком большая!", KeyboardType.CANCEL);
         this.accountBalance = accountBalance + difference;
     }
 
     public void subAccountBalance(long difference) {
         if (accountBalance - difference < 0)
-            throw new TelegramBotException("Недостаточно средств на счете!", KeyboardType.CANCEL);
+            throw new TelegramBotException(user, "Недостаточно средств на счете!", KeyboardType.CANCEL);
         this.accountBalance = accountBalance - difference;
     }
 

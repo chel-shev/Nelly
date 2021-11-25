@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.entity;
 
-import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
+import dev.chel_shev.nelly.inquiry.Inquiry;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

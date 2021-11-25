@@ -1,9 +1,11 @@
 package dev.chel_shev.nelly.bot;
 
 import dev.chel_shev.nelly.exception.TelegramBotException;
+import dev.chel_shev.nelly.inquiry.Inquiry;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.ApplicationContextUtils;
 import dev.chel_shev.nelly.util.DecoderPhotoQR;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
@@ -19,11 +21,12 @@ import java.util.Comparator;
 import static java.util.Objects.isNull;
 
 @Component
+@RequiredArgsConstructor
 public class BotResources {
 
     public String getQRDataFromPhoto(Message message) {
         ApplicationContext appCtx = ApplicationContextUtils.getApplicationContext();
-        TelegramBotMain telegramBot = (TelegramBotMain) appCtx.getBean("telegramBotMain");
+        NellyNotBot<? extends Inquiry> telegramBot = (NellyNotBot<? extends Inquiry>) appCtx.getBean("nellyNotBot");
         try {
             @NotNull PhotoSize photo = getPhoto(message);
             String path = getFilePath(telegramBot, photo);
@@ -37,7 +40,7 @@ public class BotResources {
         }
     }
 
-    public String getFilePath(TelegramBotMain telegramBot, PhotoSize photo) {
+    public String getFilePath(NellyNotBot<? extends Inquiry> telegramBot, PhotoSize photo) {
         if (isNull(photo.getFilePath()) || photo.getFilePath().isEmpty()) {
             GetFile getFileMethod = new GetFile();
             getFileMethod.setFileId(photo.getFileId());

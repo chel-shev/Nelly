@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.entity;
 
-import dev.chel_shev.nelly.type.EventType;
+import dev.chel_shev.nelly.type.PeriodType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +23,7 @@ public class CalendarEntity {
     private LocalDateTime eventDateTime;
 
     @Enumerated(EnumType.STRING)
-    private EventType type;
+    private PeriodType type;
 
     @OneToOne
     private EventEntity event;
@@ -31,7 +31,7 @@ public class CalendarEntity {
     @ManyToOne
     private UserEntity user;
 
-    public CalendarEntity(LocalDateTime eventDateTime, EventEntity event, EventType type, UserEntity user) {
+    public CalendarEntity(LocalDateTime eventDateTime, EventEntity event, PeriodType type, UserEntity user) {
         this.eventDateTime = eventDateTime;
         this.event = event;
         this.type = type;
@@ -43,7 +43,7 @@ public class CalendarEntity {
     }
 
     public LocalDateTime getEventDateTime() {
-        if (type == EventType.EVERY_YEAR)
+        if (type == PeriodType.EVERY_YEAR)
             return eventDateTime.withYear(LocalDateTime.now().getYear());
         else
             return eventDateTime;

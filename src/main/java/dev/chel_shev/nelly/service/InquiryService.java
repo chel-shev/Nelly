@@ -3,9 +3,9 @@ package dev.chel_shev.nelly.service;
 import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.inquiry.InquiryFactory;
-import dev.chel_shev.nelly.inquiry.prototype.Inquiry;
-import dev.chel_shev.nelly.inquiry.prototype.start.StartInquiry;
+import dev.chel_shev.nelly.inquiry.Inquiry;
+import dev.chel_shev.nelly.inquiry.bot.StartInquiry;
+import dev.chel_shev.nelly.inquiry.utils.InquiryFactory;
 import dev.chel_shev.nelly.repository.InquiryRepository;
 import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.InquiryType;
@@ -33,10 +33,15 @@ public class InquiryService<I extends Inquiry> {
         var user = userService.getUserByChatId(message.getChatId());
         if (isNull(user))
             throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, inquiryFactory.create("/unknown_user")));
-        var entity = repository.findTopByUserOrderByDateDesc(user).orElseThrow(() -> new TelegramBotException("Inquiry not found!"));
-        var inquiry = inquiryFactory.create(entity.getCommand().getCommand());
-        inquiry.init(entity, user);
-        return inquiry;
+        try {
+            var entity = repository.findTopByUserOrderByDateDesc(user).orElseThrow(() -> new TelegramBotException("Inquiry not found!"));
+            var inquiry = inquiryFactory.create(entity.getCommand().getCommand());
+            inquiry.init(entity, user);
+            if (inquiry.isClosed()) return getKeyboardInquiry(message);
+            return inquiry;
+        } catch (Exception e) {
+            return getKeyboardInquiry(message);
+        }
     }
 
     public I getCommandInquiry(Message message) {

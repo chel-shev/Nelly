@@ -4,7 +4,7 @@ import dev.chel_shev.nelly.entity.BdayEntity;
 import dev.chel_shev.nelly.entity.CalendarEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.repository.BdayRepository;
-import dev.chel_shev.nelly.type.EventType;
+import dev.chel_shev.nelly.type.PeriodType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,7 @@ public class BdayService implements EventService<BdayEntity> {
     @Override
     public List<CalendarEntity> getCalendarEntities(BdayEntity entity, UserEntity user) {
         return new ArrayList<>() {{
-            add(new CalendarEntity(entity.getDate().withHour(10).withMinute(0), entity, EventType.EVERY_YEAR, user));
+            add(new CalendarEntity(entity.getDate().withHour(10).withMinute(0), entity, PeriodType.EVERY_YEAR, user));
         }};
     }
 }

@@ -15,4 +15,8 @@ public abstract class EventEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(mappedBy = "event", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @PrimaryKeyJoinColumn
+    private CalendarEntity calendar;
 }

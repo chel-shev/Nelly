@@ -1,26 +1,27 @@
 package dev.chel_shev.nelly.entity;
 
-import dev.chel_shev.nelly.inquiry.bday.BdayAddInquiry;
-import dev.chel_shev.nelly.inquiry.bday.BdayRemoveInquiry;
+import dev.chel_shev.nelly.inquiry.reminder.ReminderAddInquiry;
+import dev.chel_shev.nelly.inquiry.reminder.ReminderRemoveInquiry;
+import dev.chel_shev.nelly.type.PeriodType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "inquiry_bday")
+@Table(name = "inquiry_reminder")
 @NoArgsConstructor
-public class BdayInquiryEntity extends InquiryEntity {
+public class ReminderEntity extends InquiryEntity {
 
-    private LocalDateTime bdayDate;
+    private PeriodType periodType;
+    private String description;
     private String name;
 
-    public BdayInquiryEntity(BdayAddInquiry inquiry) {
+    public ReminderEntity(ReminderRemoveInquiry inquiry) {
         setId(inquiry.getId());
         setType(inquiry.getType());
         setMessage(inquiry.getMessage());
@@ -28,12 +29,11 @@ public class BdayInquiryEntity extends InquiryEntity {
         setDate(inquiry.getDate());
         setCommand(inquiry.getCommand());
         setUser(inquiry.getUser());
-        setBdayDate(inquiry.getBdayDate());
         setName(inquiry.getName());
         setKeyboardType(inquiry.getKeyboardType());
     }
 
-    public BdayInquiryEntity(BdayRemoveInquiry inquiry) {
+    public ReminderEntity(ReminderAddInquiry inquiry) {
         setId(inquiry.getId());
         setType(inquiry.getType());
         setMessage(inquiry.getMessage());
@@ -41,6 +41,8 @@ public class BdayInquiryEntity extends InquiryEntity {
         setDate(inquiry.getDate());
         setCommand(inquiry.getCommand());
         setUser(inquiry.getUser());
+        setPeriodType(inquiry.getPeriodType());
+        setDescription(inquiry.getDescription());
         setName(inquiry.getName());
         setKeyboardType(inquiry.getKeyboardType());
     }
