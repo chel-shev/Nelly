@@ -23,7 +23,7 @@ import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@PropertySource(value = "classpath:message.yml", encoding = "UTF-8")
+@PropertySource(value = "classpath:message.properties", encoding = "UTF-8")
 public class BdayAddHandler extends InquiryHandler<BdayAddInquiry> {
 
     private final BdayService service;
