@@ -18,7 +18,7 @@ public class CommandService {
     public CommandEntity save(String command) {
         CommandEntity commandEntity = repository.findByCommand(command).orElse(null);
         if (isNull(commandEntity)) {
-            CommandEntity entity = new CommandEntity(null, command, null, null);
+            CommandEntity entity = new CommandEntity(null, command, null);
             return repository.save(entity);
         }
         return commandEntity;
