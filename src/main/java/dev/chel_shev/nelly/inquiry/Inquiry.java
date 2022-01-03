@@ -13,7 +13,6 @@ import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +42,6 @@ public abstract class Inquiry {
         this.keyboardType = entity.getKeyboardType();
         this.command = entity.getCommand();
         this.user = user;
-        initAnswers();
         log.info("INIT Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", getId(), getMessage(), getType(), getDate(), isClosed());
     }
 
@@ -52,7 +50,6 @@ public abstract class Inquiry {
         this.date = LocalDateTime.now();
         this.user = user;
         this.command = command;
-        initAnswers();
         log.info("CREATE Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", getId(), getMessage(), getType(), getDate(), isClosed());
     }
 
@@ -76,11 +73,9 @@ public abstract class Inquiry {
         }
     }
 
-    @PostConstruct
-    public void initAnswers() {
-    }
-
     public InquiryEntity getEntity() {
         return new CommonInquiryEntity(this);
     }
+
+    public abstract <I extends Inquiry> I getInstance();
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class EyeWorkoutInquiry extends Inquiry {
 
     @Override
-    public void initAnswers() {
-
+    public EyeWorkoutInquiry getInstance() {
+        return new EyeWorkoutInquiry();
     }
 }

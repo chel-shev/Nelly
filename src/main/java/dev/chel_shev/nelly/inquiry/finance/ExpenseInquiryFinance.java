@@ -1,14 +1,10 @@
 package dev.chel_shev.nelly.inquiry.finance;
 
 import dev.chel_shev.nelly.inquiry.utils.InquiryId;
-import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.InquiryType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Slf4j
 @Component
@@ -17,21 +13,7 @@ import java.util.Set;
 public class ExpenseInquiryFinance extends InquiryFinance {
 
     @Override
-    public void initAnswers() {
-        Set<String> firstLevel = new HashSet<>() {{
-            add("`Текущий остаток:\r\n %s`\r\n\r\n" + "Расход добавлен!");
-        }};
-        Set<String> secondLevel = new HashSet<>() {{
-            add("`Текущий остаток:\r\n %s`\r\n\r\n" + "Чек добавлен!");
-        }};
-        Set<String> thirdLevel = new HashSet<>() {{
-            add("Выберите ОДНО из трёх действий:\r\n" +
-                    "` 1. Отправьте фото QR-кода`\r\n" +
-                    "` 2. Вышлите строку QR-кода`\r\n" +
-                    "` 3. Напишите данные о расходах в виде: «Покупка: Сумма», без кавычек`");
-        }};
-        getAnswer().put(CommandLevel.FIRST, firstLevel);
-        getAnswer().put(CommandLevel.SECOND, secondLevel);
-        getAnswer().put(CommandLevel.THIRD, thirdLevel);
+    public ExpenseInquiryFinance getInstance() {
+        return new ExpenseInquiryFinance();
     }
 }

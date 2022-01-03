@@ -15,14 +15,15 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class StartHandler extends InquiryHandler<StartInquiry> {
 
     private final UserService userService;
+    private final StartConfig startConfig;
 
     @Override
     public StartInquiry executionLogic(StartInquiry inquiry) {
         if (userService.isExist(inquiry.getUser().getChatId())) {
-            inquiry.setAnswerMessage(answerService.generateAnswer(CommandLevel.SECOND, inquiry));
+            inquiry.setAnswerMessage(answerService.generateAnswer(CommandLevel.SECOND, startConfig));
         } else {
             userService.save(inquiry.getUser());
-            inquiry.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, inquiry));
+            inquiry.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, startConfig));
         }
         inquiry.setKeyboardType(KeyboardType.COMMON);
         inquiry.setClosed(true);

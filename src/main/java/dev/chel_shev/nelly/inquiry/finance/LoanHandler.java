@@ -24,6 +24,7 @@ import static dev.chel_shev.nelly.type.KeyboardType.FINANCE;
 public class LoanHandler extends InquiryFinanceHandler<LoanInquiryFinance> {
 
     private final LoanService loanService;
+    private final LoanConfig loanConfig;
 
     @Override
     public LoanInquiryFinance executionLogic(LoanInquiryFinance i) {
@@ -32,7 +33,7 @@ public class LoanHandler extends InquiryFinanceHandler<LoanInquiryFinance> {
             if (isDoubleParam(i))
                 return saveLoan(i);
             else{
-                i.setAnswerMessage(answerService.generateAnswer(FIRST, i));
+                i.setAnswerMessage(answerService.generateAnswer(FIRST, loanConfig));
                 i.setKeyboardType(CANCEL);
                 return i;
             }
@@ -56,7 +57,7 @@ public class LoanHandler extends InquiryFinanceHandler<LoanInquiryFinance> {
                 .filter(e -> e.getAmount() != 0)
                 .map(e -> "` " + e.getName() + ": " + String.format("%.2f", e.getAmount() / 100d) + " `\r\n")
                 .collect(Collectors.joining());
-        return String.format(answerService.generateAnswer(THIRD, i), loanList);
+        return String.format(answerService.generateAnswer(THIRD, loanConfig), loanList);
     }
 
     private LoanInquiryFinance saveLoan(LoanInquiryFinance i) {
@@ -66,7 +67,7 @@ public class LoanHandler extends InquiryFinanceHandler<LoanInquiryFinance> {
         i.setAmount(direction ? value : -1 * value);
         LoanEntity loanEntity = new LoanEntity(name, value, LocalDateTime.now(), null, direction, i.getAccount());
         loanService.save(loanEntity, i.getAccount());
-        i.setAnswerMessage(answerService.generateAnswer(SECOND, i, i.getAccount().getInfoString()));
+        i.setAnswerMessage(answerService.generateAnswer(SECOND, loanConfig, i.getAccount().getInfoString()));
         i.setKeyboardType(FINANCE);
         i.setClosed(true);
         return i;

@@ -15,11 +15,12 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class StopHandler extends InquiryHandler<StopInquiry> {
 
     private final UserService userService;
+    private final StopConfig stopConfig;
 
     @Override
     public StopInquiry executionLogic(StopInquiry inquiry) {
         userService.delete(inquiry.getUser());
-        inquiry.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, inquiry));
+        inquiry.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, stopConfig));
         inquiry.setKeyboardType(KeyboardType.NONE);
         return inquiry;
     }

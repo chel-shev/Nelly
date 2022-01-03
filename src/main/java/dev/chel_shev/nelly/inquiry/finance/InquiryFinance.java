@@ -30,7 +30,6 @@ public abstract class InquiryFinance extends Inquiry {
         this.setCommand(entity.getCommand());
         this.setAnswerMessage(entity.getAnswerMessage());
         this.setKeyboardType(entity.getKeyboardType());
-        initAnswers();
         log.info("INIT Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", getId(), getMessage(), getType(), getDate(), isClosed());
     }
 

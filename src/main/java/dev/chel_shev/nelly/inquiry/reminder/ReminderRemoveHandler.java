@@ -1,7 +1,6 @@
 package dev.chel_shev.nelly.inquiry.reminder;
 
 import dev.chel_shev.nelly.inquiry.InquiryHandler;
-import dev.chel_shev.nelly.inquiry.bday.BdayRemoveInquiry;
 import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.util.TelegramBotUtils;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import static dev.chel_shev.nelly.type.KeyboardType.BDAY;
 import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
 
 @Slf4j
@@ -17,7 +15,7 @@ import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
 @RequiredArgsConstructor
 public class ReminderRemoveHandler extends InquiryHandler<ReminderRemoveInquiry> {
 
-
+    private final ReminderRemoveConfig reminderRemoveConfig;
 
     @Override
     public ReminderRemoveInquiry executionLogic(ReminderRemoveInquiry i) {
@@ -35,7 +33,7 @@ public class ReminderRemoveHandler extends InquiryHandler<ReminderRemoveInquiry>
     @Override
     public ReminderRemoveInquiry preparationLogic(ReminderRemoveInquiry i, Message message) {
         if (TelegramBotUtils.getArgs(message.getText()).isEmpty()) {
-            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.THIRD, i));
+            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.THIRD, reminderRemoveConfig));
             i.setKeyboardType(CANCEL);
         } else {
             i.setMessage(TelegramBotUtils.getArgs(message.getText()));

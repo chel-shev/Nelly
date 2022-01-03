@@ -6,7 +6,6 @@ import dev.chel_shev.nelly.service.ExpenseService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/user/{user.name}/expense")
 @RestController
 public class ExpenseController {
 

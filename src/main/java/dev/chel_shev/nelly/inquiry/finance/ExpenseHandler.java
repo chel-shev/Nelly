@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static dev.chel_shev.nelly.inquiry.utils.InquiryUtils.*;
+import static dev.chel_shev.nelly.type.CommandLevel.THIRD;
 import static dev.chel_shev.nelly.type.KeyboardType.FINANCE;
 
 @Slf4j
@@ -24,6 +25,7 @@ public class ExpenseHandler extends InquiryFinanceHandler<ExpenseInquiryFinance>
 
     private final ExpenseService expenseService;
     private final Receipt receipt;
+    private final ExpenseConfig expenseConfig;
 
     @Override
     public ExpenseInquiryFinance executionLogic(ExpenseInquiryFinance i) {
@@ -46,7 +48,7 @@ public class ExpenseHandler extends InquiryFinanceHandler<ExpenseInquiryFinance>
         ExpenseEntity expenseEntity = new ExpenseEntity(LocalDateTime.now(), value, expenseProductEntity);
         expenseService.save(expenseEntity, i.getAccount(), i.getAmount());
         i.setClosed(true);
-        i.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, i, i.getAccount().getInfoString()));
+        i.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, expenseConfig, i.getAccount().getInfoString()));
         i.setKeyboardType(FINANCE);
         return i;
     }
@@ -57,9 +59,13 @@ public class ExpenseHandler extends InquiryFinanceHandler<ExpenseInquiryFinance>
         i.setAmount(receipt.getSum());
         expenseService.saveAll(expenses, i.getAccount(), i.getAmount());
         i.setClosed(true);
-        i.setAnswerMessage(answerService.generateAnswer(CommandLevel.SECOND, i));
+        i.setAnswerMessage(answerService.generateAnswer(CommandLevel.SECOND, expenseConfig));
         i.setKeyboardType(FINANCE);
         log.info("COMPLETE Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", i.getId(), i.getMessage(), i.getType(), i.getDate(), i.isClosed());
         return i;
+    }
+
+    public String getTextInfo(ExpenseInquiryFinance i) {
+        return answerService.generateAnswer(THIRD, expenseConfig);
     }
 }

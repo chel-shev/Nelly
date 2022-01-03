@@ -5,6 +5,8 @@ import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.inquiry.Inquiry;
 import dev.chel_shev.nelly.inquiry.bot.StartInquiry;
+import dev.chel_shev.nelly.inquiry.bot.UnknownConfig;
+import dev.chel_shev.nelly.inquiry.bot.UnknownUserConfig;
 import dev.chel_shev.nelly.inquiry.utils.InquiryFactory;
 import dev.chel_shev.nelly.repository.InquiryRepository;
 import dev.chel_shev.nelly.type.CommandLevel;
@@ -28,14 +30,16 @@ public class InquiryService<I extends Inquiry> {
     private final AnswerService answerService;
     private final InquiryFactory<I> inquiryFactory;
     private final CommandService commandService;
+    private final UnknownConfig unknownConfig;
+    private final UnknownUserConfig unknownUserConfig;
 
     public I getLastInquiry(Message message) {
         var user = userService.getUserByChatId(message.getChatId());
         if (isNull(user))
-            throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, inquiryFactory.create("/unknown_user")));
+            throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, unknownUserConfig));
         try {
             var entity = repository.findTopByUserOrderByDateDesc(user).orElseThrow(() -> new TelegramBotException("Inquiry not found!"));
-            var inquiry = inquiryFactory.create(entity.getCommand().getCommand());
+            var inquiry = inquiryFactory.getInquiry(entity.getCommand().getCommand());
             inquiry.init(entity, user);
             if (inquiry.isClosed()) return getKeyboardInquiry(message);
             return inquiry;
@@ -51,11 +55,11 @@ public class InquiryService<I extends Inquiry> {
             commandName = InquiryType.getFromLabel(message.getText()).getCommand();
         else commandName = message.getText();
         var command = commandService.getCommand(commandName);
-        var inquiry = inquiryFactory.create(command.getCommand());
+        var inquiry = inquiryFactory.getInquiry(command.getCommand());
         if (isNull(inquiry))
-            throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, inquiryFactory.create("/unknown")));
+            throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, unknownConfig));
         if (isNull(user) && !(inquiry instanceof StartInquiry))
-            throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, inquiryFactory.create("/unknown_user")));
+            throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, unknownUserConfig));
         inquiry.init(TelegramBotUtils.getArgs(message.getText()), !isNull(user) ? user : new UserEntity(message), command);
         return inquiry;
     }
@@ -63,7 +67,7 @@ public class InquiryService<I extends Inquiry> {
     private I getKeyboardInquiry(Message message) {
         var user = userService.getUserByChatId(message.getChatId());
         var command = commandService.getCommand(InquiryType.KEYBOARD.getCommand());
-        var inquiry = inquiryFactory.create(command.getCommand());
+        var inquiry = inquiryFactory.getInquiry(command.getCommand());
         inquiry.init(message.getText(), user, command);
         return inquiry;
     }

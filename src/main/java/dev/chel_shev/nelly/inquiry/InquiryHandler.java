@@ -7,6 +7,7 @@ import dev.chel_shev.nelly.service.UserService;
 import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -16,11 +17,8 @@ import static dev.chel_shev.nelly.type.KeyboardKeyType.CANCEL_KEY;
 @Component
 public abstract class InquiryHandler<I extends Inquiry> {
 
-    @Autowired
-    private InquiryService<I> inquiryService;
-    @Autowired
+    protected InquiryService<I> inquiryService;
     protected AnswerService answerService;
-    @Autowired
     protected UserService userService;
 
     /**
@@ -70,5 +68,20 @@ public abstract class InquiryHandler<I extends Inquiry> {
 
     public InquiryEntity save(InquiryEntity i) {
         return inquiryService.save(i);
+    }
+
+    @Autowired
+    public final void setInquiryService(@Qualifier("inquiryService") InquiryService<I> inquiryService) {
+        this.inquiryService = inquiryService;
+    }
+
+    @Autowired
+    public final void setAnswerService(@Qualifier("answerService") AnswerService answerService) {
+        this.answerService = answerService;
+    }
+
+    @Autowired
+    public final void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }

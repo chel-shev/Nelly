@@ -25,6 +25,7 @@ import static java.util.Objects.nonNull;
 public class TransferHandler extends InquiryFinanceHandler<TransferInquiryFinance> {
 
     private final TransferService transferService;
+    private final TransferConfig transferConfig;
 
     @Override
     public TransferInquiryFinance executionLogic(TransferInquiryFinance i) {
@@ -42,7 +43,7 @@ public class TransferHandler extends InquiryFinanceHandler<TransferInquiryFinanc
         TransferEntity transferEntity = new TransferEntity(i.getAccountOut(), i.getAccount(), value, LocalDateTime.now());
         transferService.save(transferEntity);
         i.setKeyboardType(FINANCE);
-        i.setAnswerMessage(answerService.generateAnswer(FIRST, i, i.getAccountOut().getInfoString(), i.getAccount().getInfoString()));
+        i.setAnswerMessage(answerService.generateAnswer(FIRST, transferConfig, i.getAccountOut().getInfoString(), i.getAccount().getInfoString()));
         i.setClosed(true);
         return i;
     }
@@ -57,20 +58,24 @@ public class TransferHandler extends InquiryFinanceHandler<TransferInquiryFinanc
             return i;
         }
         if (TelegramBotUtils.getArgs(message.getText()).isEmpty()) {
-            i.setAnswerMessage(answerService.generateAnswer(SECOND, i));
+            i.setAnswerMessage(answerService.generateAnswer(SECOND, transferConfig));
             i.setKeyboardType(ACCOUNTS);
             return i;
         }
         AccountEntity account = getAccount(i, message.getText().split(" ")[1]);
         if (isNull(i.getAccount())) {
             i.setAccount(account);
-            i.setAnswerMessage(answerService.generateAnswer(THIRD, i));
+            i.setAnswerMessage(answerService.generateAnswer(THIRD, transferConfig));
             i.setKeyboardType(ACCOUNTS);
         } else {
             i.setAccountOut(account);
-            i.setAnswerMessage(answerService.generateAnswer(FOURTH, i));
+            i.setAnswerMessage(answerService.generateAnswer(FOURTH, transferConfig));
             i.setKeyboardType(CANCEL);
         }
         return i;
+    }
+
+    public String getTextInfo(TransferInquiryFinance i) {
+        return answerService.generateAnswer(THIRD, transferConfig);
     }
 }

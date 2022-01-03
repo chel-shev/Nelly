@@ -28,13 +28,15 @@ public final class KeyboardFactory {
 
     public static ReplyKeyboardMarkup createKeyboard(KeyboardType type, UserEntity user) {
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        KeyboardRow inquiriesFirstRow;
+        KeyboardRow inquiriesSecondRow;
         keyboardMarkup.setSelective(true);
         keyboardMarkup.setResizeKeyboard(true);
         keyboardMarkup.setOneTimeKeyboard(false);
         switch (type) {
             case COMMON -> {
-                KeyboardRow inquiriesFirstRow = new KeyboardRow();
-                KeyboardRow inquiriesSecondRow = new KeyboardRow();
+                inquiriesFirstRow = new KeyboardRow();
+                inquiriesSecondRow = new KeyboardRow();
                 inquiriesFirstRow.addAll(Arrays.asList(FINANCE_KEY.label, BDAY_KEY.label));
 //                inquiriesSecondRow.addAll(Arrays.asList(REMINDER.label));
 //                inquiriesSecondRow.addAll(Arrays.asList("Спорт", "Английский"));
@@ -42,19 +44,19 @@ public final class KeyboardFactory {
                 keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow));
             }
             case BDAY -> {
-                KeyboardRow inquiriesFirstRow = new KeyboardRow();
+                inquiriesFirstRow = new KeyboardRow();
                 inquiriesFirstRow.addAll(Arrays.asList(BDAY_ADD.keyLabel, BDAY_REMOVE.keyLabel));
                 keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow, getBackRow()));
             }
             case FINANCE -> {
-                KeyboardRow inquiriesFirstRow = new KeyboardRow();
-                KeyboardRow inquiriesSecondRow = new KeyboardRow();
+                inquiriesFirstRow = new KeyboardRow();
+                inquiriesSecondRow = new KeyboardRow();
                 inquiriesFirstRow.addAll(Arrays.asList(EXPENSE.keyLabel, INCOME.keyLabel));
                 inquiriesSecondRow.addAll(Arrays.asList(LOAN.keyLabel, TRANSFER.keyLabel));
                 keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow, getBackRow()));
             }
             case REMINDER -> {
-                KeyboardRow inquiriesFirstRow = new KeyboardRow();
+                inquiriesFirstRow = new KeyboardRow();
                 inquiriesFirstRow.addAll(Arrays.asList(REMINDER_ADD.keyLabel, REMINDER_REMOVE.keyLabel));
                 keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow, getBackRow()));
             }

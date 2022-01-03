@@ -20,14 +20,15 @@ public class BdayRemoveHandler extends InquiryHandler<BdayRemoveInquiry> {
 
     private final BdayService service;
     private final CalendarService calendarService;
+    private final BdayRemoveConfig bdayRemoveConfig;
 
     @Override
     public BdayRemoveInquiry executionLogic(BdayRemoveInquiry i) {
         if (service.isExist(i.getName())) {
             calendarService.removeEvent(i.getName(), i.getUser());
-            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, i));
+            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, bdayRemoveConfig));
         } else {
-            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.SECOND, i));
+            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.SECOND, bdayRemoveConfig));
         }
         i.setClosed(true);
         i.setKeyboardType(BDAY);
@@ -37,7 +38,7 @@ public class BdayRemoveHandler extends InquiryHandler<BdayRemoveInquiry> {
     @Override
     public BdayRemoveInquiry preparationLogic(BdayRemoveInquiry i, Message message) {
         if (TelegramBotUtils.getArgs(message.getText()).isEmpty()) {
-            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.THIRD, i));
+            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.THIRD, bdayRemoveConfig));
             i.setKeyboardType(CANCEL);
         } else {
             i.setMessage(TelegramBotUtils.getArgs(message.getText()));

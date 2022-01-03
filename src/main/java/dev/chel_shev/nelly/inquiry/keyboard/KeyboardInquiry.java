@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class KeyboardInquiry extends Inquiry {
 
     @Override
-    public void initAnswers() {
-
+    public Inquiry getInstance() {
+        return new KeyboardInquiry();
     }
 }
