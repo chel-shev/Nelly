@@ -11,6 +11,7 @@ import dev.chel_shev.nelly.youtube.SubscriptionDTO;
 import dev.chel_shev.nelly.youtube.VideoDTO;
 import dev.chel_shev.nelly.youtube.YouTubeApi;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class YouTubeScheduler {
 
@@ -35,6 +37,7 @@ public class YouTubeScheduler {
 
     @Scheduled(cron = DateTimeUtils.EVERY_MINUTE)
     public void schedule() {
+        log.info("YouTubeScheduler is started!");
         Map<String, YouTubeCashEntity> subsCashed = youTubeCashRepository.findAll().stream().collect(Collectors.toMap(YouTubeCashEntity::getChannelId, Function.identity()));
         List<SubscriptionDTO> subs = youTubeApi.getSubscriptions();
         Optional<UserEntity> user = userRepository.findByUserName("chel_shev");
@@ -54,6 +57,7 @@ public class YouTubeScheduler {
                 youTubeCashRepository.save(youTubeCashEntity);
             }
         });
+        log.info("YouTubeScheduler is finished!");
     }
 
     private void updateLastPublished(SubscriptionDTO sub, VideoDTO video) {

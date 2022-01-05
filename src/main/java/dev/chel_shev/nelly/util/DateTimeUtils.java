@@ -63,13 +63,11 @@ public class DateTimeUtils {
 
     public static boolean isNextHour(LocalDateTime dateTime, ZoneOffset offset) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of(offset.getId()));
-        log.info("date = " + dateTime + " is Next Hour?" + " Now = " + now + " Server = " + LocalDateTime.now());
         return dateTime.getMonth() == now.getMonth() && dateTime.getDayOfMonth() == now.getDayOfMonth() && dateTime.getHour() == now.getHour();
     }
 
     public static boolean isNextMinute(LocalDateTime dateTime, ZoneOffset offset) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of(offset.getId()));
-        log.info("date = " + dateTime + " is Next Minute?" + " Now = " + now + " Server = " + LocalDateTime.now());
         return dateTime.getMonth() == now.getMonth() && dateTime.getDayOfMonth() == now.getDayOfMonth() && dateTime.getHour() == now.getHour() && dateTime.getMinute() == now.getMinute();
     }
 }
