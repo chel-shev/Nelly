@@ -40,7 +40,7 @@ public final class KeyboardFactory {
         switch (type) {
             case COMMON -> {
                 inquiriesFirstRow.addAll(Arrays.asList(FINANCE_KEY.label, BDAY_KEY.label));
-                inquiriesSecondRow.addAll(Arrays.asList(REMINDER.label));
+//                inquiriesSecondRow.addAll(Arrays.asList(REMINDER.label));
 //                inquiriesSecondRow.addAll(Arrays.asList("Спорт", "Английский"));
                 keyboard.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow));
                 return keyboard;
