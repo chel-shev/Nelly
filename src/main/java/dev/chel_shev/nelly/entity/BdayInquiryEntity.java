@@ -21,27 +21,13 @@ public class BdayInquiryEntity extends InquiryEntity {
     private String name;
 
     public BdayInquiryEntity(BdayAddInquiry inquiry) {
-        setId(inquiry.getId());
-        setType(inquiry.getType());
-        setMessage(inquiry.getMessage());
-        setClosed(inquiry.isClosed());
-        setDate(inquiry.getDate());
-        setCommand(inquiry.getCommand());
-        setUser(inquiry.getUser());
-        setBdayDate(inquiry.getBdayDate());
-        setName(inquiry.getName());
-        setKeyboardType(inquiry.getKeyboardType());
+        super(inquiry);
+        this.bdayDate = inquiry.getBdayDate();
+        this.name = inquiry.getName();
     }
 
     public BdayInquiryEntity(BdayRemoveInquiry inquiry) {
-        setId(inquiry.getId());
-        setType(inquiry.getType());
-        setMessage(inquiry.getMessage());
-        setClosed(inquiry.isClosed());
-        setDate(inquiry.getDate());
-        setCommand(inquiry.getCommand());
-        setUser(inquiry.getUser());
-        setName(inquiry.getName());
-        setKeyboardType(inquiry.getKeyboardType());
+        super(inquiry);
+        this.name = inquiry.getName();
     }
 }

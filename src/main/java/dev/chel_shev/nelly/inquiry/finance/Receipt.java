@@ -23,8 +23,6 @@ import static java.util.Objects.isNull;
  * Вид кода: t=20200517T1429&s=2711.51&fn=9251440300024356&i=108404&fp=357526947&n=1
  */
 @Data
-@Scope("prototype")
-@Component
 public class Receipt {
 
     @Value("${easy.finance.receipt.api.url}")
@@ -138,14 +136,5 @@ public class Receipt {
 
     public boolean isInvalid() {
         return isNull(FP) || isNull(N) || isNull(S) || isNull(FD) || isNull(FN) || isNull(T);
-    }
-
-    public void clear() {
-        FP = null;
-        N = null;
-        S = null;
-        FD = null;
-        FN = null;
-        T = null;
     }
 }

@@ -18,46 +18,48 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class BotSender {
 
-    public void sendMessage(Inquiry inquiry) {
+    public Message sendMessage(Inquiry inquiry) {
         SendMessage sendMessage = SendMessage.builder().chatId(String.valueOf(inquiry.getUser().getChatId())).text(inquiry.getAnswerMessage()).build();
-        sendMessage(sendMessage, inquiry.getKeyboardType(), inquiry.getUser());
+        return sendMessage(sendMessage, inquiry.getKeyboardType(), inquiry.getUser());
     }
 
-    public void sendMessage(UserEntity user, KeyboardType keyboardType, String text) {
+    public Message sendMessage(UserEntity user, KeyboardType keyboardType, String text) {
         SendMessage sendMessage = SendMessage.builder().chatId(String.valueOf(user.getChatId())).text(text).build();
-        sendMessage(sendMessage, keyboardType, user);
+        return sendMessage(sendMessage, keyboardType, user);
     }
 
-    public void sendMessage(UserEntity user, KeyboardType keyboardType, InputFile photo, String text) {
+    public Message sendMessage(UserEntity user, KeyboardType keyboardType, InputFile photo, String text) {
         SendPhoto sendPhoto = SendPhoto.builder().chatId(String.valueOf(user.getChatId())).photo(photo).caption(text).build();
-        sendMessage(sendPhoto, keyboardType, user);
+        return sendMessage(sendPhoto, keyboardType, user);
     }
 
-    public void sendMessage(Message message, KeyboardType keyboardType, String text) {
+    public Message sendMessage(Message message, KeyboardType keyboardType, String text) {
         SendMessage sendMessage = SendMessage.builder().chatId(String.valueOf(message.getChatId())).text(text).build();
-        sendMessage(sendMessage, keyboardType, null);
+        return sendMessage(sendMessage, keyboardType, null);
     }
 
-    private void sendMessage(SendMessage sendMessage, KeyboardType keyboardType, UserEntity user) {
+    private Message sendMessage(SendMessage sendMessage, KeyboardType keyboardType, UserEntity user) {
         ApplicationContext appCtx = ApplicationContextUtils.getApplicationContext();
         NellyNotBot<? extends Inquiry> telegramBot = (NellyNotBot<? extends Inquiry>) appCtx.getBean("nellyNotBot");
         try {
             sendMessage.setReplyMarkup(KeyboardFactory.createKeyboard(keyboardType, user));
             sendMessage.enableMarkdown(true);
-            telegramBot.execute(sendMessage);
+            return telegramBot.execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
-    private void sendMessage(SendPhoto sendPhoto, KeyboardType keyboardType, UserEntity user) {
+    private Message sendMessage(SendPhoto sendPhoto, KeyboardType keyboardType, UserEntity user) {
         ApplicationContext appCtx = ApplicationContextUtils.getApplicationContext();
         NellyNotBot<? extends Inquiry> telegramBot = (NellyNotBot<? extends Inquiry>) appCtx.getBean("nellyNotBot");
         try {
             sendPhoto.setReplyMarkup(KeyboardFactory.createKeyboard(keyboardType, user));
-            telegramBot.execute(sendPhoto);
+            return telegramBot.execute(sendPhoto);
         } catch (TelegramApiException e) {
             e.printStackTrace();
+            return null;
         }
     }
 }

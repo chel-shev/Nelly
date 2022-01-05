@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
-@Scope("prototype")
 @RequiredArgsConstructor
 public class StartHandler extends InquiryHandler<StartInquiry> {
 
@@ -20,10 +19,10 @@ public class StartHandler extends InquiryHandler<StartInquiry> {
     @Override
     public StartInquiry executionLogic(StartInquiry inquiry) {
         if (userService.isExist(inquiry.getUser().getChatId())) {
-            inquiry.setAnswerMessage(answerService.generateAnswer(CommandLevel.SECOND, startConfig));
+            inquiry.setAnswerMessage(aSer.generateAnswer(CommandLevel.SECOND, startConfig));
         } else {
             userService.save(inquiry.getUser());
-            inquiry.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, startConfig));
+            inquiry.setAnswerMessage(aSer.generateAnswer(CommandLevel.FIRST, startConfig));
         }
         inquiry.setKeyboardType(KeyboardType.COMMON);
         inquiry.setClosed(true);

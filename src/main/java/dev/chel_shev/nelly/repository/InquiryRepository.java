@@ -8,5 +8,7 @@ import java.util.Optional;
 
 public interface InquiryRepository extends JpaRepository<InquiryEntity, Long> {
     Optional<InquiryEntity> findTopByUserOrderByDateDesc(UserEntity user);
+
+    Optional<InquiryEntity> findByUserAndAndAnswerMessageId(UserEntity user, Integer answerMessageId);
 }
 

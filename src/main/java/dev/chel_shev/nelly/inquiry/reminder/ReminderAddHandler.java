@@ -13,14 +13,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
+import static dev.chel_shev.nelly.type.KeyboardType.PERIOD;
 
 @Component
 @Getter
 @Setter
-@Scope("prototype")
 @Slf4j
-@InquiryId(type = InquiryType.REMINDER_ADD)
+@InquiryId(InquiryType.REMINDER_ADD)
 @RequiredArgsConstructor
 public class ReminderAddHandler extends InquiryHandler<ReminderAddInquiry> {
 
@@ -42,12 +43,15 @@ public class ReminderAddHandler extends InquiryHandler<ReminderAddInquiry> {
     @Override
     public ReminderAddInquiry preparationLogic(ReminderAddInquiry i, Message message) {
         if (TelegramBotUtils.getArgs(message.getText()).isEmpty()) {
-            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.THIRD, reminderAddConfig));
+            i.setAnswerMessage(aSer.generateAnswer(CommandLevel.THIRD, reminderAddConfig));
             i.setKeyboardType(CANCEL);
-        } else {
+        } else if (isNullOrEmpty(i.getName())) {
+            i.setAnswerMessage(aSer.generateAnswer(CommandLevel.FOURTH, reminderAddConfig));
             i.setMessage(TelegramBotUtils.getArgs(message.getText()));
             i.setName(i.getArgFromMassage(0));
-            i.setKeyboardType(CANCEL);
+            i.setKeyboardType(PERIOD);
+        } else {
+
         }
         return i;
     }

@@ -4,6 +4,7 @@ import dev.chel_shev.nelly.inquiry.Inquiry;
 import dev.chel_shev.nelly.inquiry.InquiryHandler;
 import dev.chel_shev.nelly.service.CommandService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Scope("singleton")
 @RequiredArgsConstructor
 public class HandlerFactory<I extends Inquiry> {
 
@@ -32,7 +34,7 @@ public class HandlerFactory<I extends Inquiry> {
     }
 
     public void registerHandler(Class<I> dataType, InquiryHandler<I> handlerType) {
-        commandService.save(dataType.getAnnotation(InquiryId.class).type().getCommand());
+        commandService.save(dataType.getAnnotation(InquiryId.class).value().getCommand());
         registry.put(dataType, handlerType);
     }
 

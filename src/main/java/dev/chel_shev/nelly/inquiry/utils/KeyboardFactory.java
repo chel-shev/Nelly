@@ -5,11 +5,15 @@ import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.service.AccountService;
 import dev.chel_shev.nelly.type.KeyboardType;
+import dev.chel_shev.nelly.type.PeriodType;
 import dev.chel_shev.nelly.util.ApplicationContextUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
@@ -26,50 +30,56 @@ import static dev.chel_shev.nelly.type.KeyboardKeyType.*;
 @RequiredArgsConstructor
 public final class KeyboardFactory {
 
-    public static ReplyKeyboardMarkup createKeyboard(KeyboardType type, UserEntity user) {
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        KeyboardRow inquiriesFirstRow;
-        KeyboardRow inquiriesSecondRow;
-        keyboardMarkup.setSelective(true);
-        keyboardMarkup.setResizeKeyboard(true);
-        keyboardMarkup.setOneTimeKeyboard(false);
+    public static ReplyKeyboard createKeyboard(KeyboardType type, UserEntity user) {
+        ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup();
+        KeyboardRow inquiriesFirstRow = new KeyboardRow();
+        KeyboardRow inquiriesSecondRow = new KeyboardRow();
+        keyboard.setSelective(true);
+        keyboard.setResizeKeyboard(true);
+        keyboard.setOneTimeKeyboard(false);
         switch (type) {
             case COMMON -> {
-                inquiriesFirstRow = new KeyboardRow();
-                inquiriesSecondRow = new KeyboardRow();
                 inquiriesFirstRow.addAll(Arrays.asList(FINANCE_KEY.label, BDAY_KEY.label));
-//                inquiriesSecondRow.addAll(Arrays.asList(REMINDER.label));
+                inquiriesSecondRow.addAll(Arrays.asList(REMINDER.label));
 //                inquiriesSecondRow.addAll(Arrays.asList("Спорт", "Английский"));
-//                inquiriesSecondRow.addAll(Arrays.asList("Напоминания"));
-                keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow));
+                keyboard.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow));
+                return keyboard;
             }
             case BDAY -> {
-                inquiriesFirstRow = new KeyboardRow();
                 inquiriesFirstRow.addAll(Arrays.asList(BDAY_ADD.keyLabel, BDAY_REMOVE.keyLabel));
-                keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow, getBackRow()));
+                keyboard.setKeyboard(Arrays.asList(inquiriesFirstRow, getBackRow()));
+                return keyboard;
             }
             case FINANCE -> {
-                inquiriesFirstRow = new KeyboardRow();
-                inquiriesSecondRow = new KeyboardRow();
                 inquiriesFirstRow.addAll(Arrays.asList(EXPENSE.keyLabel, INCOME.keyLabel));
                 inquiriesSecondRow.addAll(Arrays.asList(LOAN.keyLabel, TRANSFER.keyLabel));
-                keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow, getBackRow()));
+                keyboard.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow, getBackRow()));
+                return keyboard;
             }
             case REMINDER -> {
-                inquiriesFirstRow = new KeyboardRow();
                 inquiriesFirstRow.addAll(Arrays.asList(REMINDER_ADD.keyLabel, REMINDER_REMOVE.keyLabel));
-                keyboardMarkup.setKeyboard(Arrays.asList(inquiriesFirstRow, getBackRow()));
+                keyboard.setKeyboard(Arrays.asList(inquiriesFirstRow, getBackRow()));
+                return keyboard;
             }
-            case CANCEL -> keyboardMarkup.setKeyboard(Collections.singletonList(getCancelRow()));
+            case CANCEL -> {
+                keyboard.setKeyboard(Collections.singletonList(getCancelRow()));
+                return keyboard;
+            }
             case ACCOUNTS -> {
                 List<KeyboardRow> rowList = new ArrayList<>(getAccountRowList(user));
                 rowList.add(getCancelRow());
-                keyboardMarkup.setKeyboard(rowList);
+                keyboard.setKeyboard(rowList);
+                return keyboard;
             }
-            case NONE -> keyboardMarkup.setKeyboard(new ArrayList<>());
+            case PERIOD -> {
+                InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
+                inlineKeyboard.setKeyboard(getButton());
+                return inlineKeyboard;
+            }
+            case NONE -> keyboard.setKeyboard(new ArrayList<>());
             default -> throw new TelegramBotException(user, "Неверный тип клавиатуры!", KeyboardType.COMMON);
         }
-        return keyboardMarkup;
+        return keyboard;
     }
 
     private static KeyboardRow getCancelRow() {
@@ -84,26 +94,48 @@ public final class KeyboardFactory {
         return back;
     }
 
+    private static List<List<InlineKeyboardButton>> getButton() {
+        List<PeriodType> periodTypes = Arrays.stream(PeriodType.values()).toList().stream().toList();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> rowNames = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        for (int i = 0; i < periodTypes.size(); i++) {
+            if (i % 2 == 0) {
+                if (i != 0) {
+                    row.addAll(rowNames);
+                    rows.add(row);
+                }
+                row = new ArrayList<>();
+                rowNames = new ArrayList<>();
+            }
+            InlineKeyboardButton button = InlineKeyboardButton.builder().text(periodTypes.get(i).name()).callbackData(periodTypes.get(i).name()).build();
+            rowNames.add(button);
+        }
+        row.addAll(rowNames);
+        rows.add(row);
+        return rows;
+    }
+
     private static List<KeyboardRow> getAccountRowList(UserEntity user) {
         ApplicationContext appCtx = ApplicationContextUtils.getApplicationContext();
         AccountService accountService = (AccountService) appCtx.getBean("accountService");
-        List<KeyboardRow> rowList = new ArrayList<>();
         List<String> accountList = accountService.getAccountListByUserId(user.getId()).stream().map(AccountEntity::getInfoString).collect(Collectors.toList());
+        List<KeyboardRow> rows = new ArrayList<>();
+        List<String> rowNames = new ArrayList<>();
         KeyboardRow row = new KeyboardRow();
-        List<String> rowsName = new ArrayList<>();
         for (int i = 0; i < accountList.size(); i++) {
             if (i % 2 == 0) {
                 if (i != 0) {
-                    row.addAll(rowsName);
-                    rowList.add(row);
+                    row.addAll(rowNames);
+                    rows.add(row);
                 }
                 row = new KeyboardRow();
-                rowsName = new ArrayList<>();
+                rowNames = new ArrayList<>();
             }
-            rowsName.add(accountList.get(i));
+            rowNames.add(accountList.get(i));
         }
-        row.addAll(rowsName);
-        rowList.add(row);
-        return rowList;
+        row.addAll(rowNames);
+        rows.add(row);
+        return rows;
     }
 }

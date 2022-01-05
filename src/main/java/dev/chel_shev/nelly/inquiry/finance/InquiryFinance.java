@@ -15,21 +15,14 @@ import static java.util.Objects.isNull;
 @Slf4j
 @Getter
 @Setter
-@Scope("prototype")
 public abstract class InquiryFinance extends Inquiry {
 
     private Long amount;
     private AccountEntity account;
 
     public void init(InquiryEntity entity, UserEntity user) {
-        this.setUser(user);
-        this.setClosed(entity.isClosed());
-        this.setAccount(((FinanceInquiryEntity) entity).getIn());
-        this.setDate(entity.getDate());
-        this.setId(entity.getId());
-        this.setCommand(entity.getCommand());
-        this.setAnswerMessage(entity.getAnswerMessage());
-        this.setKeyboardType(entity.getKeyboardType());
+        super.init(entity, user);
+        this.account = ((FinanceInquiryEntity) entity).getIn();
         log.info("INIT Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", getId(), getMessage(), getType(), getDate(), isClosed());
     }
 

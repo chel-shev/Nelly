@@ -8,14 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
-@Scope("prototype")
-@NoArgsConstructor
-@InquiryId(type = InquiryType.LOAN)
+@InquiryId(InquiryType.LOAN)
 public class LoanInquiryFinance extends InquiryFinance {
 
-    @Override
-    public LoanInquiryFinance getInstance() {
-        return new LoanInquiryFinance();
-    }
 }

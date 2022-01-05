@@ -16,8 +16,7 @@ import org.springframework.stereotype.Component;
 import static java.util.Objects.isNull;
 
 @Slf4j
-@Component
-@InquiryId(type = InquiryType.TRANSFER)
+@InquiryId(InquiryType.TRANSFER)
 public class TransferInquiryFinance extends InquiryFinance {
 
     @Setter
@@ -26,12 +25,8 @@ public class TransferInquiryFinance extends InquiryFinance {
 
     @Override
     public void init(InquiryEntity entity, UserEntity user) throws TelegramBotException {
-        this.setUser(user);
-        this.setClosed(entity.isClosed());
+        super.init(entity, user);
         this.setAccount(((FinanceInquiryEntity) entity).getIn());
-        this.setDate(entity.getDate());
-        this.setId(entity.getId());
-        this.setCommand(entity.getCommand());
         this.accountOut = ((FinanceInquiryEntity) entity).getOut();
         log.info("CREATE Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", getId(), getMessage(), getType(), getDate(), isClosed());
     }
@@ -39,11 +34,6 @@ public class TransferInquiryFinance extends InquiryFinance {
     @Override
     public InquiryEntity getEntity() {
         return new FinanceInquiryEntity(this, getAccountOut());
-    }
-
-    @Override
-    public Inquiry getInstance() {
-        return new TransferInquiryFinance();
     }
 
     @Override

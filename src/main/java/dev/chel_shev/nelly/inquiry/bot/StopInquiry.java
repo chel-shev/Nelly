@@ -6,13 +6,6 @@ import dev.chel_shev.nelly.type.InquiryType;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
-@Scope("prototype")
-@InquiryId(type = InquiryType.STOP)
+@InquiryId(InquiryType.STOP)
 public class StopInquiry extends Inquiry {
-
-    @Override
-    public Inquiry getInstance() {
-        return new StopInquiry();
-    }
 }

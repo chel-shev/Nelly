@@ -25,13 +25,7 @@ public class FinanceInquiryEntity extends InquiryEntity {
     private AccountEntity out;
 
     public FinanceInquiryEntity(InquiryFinance inquiry, AccountEntity out) {
-        setId(inquiry.getId());
-        setType(inquiry.getType());
-        setMessage(inquiry.getMessage());
-        setClosed(inquiry.isClosed());
-        setDate(inquiry.getDate());
-        setCommand(inquiry.getCommand());
-        setUser(inquiry.getUser());
+        super(inquiry);
         this.amount = inquiry.getAmount();
         this.in = inquiry.getAccount();
         this.out = out;

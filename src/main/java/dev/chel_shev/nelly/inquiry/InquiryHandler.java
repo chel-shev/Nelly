@@ -4,7 +4,6 @@ import dev.chel_shev.nelly.entity.InquiryEntity;
 import dev.chel_shev.nelly.service.AnswerService;
 import dev.chel_shev.nelly.service.InquiryService;
 import dev.chel_shev.nelly.service.UserService;
-import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,13 +11,14 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import static dev.chel_shev.nelly.type.KeyboardKeyType.CANCEL_KEY;
+import static dev.chel_shev.nelly.type.KeyboardType.COMMON;
 
 @Slf4j
 @Component
 public abstract class InquiryHandler<I extends Inquiry> {
 
     protected InquiryService<I> inquiryService;
-    protected AnswerService answerService;
+    protected AnswerService aSer;
     protected UserService userService;
 
     /**
@@ -32,37 +32,36 @@ public abstract class InquiryHandler<I extends Inquiry> {
     /**
      * Inquiry preparation logic
      *
-     * @param i - Received inquiry
+     * @param i       - Received inquiry
      * @param message - Bot message
      * @return - Processed inquiry
      */
     protected abstract I preparationLogic(I i, Message message);
 
     public I execute(I i, Message message) {
-        log.info("EXECUTE ExpenseInquiry(inquiryId: {}, text: {}, type: {}, date: {}, completed: {})", i.getId(), i.getMessage(), i.getType(), i.getDate(), i.isClosed());
         if (message.getText().equals(CANCEL_KEY.label))
             return cancel(i);
-        I inquiry = executionLogic(i);
-        save(i.getEntity());
-        log.info("COMPLETE Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", i.getId(), i.getMessage(), i.getType(), i.getDate(), i.isClosed());
-        return inquiry;
+        executionLogic(i);
+        i.setId(save(i.getEntity()).getId());
+        log.info("EXECUTE {}", i);
+        return i;
     }
 
     public I prepare(I i, Message message) {
         if (message.getText().equals(CANCEL_KEY.label))
             return cancel(i);
-        I inquiry = preparationLogic(i, message);
-        save(i.getEntity());
-        log.info("PREPARE Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", i.getId(), i.getMessage(), i.getType(), i.getDate(), i.isClosed());
-        return inquiry;
+        preparationLogic(i, message);
+        i.setId(save(i.getEntity()).getId());
+        log.info("PREPARE {}", i);
+        return i;
     }
 
     public I cancel(I i) {
         i.setClosed(true);
         i.setAnswerMessage("Действие отменено!");
-        i.setKeyboardType(KeyboardType.COMMON);
-        save(i.getEntity());
-        log.info("CANCEL Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", i.getId(), i.getMessage(), i.getType(), i.getDate(), i.isClosed());
+        i.setId(save(i.getEntity()).getId());
+        i.setKeyboardType(COMMON);
+        log.info("CANCEL {}", i);
         return i;
     }
 
@@ -76,12 +75,20 @@ public abstract class InquiryHandler<I extends Inquiry> {
     }
 
     @Autowired
-    public final void setAnswerService(@Qualifier("answerService") AnswerService answerService) {
-        this.answerService = answerService;
+    public final void setAnswerService(@Qualifier("answerService") AnswerService aSer) {
+        this.aSer = aSer;
     }
 
     @Autowired
     public final void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void updateInquiry(I i, Message reply) {
+        if (null == i) return;
+        i.setAnswerMessage(reply.getText());
+        i.setAnswerMessageId(reply.getMessageId());
+        save(i.getEntity());
+        log.info("UPDATE {}", i);
     }
 }

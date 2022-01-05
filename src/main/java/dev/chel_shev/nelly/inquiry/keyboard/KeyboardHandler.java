@@ -10,7 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import static dev.chel_shev.nelly.type.KeyboardKeyType.getFromLabel;
 
 @Component
-@Scope("prototype")
 @RequiredArgsConstructor
 public class KeyboardHandler extends InquiryHandler<KeyboardInquiry> {
 

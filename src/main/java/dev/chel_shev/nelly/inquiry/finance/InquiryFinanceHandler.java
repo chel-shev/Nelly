@@ -47,11 +47,8 @@ public abstract class InquiryFinanceHandler<IF extends InquiryFinance> extends I
     public abstract String getTextInfo(IF i);
 
     public IF cancel(IF i) {
-        i.setClosed(true);
-        i.setAnswerMessage("Действие отменено!");
+        super.cancel(i);
         i.setKeyboardType(FINANCE);
-        save(i.getEntity());
-        log.info("CANCEL Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", i.getId(), i.getMessage(), i.getType(), i.getDate(), i.isClosed());
         return i;
     }
 

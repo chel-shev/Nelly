@@ -14,6 +14,7 @@ import dev.chel_shev.nelly.type.InquiryType;
 import dev.chel_shev.nelly.util.TelegramBotUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import static dev.chel_shev.nelly.type.InquiryType.ACTION_COMMAND_MAP;
@@ -32,6 +33,16 @@ public class InquiryService<I extends Inquiry> {
     private final CommandService commandService;
     private final UnknownConfig unknownConfig;
     private final UnknownUserConfig unknownUserConfig;
+
+    private I getInquiryByCallbackQuery(CallbackQuery callbackQuery) {
+        var user = userService.getUserByChatId(callbackQuery.getMessage().getChatId());
+        if (isNull(user))
+            throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, unknownUserConfig));
+        var entity = repository.findByUserAndAndAnswerMessageId(user, callbackQuery.getMessage().getMessageId()).orElseThrow(() -> new TelegramBotException("Inquiry not found!"));
+        var inquiry = inquiryFactory.getInquiry(entity.getCommand().getCommand());
+        inquiry.init(entity, user);
+        return inquiry;
+    }
 
     public I getLastInquiry(Message message) {
         var user = userService.getUserByChatId(message.getChatId());
@@ -60,7 +71,7 @@ public class InquiryService<I extends Inquiry> {
             throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, unknownConfig));
         if (isNull(user) && !(inquiry instanceof StartInquiry))
             throw new TelegramBotException(answerService.generateAnswer(CommandLevel.FIRST, unknownUserConfig));
-        inquiry.init(TelegramBotUtils.getArgs(message.getText()), !isNull(user) ? user : new UserEntity(message), command);
+        inquiry.init(TelegramBotUtils.getArgs(message.getText()), message.getMessageId(), !isNull(user) ? user : new UserEntity(message), command);
         return inquiry;
     }
 
@@ -68,7 +79,7 @@ public class InquiryService<I extends Inquiry> {
         var user = userService.getUserByChatId(message.getChatId());
         var command = commandService.getCommand(InquiryType.KEYBOARD.getCommand());
         var inquiry = inquiryFactory.getInquiry(command.getCommand());
-        inquiry.init(message.getText(), user, command);
+        inquiry.init(message.getText(), message.getMessageId(), user, command);
         return inquiry;
     }
 
@@ -82,7 +93,15 @@ public class InquiryService<I extends Inquiry> {
         }
     }
 
+    public I getInquiry(CallbackQuery callbackQuery) {
+        return getInquiryByCallbackQuery(callbackQuery);
+    }
+
     public InquiryEntity save(InquiryEntity inquiry) {
         return repository.save(inquiry);
+    }
+
+    public void updateInquiry(I i, Message reply) {
+
     }
 }

@@ -6,13 +6,9 @@ import dev.chel_shev.nelly.type.InquiryType;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
-@Scope("prototype")
-@InquiryId(type = InquiryType.KEYBOARD)
+import static dev.chel_shev.nelly.type.InquiryType.KEYBOARD;
+
+@InquiryId(KEYBOARD)
 public class KeyboardInquiry extends Inquiry {
 
-    @Override
-    public Inquiry getInstance() {
-        return new KeyboardInquiry();
-    }
 }

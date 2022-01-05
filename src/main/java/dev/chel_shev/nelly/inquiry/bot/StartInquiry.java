@@ -6,13 +6,8 @@ import dev.chel_shev.nelly.type.InquiryType;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
-@Scope("prototype")
-@InquiryId(type = InquiryType.START)
-public class StartInquiry extends Inquiry {
+import static dev.chel_shev.nelly.type.InquiryType.START;
 
-    @Override
-    public Inquiry getInstance() {
-        return new StartInquiry();
-    }
+@InquiryId(START)
+public class StartInquiry extends Inquiry {
 }

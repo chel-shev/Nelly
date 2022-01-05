@@ -16,13 +16,6 @@ import javax.persistence.Table;
 public class CommonInquiryEntity extends InquiryEntity {
 
     public CommonInquiryEntity(Inquiry inquiry) {
-        setType(inquiry.getType());
-        setMessage(inquiry.getMessage());
-        setClosed(inquiry.isClosed());
-        setDate(inquiry.getDate());
-        setCommand(inquiry.getCommand());
-        setAnswerMessage(inquiry.getAnswerMessage());
-        setKeyboardType(inquiry.getKeyboardType());
-        setUser(inquiry.getUser());
+        super(inquiry);
     }
 }

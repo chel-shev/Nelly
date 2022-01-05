@@ -13,7 +13,11 @@ public enum KeyboardType {
     CANCEL(""),
     ACCOUNTS(""),
     BDAY("ДР \uD83D\uDCC6"),
-    COMMON("");
+    COMMON(""),
+
+    // inline keyboard
+    PERIOD("");
+
 
     @Getter
     public final String label;

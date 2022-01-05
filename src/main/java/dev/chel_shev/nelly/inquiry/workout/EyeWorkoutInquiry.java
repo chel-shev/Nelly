@@ -6,13 +6,8 @@ import dev.chel_shev.nelly.type.InquiryType;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
-@Scope("prototype")
-@InquiryId(type = InquiryType.WORKOUT)
-public class EyeWorkoutInquiry extends Inquiry {
+import static dev.chel_shev.nelly.type.InquiryType.WORKOUT;
 
-    @Override
-    public EyeWorkoutInquiry getInstance() {
-        return new EyeWorkoutInquiry();
-    }
+@InquiryId(WORKOUT)
+public class EyeWorkoutInquiry extends Inquiry {
 }

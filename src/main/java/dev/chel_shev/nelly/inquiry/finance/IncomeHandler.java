@@ -25,12 +25,12 @@ public class IncomeHandler extends InquiryFinanceHandler<IncomeInquiryFinance> {
 
     @Override
     public IncomeInquiryFinance executionLogic(IncomeInquiryFinance i) {
-        log.info("PROCESS IncomeInquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", i.getId(), i.getMessage(), i.getType(), i.getDate(), i.isClosed());
+        log.info("PROCESS Income {}", i);
         try {
             if (isDoubleParam(i))
                 return saveIncome(i);
             else {
-                i.setAnswerMessage(answerService.generateAnswer(FIRST, incomeConfig));
+                i.setAnswerMessage(aSer.generateAnswer(FIRST, incomeConfig));
                 i.setKeyboardType(CANCEL);
                 return i;
             }
@@ -45,13 +45,13 @@ public class IncomeHandler extends InquiryFinanceHandler<IncomeInquiryFinance> {
         String name = getNameFromParam(i, 0);
         IncomeEntity incomeEntity = new IncomeEntity(name, value, LocalDateTime.now(), null, i.getAccount());
         incomeService.save(incomeEntity, i.getAccount());
-        i.setAnswerMessage(answerService.generateAnswer(SECOND, incomeConfig, i.getAccount().getInfoString()));
+        i.setAnswerMessage(aSer.generateAnswer(SECOND, incomeConfig, i.getAccount().getInfoString()));
         i.setKeyboardType(FINANCE);
         i.setClosed(true);
         return i;
     }
 
     public String getTextInfo(IncomeInquiryFinance i) {
-        return answerService.generateAnswer(THIRD, incomeConfig);
+        return aSer.generateAnswer(THIRD, incomeConfig);
     }
 }

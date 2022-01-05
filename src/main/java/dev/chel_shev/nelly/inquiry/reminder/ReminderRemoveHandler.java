@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
+import static dev.chel_shev.nelly.type.KeyboardType.PERIOD;
 
 @Slf4j
 @Component
@@ -33,11 +34,14 @@ public class ReminderRemoveHandler extends InquiryHandler<ReminderRemoveInquiry>
     @Override
     public ReminderRemoveInquiry preparationLogic(ReminderRemoveInquiry i, Message message) {
         if (TelegramBotUtils.getArgs(message.getText()).isEmpty()) {
-            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.THIRD, reminderRemoveConfig));
+            i.setAnswerMessage(aSer.generateAnswer(CommandLevel.THIRD, reminderRemoveConfig));
             i.setKeyboardType(CANCEL);
-        } else {
+        } else if (i.getName().isEmpty()) {
+            i.setAnswerMessage(aSer.generateAnswer(CommandLevel.FOURTH, reminderRemoveConfig));
             i.setMessage(TelegramBotUtils.getArgs(message.getText()));
             i.setName(i.getArgFromMassage(0));
+        } else {
+
         }
         return i;
     }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
-@Scope("prototype")
 @RequiredArgsConstructor
 public class StopHandler extends InquiryHandler<StopInquiry> {
 
@@ -20,7 +19,7 @@ public class StopHandler extends InquiryHandler<StopInquiry> {
     @Override
     public StopInquiry executionLogic(StopInquiry inquiry) {
         userService.delete(inquiry.getUser());
-        inquiry.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, stopConfig));
+        inquiry.setAnswerMessage(aSer.generateAnswer(CommandLevel.FIRST, stopConfig));
         inquiry.setKeyboardType(KeyboardType.NONE);
         return inquiry;
     }

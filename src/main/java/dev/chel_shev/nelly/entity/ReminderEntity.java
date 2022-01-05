@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,32 +19,18 @@ import javax.persistence.Table;
 public class ReminderEntity extends InquiryEntity {
 
     private PeriodType periodType;
-    private String description;
+    private LocalDateTime time;
     private String name;
 
     public ReminderEntity(ReminderRemoveInquiry inquiry) {
-        setId(inquiry.getId());
-        setType(inquiry.getType());
-        setMessage(inquiry.getMessage());
-        setClosed(inquiry.isClosed());
-        setDate(inquiry.getDate());
-        setCommand(inquiry.getCommand());
-        setUser(inquiry.getUser());
-        setName(inquiry.getName());
-        setKeyboardType(inquiry.getKeyboardType());
+        super(inquiry);
+        this.name = inquiry.getName();
     }
 
     public ReminderEntity(ReminderAddInquiry inquiry) {
-        setId(inquiry.getId());
-        setType(inquiry.getType());
-        setMessage(inquiry.getMessage());
-        setClosed(inquiry.isClosed());
-        setDate(inquiry.getDate());
-        setCommand(inquiry.getCommand());
-        setUser(inquiry.getUser());
-        setPeriodType(inquiry.getPeriodType());
-        setDescription(inquiry.getDescription());
-        setName(inquiry.getName());
-        setKeyboardType(inquiry.getKeyboardType());
+        super(inquiry);
+        this.periodType = inquiry.getPeriodType();
+        this.time = inquiry.getTime();
+        this.name = inquiry.getName();
     }
 }

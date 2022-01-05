@@ -6,13 +6,6 @@ import dev.chel_shev.nelly.type.InquiryType;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
-@Scope("prototype")
-@InquiryId(type = InquiryType.NONE)
+@InquiryId(InquiryType.NONE)
 public class UnknownInquiry extends Inquiry {
-
-    @Override
-    public Inquiry getInstance() {
-        return new UnknownInquiry();
-    }
 }

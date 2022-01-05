@@ -15,14 +15,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import javax.annotation.PostConstruct;
-
-import static java.util.Objects.isNull;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -53,16 +52,23 @@ public class NellyNotBot<I extends Inquiry> extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (isNull(update.getMessage())) return;
-        Message message = update.getMessage();
-        try {
+        if (update.hasMessage()) {
+            Message message = update.getMessage();
+            Message reply;
             I i = inquiryService.getInquiry(message);
             InquiryHandler<I> inquiryHandler = handlerFactory.getHandler(i.getClass());
-            if (i.isNotReadyForExecute()) i = inquiryHandler.prepare(i, message);
-            if (!i.isNotReadyForExecute()) i = inquiryHandler.execute(i, message);
-            sender.sendMessage(i);
-        } catch (TelegramBotException e) {
-            sender.sendMessage(e.getUser(), KeyboardType.CANCEL, e.getMessage());
+            try {
+                if (i.isNotReadyForExecute()) i = inquiryHandler.prepare(i, message);
+                if (!i.isNotReadyForExecute()) i = inquiryHandler.execute(i, message);
+                reply = sender.sendMessage(i);
+            } catch (TelegramBotException e) {
+                reply = sender.sendMessage(e.getUser(), KeyboardType.CANCEL, e.getMessage());
+            }
+            inquiryHandler.updateInquiry(i, reply);
+        } else if (update.hasCallbackQuery()) {
+            CallbackQuery callbackQuery = update.getCallbackQuery();
+            I i = inquiryService.getInquiry(callbackQuery);
+            log.info(i.toString());
         }
     }
 }

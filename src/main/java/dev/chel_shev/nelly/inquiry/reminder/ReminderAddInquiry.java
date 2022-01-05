@@ -10,17 +10,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
+
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static dev.chel_shev.nelly.type.InquiryType.REMINDER_ADD;
 import static java.util.Objects.isNull;
 
 @Getter
 @Setter
 @Slf4j
-@InquiryId(type = InquiryType.REMINDER_ADD)
+@InquiryId(REMINDER_ADD)
 public class ReminderAddInquiry extends Inquiry {
 
     private PeriodType periodType;
-    private String description;
+    private LocalDateTime time;
     private String name;
 
     @Override
@@ -31,10 +34,5 @@ public class ReminderAddInquiry extends Inquiry {
     @Override
     public InquiryEntity getEntity() {
         return new ReminderEntity(this);
-    }
-
-    @Override
-    public ReminderAddInquiry getInstance() {
-        return new ReminderAddInquiry();
     }
 }

@@ -33,12 +33,12 @@ public class BdayAddHandler extends InquiryHandler<BdayAddInquiry> {
     @Override
     public BdayAddInquiry executionLogic(BdayAddInquiry i) {
         if (calendarService.isExist(i.getName(), i.getBdayDate(), i.getUser())) {
-            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.SECOND, bdayAddConfig));
+            i.setAnswerMessage(aSer.generateAnswer(CommandLevel.SECOND, bdayAddConfig));
         } else {
             BdayEntity save = service.save(new BdayEntity(i.getName(), i.getBdayDate()));
             List<CalendarEntity> calendarEntities = service.getCalendarEntities(save, i.getUser());
             calendarService.addEvents(calendarEntities);
-            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, bdayAddConfig));
+            i.setAnswerMessage(aSer.generateAnswer(CommandLevel.FIRST, bdayAddConfig));
         }
         i.setClosed(true);
         i.setKeyboardType(BDAY);
@@ -46,18 +46,15 @@ public class BdayAddHandler extends InquiryHandler<BdayAddInquiry> {
     }
 
     public BdayAddInquiry cancel(BdayAddInquiry i) {
-        i.setClosed(true);
-        i.setAnswerMessage("Действие отменено!");
+        super.cancel(i);
         i.setKeyboardType(BDAY);
-        save(i.getEntity());
-        log.info("CANCEL Inquiry(inquiryId: {}, text: {}, type: {}, date: {}, closed: {})", i.getId(), i.getMessage(), i.getType(), i.getDate(), i.isClosed());
         return i;
     }
 
     @Override
     public BdayAddInquiry preparationLogic(BdayAddInquiry i, Message message) {
         if (TelegramBotUtils.getArgs(message.getText()).isEmpty()) {
-            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.THIRD, bdayAddConfig));
+            i.setAnswerMessage(aSer.generateAnswer(CommandLevel.THIRD, bdayAddConfig));
             i.setKeyboardType(CANCEL);
         } else {
             i.setMessage(TelegramBotUtils.getArgs(message.getText()));
