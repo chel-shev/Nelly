@@ -1,4 +1,4 @@
-package dev.chel_shev.nelly.youtube;
+package dev.chel_shev.nelly.youtube.channel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

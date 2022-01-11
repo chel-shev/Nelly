@@ -1,4 +1,4 @@
-package dev.chel_shev.nelly.youtube;
+package dev.chel_shev.nelly.youtube.subscriptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +8,7 @@ import lombok.Data;
 public class SubscriptionDTO {
 
     String channelId;
+    String playlistId;
     String title;
     Integer totalItemCount;
 }

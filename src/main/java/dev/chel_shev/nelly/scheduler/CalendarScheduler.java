@@ -25,16 +25,16 @@ public class CalendarScheduler {
 
     @Scheduled(cron = DateTimeUtils.EVERY_MINUTE)
     public void schedule() {
+        log.info("CalendarScheduler is started!");
         userRepository.findAll().forEach(this::createTasks);
+        log.info("CalendarScheduler is finished!");
     }
 
     private void createTasks(UserEntity userEntity) {
-        log.info("CalendarScheduler is started!");
         List<CalendarEntity> calendarList = userEntity.getCalendarList();
         calendarList.forEach(e -> {
             if (isNextMinute(e.getEventDateTime(), e.getUser().getZoneOffset()))
                 TaskCreator.create(e, sender);
         });
-        log.info("CalendarScheduler is finished!");
     }
 }

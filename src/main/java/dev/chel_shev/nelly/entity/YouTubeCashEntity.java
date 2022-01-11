@@ -19,12 +19,14 @@ public class YouTubeCashEntity {
     private Long id;
 
     private String channelId;
+    private String playlistId;
     private String title;
     private Integer totalItemCount;
     private ZonedDateTime lastPublished;
 
-    public YouTubeCashEntity(String channelId, String title, Integer totalItemCount, ZonedDateTime lastPublished) {
+    public YouTubeCashEntity(String channelId, String playlistId, String title, Integer totalItemCount, ZonedDateTime lastPublished) {
         this.channelId = channelId;
+        this.playlistId = playlistId;
         this.title = title;
         this.totalItemCount = totalItemCount;
         this.lastPublished = lastPublished;
