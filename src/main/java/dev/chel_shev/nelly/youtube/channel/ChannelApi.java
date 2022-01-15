@@ -21,7 +21,7 @@ public class ChannelApi {
 
     public String getPlaylistIdByChannelId(String channelId) {
         Webb webb = Webb.create();
-        log.info("CHANNELS " + QUOTA);
+        log.debug("CHANNELS " + QUOTA);
         Response<JSONObject> channel = webb.get(URL_CHANNELS)
                 .params(configurer.getParamsChannel(channelId))
                 .ensureSuccess()

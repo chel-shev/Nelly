@@ -36,7 +36,7 @@ public class SubscriptionsApi {
         Map<String, YouTubeCashEntity> subsCashed = youTubeCashRepository.findAll().stream().collect(Collectors.toMap(YouTubeCashEntity::getChannelId, Function.identity()));
 
         Webb webb = Webb.create();
-        log.info("SUBSCRIPTIONS " + QUOTA);
+        log.debug("SUBSCRIPTIONS " + QUOTA);
         Response<JSONObject> subscriptionsJson = webb.get(URL_SUBSCRIPTIONS)
                 .params(configurer.getParamsSubscriptions())
                 .ensureSuccess()

@@ -38,7 +38,7 @@ public class YouTubeScheduler {
 
     @Scheduled(cron = DateTimeUtils.EVERY_MINUTE)
     public void schedule() {
-        log.info("YouTubeScheduler" + VERSION + " is started!");
+        log.debug("YouTubeScheduler" + VERSION + " is started!");
         Map<String, YouTubeCashEntity> subsCashed = youTubeCashRepository.findAll().stream().collect(Collectors.toMap(YouTubeCashEntity::getChannelId, Function.identity()));
         List<SubscriptionDTO> subs = subscriptionsApi.getSubscriptions();
         Optional<UserEntity> user = userRepository.findByUserName("chel_shev");
@@ -46,23 +46,23 @@ public class YouTubeScheduler {
             if (subsCashed.containsKey(e.getChannelId())) {
                 YouTubeCashEntity youTubeCashEntity = subsCashed.get(e.getChannelId());
                 if (!e.getTotalItemCount().equals(youTubeCashEntity.getTotalItemCount())) {
-                    log.info("ChannelId: " + e.getChannelId() + " ItemCount: " + e.getTotalItemCount() + " In db: " + youTubeCashEntity.getTotalItemCount());
+                    log.info("ChannelId: " + e.getChannelId() + " | ItemCount: " + e.getTotalItemCount() + " | In the db: " + youTubeCashEntity.getTotalItemCount());
                     List<VideoDTO> lastVideos = playlistApi.getLastVideos(e.getPlaylistId());
                     List<String> videoDTOS = lastVideos.stream()
                             .filter(v -> {
                                 boolean after = v.getPublishedAt().isAfter(youTubeCashEntity.getLastPublished());
-                                log.info("Video Published At: " + v.getPublishedAt() + " Last send: " + youTubeCashEntity.getLastPublished() + (after ? " +" : " -"));
+                                log.info("Video: " + v.getVideoId() + " | Published At: " + v.getPublishedAt() + " | Last send: " + youTubeCashEntity.getLastPublished() + (after ? " | +" : " -"));
                                 return after;
                             }).map(v -> URL_VIDEO + v.getVideoId()).toList();
                     updateLastPublished(e, lastVideos.get(0));
-                    videoDTOS.forEach(l -> sender.sendMessage(user.get(), KeyboardType.NONE, l));
+                    videoDTOS.forEach(l -> sender.sendMessage(user.get(), KeyboardType.COMMON, l, false));
                 }
             } else {
                 YouTubeCashEntity youTubeCashEntity = new YouTubeCashEntity(e.getChannelId(), e.getPlaylistId(), e.getTitle(), e.getTotalItemCount(), ZonedDateTime.now().minusHours(2));
                 youTubeCashRepository.save(youTubeCashEntity);
             }
         });
-        log.info("YouTubeScheduler" + VERSION + " is finished!");
+        log.debug("YouTubeScheduler" + VERSION + " is finished!");
     }
 
     private void updateLastPublished(SubscriptionDTO sub, VideoDTO video) {

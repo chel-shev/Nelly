@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.repository;
 
 
-import dev.chel_shev.nelly.entity.LoanEntity;
+import dev.chel_shev.nelly.entity.finance.LoanEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

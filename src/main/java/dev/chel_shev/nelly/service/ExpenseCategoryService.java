@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.ExpenseCategoryEntity;
-import dev.chel_shev.nelly.entity.StatisticCategoryEntity;
+import dev.chel_shev.nelly.entity.finance.ExpenseCategoryEntity;
+import dev.chel_shev.nelly.entity.finance.StatisticCategoryEntity;
 import dev.chel_shev.nelly.repository.ExpenseCategoryRepository;
 import dev.chel_shev.nelly.repository.StatisticCategoryRepository;
 import lombok.RequiredArgsConstructor;

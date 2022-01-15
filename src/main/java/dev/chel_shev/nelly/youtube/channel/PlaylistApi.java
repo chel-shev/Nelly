@@ -27,7 +27,7 @@ public class PlaylistApi {
 
     public List<VideoDTO> getLastVideos(String playlistId) {
         Webb webb = Webb.create();
-        log.info("PLAYLIST_ITEMS " + QUOTA);
+        log.debug("PLAYLIST_ITEMS " + QUOTA);
         Response<JSONObject> response = webb.get(URL_PLAYLIST_ITEMS)
                 .params(configurer.getParamsSearch(playlistId))
                 .ensureSuccess()

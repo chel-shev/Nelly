@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.repository;
 
-import dev.chel_shev.nelly.entity.AccountEntity;
+import dev.chel_shev.nelly.entity.finance.AccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

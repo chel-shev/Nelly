@@ -2,7 +2,7 @@ package dev.chel_shev.nelly.util;
 
 import static dev.chel_shev.nelly.type.InquiryType.ACTION_COMMAND_MAP;
 import static dev.chel_shev.nelly.type.InquiryType.ACTION_LABEL_MAP;
-import static dev.chel_shev.nelly.type.KeyboardKeyType.KEYBOARD_LABEL_MAP;
+import static dev.chel_shev.nelly.type.KeyboardType.KEYBOARD_LABEL_MAP;
 import static java.util.Objects.isNull;
 
 public class TelegramBotUtils {

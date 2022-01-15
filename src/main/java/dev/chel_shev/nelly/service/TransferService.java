@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.AccountHistoryEntity;
-import dev.chel_shev.nelly.entity.TransferEntity;
+import dev.chel_shev.nelly.entity.finance.AccountHistoryEntity;
+import dev.chel_shev.nelly.entity.finance.TransferEntity;
 import dev.chel_shev.nelly.repository.ClientHistoryRepository;
 import dev.chel_shev.nelly.repository.TransferRepository;
 import dev.chel_shev.nelly.type.InquiryType;

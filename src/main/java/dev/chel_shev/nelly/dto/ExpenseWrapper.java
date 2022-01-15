@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.dto;
 
-import dev.chel_shev.nelly.entity.ExpenseEntity;
+import dev.chel_shev.nelly.entity.finance.ExpenseEntity;
 import lombok.Data;
 
 import java.util.List;

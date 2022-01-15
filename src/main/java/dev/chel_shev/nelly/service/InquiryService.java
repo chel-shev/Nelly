@@ -1,13 +1,13 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.InquiryEntity;
+import dev.chel_shev.nelly.entity.inquiry.InquiryEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.inquiry.Inquiry;
-import dev.chel_shev.nelly.inquiry.bot.StartInquiry;
-import dev.chel_shev.nelly.inquiry.bot.UnknownConfig;
-import dev.chel_shev.nelly.inquiry.bot.UnknownUserConfig;
-import dev.chel_shev.nelly.inquiry.utils.InquiryFactory;
+import dev.chel_shev.nelly.bot.inquiry.Inquiry;
+import dev.chel_shev.nelly.bot.inquiry.bot.StartInquiry;
+import dev.chel_shev.nelly.bot.inquiry.bot.UnknownConfig;
+import dev.chel_shev.nelly.bot.inquiry.bot.UnknownUserConfig;
+import dev.chel_shev.nelly.bot.inquiry.utils.InquiryFactory;
 import dev.chel_shev.nelly.repository.InquiryRepository;
 import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.InquiryType;
@@ -62,7 +62,7 @@ public class InquiryService<I extends Inquiry> {
     public I getCommandInquiry(Message message) {
         var user = userService.getUserByChatId(message.getChatId());
         String commandName;
-        if (!ACTION_COMMAND_MAP.containsKey(message.getText()))
+        if (!ACTION_COMMAND_MAP.containsKey(message))
             commandName = InquiryType.getFromLabel(message.getText()).getCommand();
         else commandName = message.getText();
         var command = commandService.getCommand(commandName);

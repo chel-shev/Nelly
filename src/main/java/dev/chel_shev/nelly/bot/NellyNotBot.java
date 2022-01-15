@@ -1,9 +1,9 @@
 package dev.chel_shev.nelly.bot;
 
+import dev.chel_shev.nelly.bot.inquiry.Inquiry;
+import dev.chel_shev.nelly.bot.inquiry.InquiryHandler;
+import dev.chel_shev.nelly.bot.inquiry.utils.HandlerFactory;
 import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.inquiry.Inquiry;
-import dev.chel_shev.nelly.inquiry.InquiryHandler;
-import dev.chel_shev.nelly.inquiry.utils.HandlerFactory;
 import dev.chel_shev.nelly.repository.ExerciseRepository;
 import dev.chel_shev.nelly.service.InquiryService;
 import dev.chel_shev.nelly.type.KeyboardType;
@@ -62,13 +62,20 @@ public class NellyNotBot<I extends Inquiry> extends TelegramLongPollingBot {
                 if (!i.isNotReadyForExecute()) i = inquiryHandler.execute(i, message);
                 reply = sender.sendMessage(i);
             } catch (TelegramBotException e) {
-                reply = sender.sendMessage(e.getUser(), KeyboardType.CANCEL, e.getMessage());
+                reply = sender.sendMessage(e.getUser(), KeyboardType.CANCEL, e.getMessage(), true);
             }
             inquiryHandler.updateInquiry(i, reply);
         } else if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
             I i = inquiryService.getInquiry(callbackQuery);
-            log.info(i.toString());
+            InquiryHandler<I> inquiryHandler = handlerFactory.getHandler(i.getClass());
+            try {
+                if (i.isNotReadyForExecute()) i = inquiryHandler.inlinePrepare(i, callbackQuery);
+                if (!i.isNotReadyForExecute()) i = inquiryHandler.inlineExecute(i, callbackQuery);
+                sender.updateMessage(i);
+            } catch (TelegramBotException e) {
+                sender.sendMessage(e.getUser(), KeyboardType.CANCEL, e.getMessage(), true);
+            }
         }
     }
 }

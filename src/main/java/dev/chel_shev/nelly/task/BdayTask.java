@@ -21,7 +21,7 @@ public class BdayTask extends TimerTask {
     @Override
     public void run() {
         try {
-            sender.sendMessage(user, KeyboardType.NONE, name + " празднует свой День Рождения, поздравь, если уместно!");
+            sender.sendMessage(user, KeyboardType.NONE, name + " празднует свой День Рождения, поздравь, если уместно!", true);
         } catch (Exception ex) {
             System.out.println("error running thread " + ex.getMessage());
         }

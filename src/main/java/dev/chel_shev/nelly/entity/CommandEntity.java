@@ -1,5 +1,6 @@
 package dev.chel_shev.nelly.entity;
 
+import dev.chel_shev.nelly.entity.inquiry.InquiryEntity;
 import lombok.*;
 
 import javax.persistence.*;

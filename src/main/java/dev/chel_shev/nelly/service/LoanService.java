@@ -1,8 +1,8 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.AccountEntity;
-import dev.chel_shev.nelly.entity.AccountHistoryEntity;
-import dev.chel_shev.nelly.entity.LoanEntity;
+import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.finance.AccountHistoryEntity;
+import dev.chel_shev.nelly.entity.finance.LoanEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.repository.ClientHistoryRepository;
 import dev.chel_shev.nelly.repository.LoanRepository;

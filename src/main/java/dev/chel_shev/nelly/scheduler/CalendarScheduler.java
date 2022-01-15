@@ -25,9 +25,9 @@ public class CalendarScheduler {
 
     @Scheduled(cron = DateTimeUtils.EVERY_MINUTE)
     public void schedule() {
-        log.info("CalendarScheduler is started!");
+        log.debug("CalendarScheduler is started!");
         userRepository.findAll().forEach(this::createTasks);
-        log.info("CalendarScheduler is finished!");
+        log.debug("CalendarScheduler is finished!");
     }
 
     private void createTasks(UserEntity userEntity) {

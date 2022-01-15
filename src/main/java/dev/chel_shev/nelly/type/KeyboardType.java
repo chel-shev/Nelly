@@ -8,16 +8,19 @@ import java.util.Map;
 public enum KeyboardType {
 
     NONE(""),
-    FINANCE("Финансы \uD83D\uDCB0"),
-    REMINDER("Напоминания \uD83D\uDD14"),
+    FINANCE("\uD83D\uDCB0 Финансы"),
+    REMINDER("\uD83D\uDD14 Напоминания"),
     CANCEL(""),
-    ACCOUNTS(""),
-    BDAY("ДР \uD83D\uDCC6"),
+    BDAY("\uD83D\uDCC6 ДР"),
     COMMON(""),
+    BACK("⬅ Назад"),
+    WORKOUT("\uD83E\uDD38\u200D♀️ Спорт"),
 
+    ACCOUNTS(""),
     // inline keyboard
-    PERIOD("");
-
+    WORKOUT_LIST(""),
+    TIMEOUT_LIST(""),
+    PERIOD_LIST("");
 
     @Getter
     public final String label;

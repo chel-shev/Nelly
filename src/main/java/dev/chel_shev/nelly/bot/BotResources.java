@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.bot;
 
 import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.inquiry.Inquiry;
+import dev.chel_shev.nelly.bot.inquiry.Inquiry;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.ApplicationContextUtils;
 import dev.chel_shev.nelly.util.DecoderPhotoQR;

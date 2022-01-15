@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.inquiry.InquiryConfig;
+import dev.chel_shev.nelly.bot.inquiry.InquiryConfig;
 import dev.chel_shev.nelly.type.CommandLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

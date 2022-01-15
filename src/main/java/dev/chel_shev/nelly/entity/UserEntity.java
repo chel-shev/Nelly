@@ -1,6 +1,9 @@
 package dev.chel_shev.nelly.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.inquiry.InquiryEntity;
+import dev.chel_shev.nelly.entity.workout.UserWorkoutEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,6 +43,9 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CalendarEntity> calendarList;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserWorkoutEntity> workoutList;
 
     public UserEntity(Long id, String firstName, String lastName, String userName, Long chatId) {
         this.id = id;

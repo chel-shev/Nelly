@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.repository;
 
-import dev.chel_shev.nelly.entity.InquiryEntity;
+import dev.chel_shev.nelly.entity.inquiry.InquiryEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

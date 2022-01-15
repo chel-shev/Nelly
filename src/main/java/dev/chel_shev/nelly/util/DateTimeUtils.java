@@ -61,6 +61,14 @@ public class DateTimeUtils {
         throw new TelegramBotException(user, "Проверь дату, мне кажется ты ошибся");
     }
 
+    public static LocalDateTime getTimeFromTimeout(String date, UserEntity user) {
+        try {
+            return LocalDateTime.now().plusDays(Long.parseLong(date));
+        } catch (Exception e) {
+            throw new TelegramBotException(user, "Проверь дату, мне кажется ты ошибся");
+        }
+    }
+
     public static boolean isNextHour(LocalDateTime dateTime, ZoneOffset offset) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of(offset.getId()));
         return dateTime.getMonth() == now.getMonth() && dateTime.getDayOfMonth() == now.getDayOfMonth() && dateTime.getHour() == now.getHour();

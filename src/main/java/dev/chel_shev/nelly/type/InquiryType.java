@@ -6,18 +6,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum InquiryType {
-    EXPENSE("Расход \uD83D\uDCB0", "/expense"),
-    INCOME("Доход \uD83D\uDCB0", "/income"),
-    LOAN("Займ \uD83D\uDCB0", "/loan"),
-    TRANSFER("Перевод \uD83D\uDCB0", "/transfer"),
-    BDAY_ADD("Добавить \uD83D\uDCC6", "/bday_add"),
-    BDAY_REMOVE("Удалить \uD83D\uDCC6", "/bday_remove"),
-    REMINDER_ADD("Добавить \uD83D\uDD14", "/reminder_add"),
-    REMINDER_REMOVE("Удалить \uD83D\uDD15", "/reminder_remove"),
+    EXPENSE("\uD83D\uDCB0 Расход", "/expense"),
+    INCOME("\uD83D\uDCB0 Доход", "/income"),
+    LOAN("\uD83D\uDCB0 Займ", "/loan"),
+    TRANSFER("\uD83D\uDCB0 Перевод", "/transfer"),
+    BDAY_ADD("\uD83D\uDCC6 Добавить", "/bday_add"),
+    BDAY_REMOVE("\uD83D\uDCC6 Удалить", "/bday_remove"),
+    REMINDER_ADD("\uD83D\uDD14 Добавить", "/reminder_add"),
+    REMINDER_REMOVE("\uD83D\uDD15 Удалить", "/reminder_remove"),
+    WORKOUT_ADD("\uD83E\uDD38\u200D♀ Добавить", "/workout_add"),
+    WORKOUT_REMOVE("\uD83E\uDD38\u200D♀ Удалить", "/workout_remove"),
     START("", "/start"),
     STOP("", "/stop"),
     KEYBOARD("", "/keyboard"),
-    WORKOUT("", "/workout"),
     NONE("", "/none"),
     UNKNOWN("", "/unknown"),
     UNKNOWN_USER("", "/unknown_user");
