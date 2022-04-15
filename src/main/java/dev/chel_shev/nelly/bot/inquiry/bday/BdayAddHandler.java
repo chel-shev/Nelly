@@ -1,8 +1,8 @@
 package dev.chel_shev.nelly.bot.inquiry.bday;
 
-import dev.chel_shev.nelly.entity.BdayEntity;
-import dev.chel_shev.nelly.entity.CalendarEntity;
 import dev.chel_shev.nelly.bot.inquiry.InquiryHandler;
+import dev.chel_shev.nelly.entity.CalendarEntity;
+import dev.chel_shev.nelly.entity.event.BdayEventEntity;
 import dev.chel_shev.nelly.service.BdayService;
 import dev.chel_shev.nelly.service.CalendarService;
 import dev.chel_shev.nelly.type.CommandLevel;
@@ -14,9 +14,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
-import static dev.chel_shev.nelly.bot.inquiry.utils.InquiryUtils.getLastArgsPast;
+import static dev.chel_shev.nelly.bot.utils.InquiryUtils.getLastArgsPast;
 import static dev.chel_shev.nelly.type.KeyboardType.BDAY;
 import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
 
@@ -35,9 +35,14 @@ public class BdayAddHandler extends InquiryHandler<BdayAddInquiry> {
         if (calendarService.isExist(i.getName(), i.getBdayDate(), i.getUser())) {
             i.setAnswerMessage(aSer.generateAnswer(CommandLevel.SECOND, bdayAddConfig));
         } else {
-            BdayEntity save = service.save(new BdayEntity(i.getName(), i.getBdayDate()));
-            List<CalendarEntity> calendarEntities = service.getCalendarEntities(save, i.getUser());
-            calendarService.addEvents(calendarEntities);
+            LocalDateTime now = LocalDateTime.now();
+            BdayEventEntity bdayEvent;
+            if (i.getBdayDate().withYear(now.getYear()).isAfter(now))
+                bdayEvent = service.save(new BdayEventEntity(i.getName(), i.getBdayDate(), i.getBdayDate().withYear(now.getYear()).withHour(8).withMinute(0).withSecond(0)));
+            else
+                bdayEvent = service.save(new BdayEventEntity(i.getName(), i.getBdayDate(), i.getBdayDate().withYear(now.getYear() + 1).withHour(8).withMinute(0).withSecond(0)));
+            bdayEvent = service.save(bdayEvent);
+            calendarService.addEvent(bdayEvent, i.getUser());
             i.setAnswerMessage(aSer.generateAnswer(CommandLevel.FIRST, bdayAddConfig));
         }
         i.setClosed(true);

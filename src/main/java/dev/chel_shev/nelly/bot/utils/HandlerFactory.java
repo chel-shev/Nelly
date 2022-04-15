@@ -1,4 +1,4 @@
-package dev.chel_shev.nelly.bot.inquiry.utils;
+package dev.chel_shev.nelly.bot.utils;
 
 import dev.chel_shev.nelly.bot.inquiry.Inquiry;
 import dev.chel_shev.nelly.bot.inquiry.InquiryHandler;

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static dev.chel_shev.nelly.bot.inquiry.utils.InquiryUtils.*;
+import static dev.chel_shev.nelly.bot.utils.InquiryUtils.*;
 import static dev.chel_shev.nelly.type.CommandLevel.THIRD;
 import static dev.chel_shev.nelly.type.KeyboardType.FINANCE;
 

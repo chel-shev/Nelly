@@ -17,6 +17,6 @@ public class WorkoutEntity {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "workoutList")
-    private List<ExerciseEntity> exerciseList;
+    @OneToMany(mappedBy = "workout", fetch = FetchType.EAGER)
+    private List<WorkoutExerciseEntity> exercises;
 }

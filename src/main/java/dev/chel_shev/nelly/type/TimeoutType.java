@@ -9,8 +9,7 @@ public enum TimeoutType {
     THREE(3),
     FOUR(4),
     FIVE(5),
-    SIX(6),
-    SEVEN(7);
+    SIX(6);
 
     @Getter
     public final int label;

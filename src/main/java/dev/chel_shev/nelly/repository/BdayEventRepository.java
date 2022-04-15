@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.repository;
 
-import dev.chel_shev.nelly.entity.BdayEntity;
+import dev.chel_shev.nelly.entity.event.BdayEventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 
@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface BdayRepository extends JpaRepository<BdayEntity, Long> {
+public interface BdayEventRepository extends JpaRepository<BdayEventEntity, Long> {
 
     boolean existsByNameAndDate(String name, LocalDateTime date);
 
@@ -18,7 +18,7 @@ public interface BdayRepository extends JpaRepository<BdayEntity, Long> {
     @Transactional
     void deleteAllByName(String name);
 
-    List<BdayEntity> findByName(String name);
+    List<BdayEventEntity> findByName(String name);
 
-    BdayEntity findByNameAndDate(String name, LocalDateTime date);
+    BdayEventEntity findByNameAndDate(String name, LocalDateTime date);
 }

@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.bot.inquiry.reminder;
 
 import dev.chel_shev.nelly.bot.inquiry.InquiryHandler;
-import dev.chel_shev.nelly.bot.inquiry.utils.InquiryId;
+import dev.chel_shev.nelly.bot.utils.InquiryId;
 import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.InquiryType;
 import dev.chel_shev.nelly.util.TelegramBotUtils;

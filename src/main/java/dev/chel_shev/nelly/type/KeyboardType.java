@@ -10,7 +10,8 @@ public enum KeyboardType {
     NONE(""),
     FINANCE("\uD83D\uDCB0 Финансы"),
     REMINDER("\uD83D\uDD14 Напоминания"),
-    CANCEL(""),
+    CANCEL("\uD83D\uDDD9 Отмена"),
+
     BDAY("\uD83D\uDCC6 ДР"),
     COMMON(""),
     BACK("⬅ Назад"),
@@ -18,8 +19,13 @@ public enum KeyboardType {
 
     ACCOUNTS(""),
     // inline keyboard
+    INLINE_CANCEL("⏹"),
+    INLINE_NEXT("⏩"),
+    INLINE_DONE("✅"),
+
     WORKOUT_LIST(""),
     TIMEOUT_LIST(""),
+    WORKOUT_PROCESS(""),
     PERIOD_LIST("");
 
     @Getter

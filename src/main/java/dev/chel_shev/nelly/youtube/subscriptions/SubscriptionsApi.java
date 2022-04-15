@@ -2,8 +2,8 @@ package dev.chel_shev.nelly.youtube.subscriptions;
 
 import com.goebl.david.Response;
 import com.goebl.david.Webb;
-import dev.chel_shev.nelly.entity.YouTubeCashEntity;
-import dev.chel_shev.nelly.repository.YouTubeCashRepository;
+import dev.chel_shev.nelly.entity.YouTubeEntity;
+import dev.chel_shev.nelly.repository.YouTubeRepository;
 import dev.chel_shev.nelly.youtube.YouTubeConfigurer;
 import dev.chel_shev.nelly.youtube.channel.ChannelApi;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +26,14 @@ public class SubscriptionsApi {
 
     private final ChannelApi channelApi;
     private final YouTubeConfigurer configurer;
-    private final YouTubeCashRepository youTubeCashRepository;
+    private final YouTubeRepository youTubeCashRepository;
 
 
     private static final String URL_SUBSCRIPTIONS = "https://www.googleapis.com/youtube/v3/subscriptions";
     private static final String QUOTA = "-1 Quota";
 
     public List<SubscriptionDTO> getSubscriptions() throws JSONException {
-        Map<String, YouTubeCashEntity> subsCashed = youTubeCashRepository.findAll().stream().collect(Collectors.toMap(YouTubeCashEntity::getChannelId, Function.identity()));
+        Map<String, YouTubeEntity> subsCashed = youTubeCashRepository.findAll().stream().collect(Collectors.toMap(YouTubeEntity::getChannelId, Function.identity()));
 
         Webb webb = Webb.create();
         log.debug("SUBSCRIPTIONS " + QUOTA);

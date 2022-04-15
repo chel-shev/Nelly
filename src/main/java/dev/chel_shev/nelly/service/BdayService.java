@@ -1,22 +1,18 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.BdayEntity;
-import dev.chel_shev.nelly.entity.CalendarEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
-import dev.chel_shev.nelly.repository.BdayRepository;
-import dev.chel_shev.nelly.type.PeriodType;
+import dev.chel_shev.nelly.entity.event.BdayEventEntity;
+import dev.chel_shev.nelly.repository.BdayEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BdayService implements EventService<BdayEntity> {
+public class BdayService {
 
-    private final BdayRepository repository;
+    private final BdayEventRepository repository;
 
     public boolean isExist(String name, LocalDateTime date, UserEntity user) {
         return repository.existsByNameAndDate(name, date);
@@ -26,14 +22,20 @@ public class BdayService implements EventService<BdayEntity> {
         return repository.existsByName(name);
     }
 
-    public BdayEntity save(BdayEntity entity) {
+    public BdayEventEntity save(BdayEventEntity entity) {
         return repository.save(entity);
     }
 
-    @Override
-    public List<CalendarEntity> getCalendarEntities(BdayEntity entity, UserEntity user) {
-        return new ArrayList<>() {{
-            add(new CalendarEntity(entity.getDate().withHour(10).withMinute(0), entity, PeriodType.EVERY_YEAR, user));
-        }};
+    public void updateEvent(BdayEventEntity entity) {
+        LocalDateTime eventDateTime = entity.getEventDateTime();
+        entity.setEventDateTime(eventDateTime.plusYears(1));
+        save(entity);
     }
+
+//    @Override
+//    public List<CalendarEntity> getCalendarEntities(BdayEntity entity, UserEntity user) {
+//        return new ArrayList<>() {{
+//            add(new CalendarEntity(entity.getDate().withHour(10).withMinute(0), entity, user));
+//        }};
+//    }
 }

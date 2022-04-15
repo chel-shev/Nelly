@@ -1,6 +1,8 @@
-package dev.chel_shev.nelly.bot.inquiry;
+package dev.chel_shev.nelly.bot.utils;
 
 import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.event.EventEntity;
+import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
 import dev.chel_shev.nelly.entity.finance.AccountEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.service.AccountService;
@@ -35,6 +37,10 @@ public final class KeyboardFactory {
     private final WorkoutService workoutService;
 
     public ReplyKeyboard createKeyboard(KeyboardType type, UserEntity user) {
+        return createKeyboard(type, user, null);
+    }
+
+    public ReplyKeyboard createKeyboard(KeyboardType type, UserEntity user, EventEntity event) {
         ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup();
         KeyboardRow inquiriesFirstRow = new KeyboardRow();
         KeyboardRow inquiriesSecondRow = new KeyboardRow();
@@ -88,12 +94,17 @@ public final class KeyboardFactory {
             }
             case TIMEOUT_LIST -> {
                 InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
-                inlineKeyboard.setKeyboard(getButtons( Arrays.stream(TimeoutType.values()).toList().stream().map(e-> String.valueOf(e.getLabel())).toList()));
+                inlineKeyboard.setKeyboard(getButtons(Arrays.stream(TimeoutType.values()).toList().stream().map(e -> String.valueOf(e.getLabel())).toList()));
                 return inlineKeyboard;
             }
             case PERIOD_LIST -> {
                 InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
                 inlineKeyboard.setKeyboard(getButtons(Arrays.stream(PeriodType.values()).toList().stream().map(Enum::name).toList()));
+                return inlineKeyboard;
+            }
+            case WORKOUT_PROCESS -> {
+                InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
+                inlineKeyboard.setKeyboard(getWorkoutProcess(event));
                 return inlineKeyboard;
             }
             case NONE -> keyboard.setKeyboard(new ArrayList<>());
@@ -114,7 +125,22 @@ public final class KeyboardFactory {
         return back;
     }
 
-    private List<List<InlineKeyboardButton>> getButtons(List<String> titles){
+    private List<List<InlineKeyboardButton>> getWorkoutProcess(EventEntity event) {
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> rowAction = new ArrayList<>();
+        WorkoutEventEntity workoutEvent = (WorkoutEventEntity) event;
+        if (workoutEvent.getWorkout().getExercises().size() > workoutEvent.getStep() + 1) {
+            rowAction.add(InlineKeyboardButton.builder().text(INLINE_CANCEL.label).callbackData(INLINE_CANCEL.label).build());
+            rowAction.add(InlineKeyboardButton.builder().text(INLINE_NEXT.label).callbackData(INLINE_NEXT.label).build());
+        } else {
+            rowAction.add(InlineKeyboardButton.builder().text(INLINE_CANCEL.label).callbackData(INLINE_CANCEL.label).build());
+            rowAction.add(InlineKeyboardButton.builder().text(INLINE_DONE.label).callbackData(INLINE_DONE.label).build());
+        }
+        rows.add(rowAction);
+        return rows;
+    }
+
+    private List<List<InlineKeyboardButton>> getButtons(List<String> titles) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> rowNames = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();

@@ -10,9 +10,9 @@ import java.time.ZonedDateTime;
 @Setter
 @Getter
 @Entity
-@Table(name = "youtube_cash")
+@Table(name = "youtube")
 @NoArgsConstructor
-public class YouTubeCashEntity {
+public class YouTubeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class YouTubeCashEntity {
     private Integer totalItemCount;
     private ZonedDateTime lastPublished;
 
-    public YouTubeCashEntity(String channelId, String playlistId, String title, Integer totalItemCount, ZonedDateTime lastPublished) {
+    public YouTubeEntity(String channelId, String playlistId, String title, Integer totalItemCount, ZonedDateTime lastPublished) {
         this.channelId = channelId;
         this.playlistId = playlistId;
         this.title = title;

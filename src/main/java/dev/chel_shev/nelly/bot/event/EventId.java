@@ -1,5 +1,6 @@
-package dev.chel_shev.nelly.bot.inquiry.utils;
+package dev.chel_shev.nelly.bot.event;
 
+import dev.chel_shev.nelly.type.EventType;
 import dev.chel_shev.nelly.type.InquiryType;
 
 import java.lang.annotation.ElementType;
@@ -9,6 +10,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface InquiryId {
-    InquiryType value();
+public @interface EventId {
+    EventType value();
 }

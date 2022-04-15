@@ -1,8 +1,10 @@
 package dev.chel_shev.nelly.scheduler;
 
+import dev.chel_shev.nelly.bot.BotResources;
 import dev.chel_shev.nelly.bot.BotSender;
 import dev.chel_shev.nelly.entity.CalendarEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.repository.CalendarRepository;
 import dev.chel_shev.nelly.repository.UserRepository;
 import dev.chel_shev.nelly.util.DateTimeUtils;
 import dev.chel_shev.nelly.util.TaskCreator;
@@ -21,7 +23,10 @@ import static dev.chel_shev.nelly.util.DateTimeUtils.isNextMinute;
 public class CalendarScheduler {
 
     private final UserRepository userRepository;
+    private final CalendarRepository calendarRepository;
     private final BotSender sender;
+    private final BotResources resources;
+    private final TaskCreator taskCreator;
 
     @Scheduled(cron = DateTimeUtils.EVERY_MINUTE)
     public void schedule() {
@@ -31,10 +36,10 @@ public class CalendarScheduler {
     }
 
     private void createTasks(UserEntity userEntity) {
-        List<CalendarEntity> calendarList = userEntity.getCalendarList();
+        List<CalendarEntity> calendarList = calendarRepository.findAllByUserAndEvent_Closed(userEntity, false);
         calendarList.forEach(e -> {
-            if (isNextMinute(e.getEventDateTime(), e.getUser().getZoneOffset()))
-                TaskCreator.create(e, sender);
+            if (isNextMinute(e.getEvent().getEventDateTime(), e.getUser().getZoneOffset()))
+                taskCreator.create(e, sender, resources);
         });
     }
 }

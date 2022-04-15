@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-import static dev.chel_shev.nelly.bot.inquiry.utils.InquiryUtils.*;
+import static dev.chel_shev.nelly.bot.utils.InquiryUtils.*;
 import static dev.chel_shev.nelly.type.CommandLevel.*;
 import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
 import static dev.chel_shev.nelly.type.KeyboardType.FINANCE;

@@ -1,5 +1,6 @@
 package dev.chel_shev.nelly.bot;
 
+import dev.chel_shev.nelly.bot.event.Event;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.bot.inquiry.Inquiry;
 import dev.chel_shev.nelly.type.KeyboardType;
@@ -26,7 +27,7 @@ public class BotResources {
 
     public String getQRDataFromPhoto(Message message) {
         ApplicationContext appCtx = ApplicationContextUtils.getApplicationContext();
-        NellyNotBot<? extends Inquiry> telegramBot = (NellyNotBot<? extends Inquiry>) appCtx.getBean("nellyNotBot");
+        NellyNotBot<? extends Inquiry, ? extends Event> telegramBot = (NellyNotBot<? extends Inquiry, ? extends Event>) appCtx.getBean("nellyNotBot");
         try {
             @NotNull PhotoSize photo = getPhoto(message);
             String path = getFilePath(telegramBot, photo);
@@ -40,7 +41,7 @@ public class BotResources {
         }
     }
 
-    public String getFilePath(NellyNotBot<? extends Inquiry> telegramBot, PhotoSize photo) {
+    public String getFilePath(NellyNotBot<? extends Inquiry, ? extends Event> telegramBot, PhotoSize photo) {
         if (isNull(photo.getFilePath()) || photo.getFilePath().isEmpty()) {
             GetFile getFileMethod = new GetFile();
             getFileMethod.setFileId(photo.getFileId());

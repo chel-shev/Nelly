@@ -3,7 +3,7 @@ package dev.chel_shev.nelly.bot.inquiry.reminder;
 import dev.chel_shev.nelly.entity.inquiry.InquiryEntity;
 import dev.chel_shev.nelly.entity.inquiry.ReminderInquiryEntity;
 import dev.chel_shev.nelly.bot.inquiry.Inquiry;
-import dev.chel_shev.nelly.bot.inquiry.utils.InquiryId;
+import dev.chel_shev.nelly.bot.utils.InquiryId;
 import dev.chel_shev.nelly.type.PeriodType;
 import lombok.Getter;
 import lombok.Setter;

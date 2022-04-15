@@ -18,8 +18,6 @@ public class ExerciseEntity {
 
     private String name;
     private String comment;
+    private String fileId;
     private byte[] image;
-
-    @ManyToMany
-    private List<WorkoutEntity> workoutList;
 }

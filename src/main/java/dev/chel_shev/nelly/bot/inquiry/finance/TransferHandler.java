@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.time.LocalDateTime;
 
-import static dev.chel_shev.nelly.bot.inquiry.utils.InquiryUtils.getValueFromParam;
+import static dev.chel_shev.nelly.bot.utils.InquiryUtils.getValueFromParam;
 import static dev.chel_shev.nelly.type.CommandLevel.*;
 import static dev.chel_shev.nelly.type.KeyboardType.*;
 import static java.util.Objects.isNull;

@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.repository.YouTubeCashRepository;
+import dev.chel_shev.nelly.repository.YouTubeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class YouTubeService {
 
-    private final YouTubeCashRepository repository;
+    private final YouTubeRepository repository;
 
 
 }

@@ -1,11 +1,10 @@
 package dev.chel_shev.nelly.bot.inquiry.workout;
 
 import dev.chel_shev.nelly.bot.inquiry.Inquiry;
-import dev.chel_shev.nelly.bot.inquiry.utils.InquiryId;
+import dev.chel_shev.nelly.bot.utils.InquiryId;
 import lombok.Getter;
 import lombok.Setter;
 
-import static dev.chel_shev.nelly.type.InquiryType.WORKOUT_ADD;
 import static dev.chel_shev.nelly.type.InquiryType.WORKOUT_REMOVE;
 
 @Setter
