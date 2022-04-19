@@ -44,7 +44,7 @@ public class WorkoutAddHandler extends InquiryHandler<WorkoutAddInquiry> {
 
     public void inlineExecutionLogic(WorkoutAddInquiry i, CallbackQuery callbackQuery) {
         WorkoutEntity workout = service.getByName(i.getWorkoutName());
-        WorkoutEventEntity workoutEvent = service.save(new WorkoutEventEntity(-1, workout, i.getPeriodType(), i.getWorkoutTime().withHour(8).withMinute(0)));
+        WorkoutEventEntity workoutEvent = service.save(new WorkoutEventEntity(-1, 1,  workout, i.getPeriodType(), i.getWorkoutTime().withHour(8).withMinute(0)));
         CalendarEntity calendarEntity = calendarService.addEvent(workoutEvent, i.getUser());
         workoutEvent.setCalendar(calendarEntity);
         service.save(workoutEvent);

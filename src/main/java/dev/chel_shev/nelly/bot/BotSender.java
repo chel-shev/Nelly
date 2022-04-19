@@ -6,6 +6,8 @@ import dev.chel_shev.nelly.bot.inquiry.Inquiry;
 import dev.chel_shev.nelly.bot.utils.KeyboardFactory;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
+import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
+import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.ApplicationContextUtils;
 import lombok.RequiredArgsConstructor;
@@ -108,28 +110,30 @@ public class BotSender {
 
     public <E extends Event> Message sendMessage(E e) {
         InputFile photo;
-        String name = ((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getName();
+        WorkoutEntity workout = ((WorkoutEvent) e).getWorkout();
+        ExerciseEntity exercise = workout.getExercises().get(((WorkoutEvent) e).getStep()).getExercise();
         if (e.getClosed()) {
             deleteMessage(e);
             return sendMessage(e.getUser(), e.getKeyboardType(), e.getAnswerMessage(), true);
         }
-        if (isNull(((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getFileId())) {
+        String massage = "__" + exercise.getName() + "__" + " " + (!isNull(exercise.getComment()) ? ("(" + exercise.getComment() + ")" + " ") : "") + "`" + exercise.getReps() * ((WorkoutEvent) e).getLevel() + exercise.getType().getLabel() + "`";
+        if (isNull(exercise.getFileId())) {
             deleteMessage(e);
-            photo = new InputFile(new ByteArrayInputStream(((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getImage()), name);
-            return sendMessage(e.getUser(), e.getKeyboardType(), photo, name, (WorkoutEventEntity) e.getEntity());
+            photo = new InputFile(new ByteArrayInputStream(((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getImage()), exercise.getName());
+            return sendMessage(e.getUser(), e.getKeyboardType(), photo, massage, (WorkoutEventEntity) e.getEntity());
         } else {
-            photo = new InputFile(((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getFileId());
-            return updateMessage(e.getUser(), e.getKeyboardType(), photo, name, (WorkoutEventEntity) e.getEntity());
+            photo = new InputFile(exercise.getFileId());
+            return updateMessage(e.getUser(), e.getKeyboardType(), photo, massage, (WorkoutEventEntity) e.getEntity());
         }
     }
 
     public Message sendMessage(UserEntity user, KeyboardType keyboardType, InputFile photo, String text, WorkoutEventEntity workoutEvent) {
-        SendPhoto sendMessage = SendPhoto.builder().chatId(String.valueOf(user.getChatId())).photo(photo).caption(text).build();
+        SendPhoto sendMessage = SendPhoto.builder().parseMode("Markdown").chatId(String.valueOf(user.getChatId())).photo(photo).caption(text).build();
         return sendMessage(sendMessage, keyboardType, user, workoutEvent);
     }
 
     public Message updateMessage(UserEntity user, KeyboardType keyboardType, InputFile photo, String text, WorkoutEventEntity workoutEvent) {
-        InputMediaPhoto media = InputMediaPhoto.builder().media(photo.getAttachName()).caption(text).build();
+        InputMediaPhoto media = InputMediaPhoto.builder().parseMode("Markdown").media(photo.getAttachName()).caption(text).build();
         EditMessageMedia editMessageMedia = EditMessageMedia.builder().chatId(String.valueOf(user.getChatId())).messageId(workoutEvent.getAnswerMessageId()).media(media).build();
         return updateMessage(editMessageMedia, keyboardType, user, workoutEvent);
     }

@@ -17,6 +17,7 @@ import lombok.Setter;
 public class WorkoutEvent extends Event {
 
     private Integer step;
+    private Integer level;
     private WorkoutEntity workout;
 
     public EventEntity getEntity() {
@@ -27,6 +28,7 @@ public class WorkoutEvent extends Event {
     public void init(EventEntity entity, UserEntity user) {
         super.init(entity, user);
         this.step = ((WorkoutEventEntity) entity).getStep();
+        this.level = ((WorkoutEventEntity) entity).getLevel();
         this.workout = ((WorkoutEventEntity) entity).getWorkout();
     }
 

@@ -26,15 +26,17 @@ public class WorkoutEventEntity extends EventEntity {
     @ManyToOne
     private WorkoutEntity workout;
 
-    public WorkoutEventEntity(int step, WorkoutEntity workout, PeriodType periodType, LocalDateTime eventDateTime) {
+    public WorkoutEventEntity(int step, int level, WorkoutEntity workout, PeriodType periodType, LocalDateTime eventDateTime) {
         super(EventType.WORKOUT, periodType, eventDateTime);
         this.step = step;
+        this.level = level;
         this.workout = workout;
     }
 
     public WorkoutEventEntity(WorkoutEvent event) {
         super(event);
         this.step = event.getStep();
+        this.level = event.getLevel();
         this.workout = event.getWorkout();
     }
 }
