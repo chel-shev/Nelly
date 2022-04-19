@@ -37,13 +37,10 @@ public class TaskCreator {
             time.schedule(bdayTask, date);
         } else if (entity.getEvent() instanceof WorkoutEventEntity workoutEvent) {
             InputFile file;
-            if (isNull(workoutEvent.getWorkout().getExercises().get(((WorkoutEventEntity) entity.getEvent()).getStep()).getExercise().getFileId()))
-                file = new InputFile(new ByteArrayInputStream(
-                        workoutEvent.getWorkout().getExercises().get(((WorkoutEventEntity) entity.getEvent()).getStep()).getExercise().getImage()),
-                        workoutEvent.getWorkout().getExercises().get(((WorkoutEventEntity) entity.getEvent()).getStep()).getExercise().getName()
-                );
+            if (isNull(workoutEvent.getWorkout().getFileId()))
+                file = new InputFile(new ByteArrayInputStream(workoutEvent.getWorkout().getImage()), workoutEvent.getWorkout().getName());
             else
-                file = new InputFile(workoutEvent.getWorkout().getExercises().get(((WorkoutEventEntity) entity.getEvent()).getStep()).getExercise().getFileId());
+                file = new InputFile(workoutEvent.getWorkout().getFileId());
             WorkoutTask bdayTask = new WorkoutTask(workoutService, sender, resources, entity.getUser(), file, workoutEvent.getWorkout().getName(), entity.getEvent());
             log.info("Task created with time = " + date);
             time.schedule(bdayTask, date);

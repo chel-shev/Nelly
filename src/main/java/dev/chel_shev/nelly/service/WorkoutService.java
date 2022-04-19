@@ -64,4 +64,10 @@ public class WorkoutService {
         exerciseEntity.setFileId(fileId);
         exerciseRepository.save(exerciseEntity);
     }
+
+    public void updateWorkout(WorkoutEventEntity workoutEvent, String fileId) {
+        WorkoutEntity workout = workoutEvent.getWorkout();
+        workout.setFileId(fileId);
+        repository.save(workout);
+    }
 }

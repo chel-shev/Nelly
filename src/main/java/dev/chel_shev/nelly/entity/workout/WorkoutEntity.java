@@ -16,6 +16,8 @@ public class WorkoutEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private byte[] image;
+    private String fileId;
 
     @OneToMany(mappedBy = "workout", fetch = FetchType.EAGER)
     private List<WorkoutExerciseEntity> exercises;
