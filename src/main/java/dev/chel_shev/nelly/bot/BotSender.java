@@ -108,19 +108,18 @@ public class BotSender {
 
     public <E extends Event> Message sendMessage(E e) {
         InputFile photo;
+        String name = ((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getName();
         if (e.getClosed()) {
             deleteMessage(e);
             return sendMessage(e.getUser(), e.getKeyboardType(), e.getAnswerMessage(), true);
         }
         if (isNull(((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getFileId())) {
             deleteMessage(e);
-            photo = new InputFile(new ByteArrayInputStream(
-                    ((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getImage()),
-                    ((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getName());
-            return sendMessage(e.getUser(), e.getKeyboardType(), photo, e.getAnswerMessage(), (WorkoutEventEntity) e.getEntity());
+            photo = new InputFile(new ByteArrayInputStream(((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getImage()), name);
+            return sendMessage(e.getUser(), e.getKeyboardType(), photo, name, (WorkoutEventEntity) e.getEntity());
         } else {
             photo = new InputFile(((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getFileId());
-            return updateMessage(e.getUser(), e.getKeyboardType(), photo, e.getAnswerMessage(), (WorkoutEventEntity) e.getEntity());
+            return updateMessage(e.getUser(), e.getKeyboardType(), photo, name, (WorkoutEventEntity) e.getEntity());
         }
     }
 
@@ -130,15 +129,8 @@ public class BotSender {
     }
 
     public Message updateMessage(UserEntity user, KeyboardType keyboardType, InputFile photo, String text, WorkoutEventEntity workoutEvent) {
-        InputMediaPhoto media = InputMediaPhoto.builder()
-                .media(photo.getAttachName())
-                .caption(text)
-                .build();
-        EditMessageMedia editMessageMedia = EditMessageMedia.builder()
-                .chatId(String.valueOf(user.getChatId()))
-                .messageId(workoutEvent.getAnswerMessageId())
-                .media(media)
-                .build();
+        InputMediaPhoto media = InputMediaPhoto.builder().media(photo.getAttachName()).caption(text).build();
+        EditMessageMedia editMessageMedia = EditMessageMedia.builder().chatId(String.valueOf(user.getChatId())).messageId(workoutEvent.getAnswerMessageId()).media(media).build();
         return updateMessage(editMessageMedia, keyboardType, user, workoutEvent);
     }
 

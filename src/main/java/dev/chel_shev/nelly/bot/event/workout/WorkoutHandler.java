@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.time.LocalDateTime;
-
 import static dev.chel_shev.nelly.type.KeyboardType.*;
 import static java.util.Objects.isNull;
 
@@ -27,7 +25,6 @@ public class WorkoutHandler extends EventHandler<WorkoutEvent> {
         if (callbackQuery.getData().equals(INLINE_NEXT.label)) {
             e.incStep();
             e.setKeyboardType(WORKOUT_PROCESS);
-            e.setAnswerMessage(e.getWorkout().getExercises().get(e.getStep()).getExercise().getName());
         } else {
             e.setAnswerMessage(aSer.generateAnswer(CommandLevel.FIRST, workoutConfig));
             e.setKeyboardType(COMMON);

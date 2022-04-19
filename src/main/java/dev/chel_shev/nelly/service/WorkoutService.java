@@ -51,7 +51,7 @@ public class WorkoutService {
             return;
         e.setId(null);
         e.setAnswerMessageId(null);
-        e.setStep(0);
+        e.setStep(-1);
         e.setKeyboardType(KeyboardType.WORKOUT_PROCESS);
         WorkoutEventEntity workoutEvent = save(e);
         CalendarEntity calendarEntity = calendarService.addEvent(workoutEvent, user);
