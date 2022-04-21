@@ -25,6 +25,9 @@ public class WorkoutHandler extends EventHandler<WorkoutEvent> {
         if (callbackQuery.getData().equals(INLINE_NEXT.label)) {
             e.incStep();
             e.setKeyboardType(WORKOUT_PROCESS);
+        } else if (callbackQuery.getData().equals(INLINE_PREV.label)) {
+            e.decStep();
+            e.setKeyboardType(WORKOUT_PROCESS);
         } else {
             e.setAnswerMessage(aSer.generateAnswer(CommandLevel.FIRST, workoutConfig));
             e.setKeyboardType(COMMON);

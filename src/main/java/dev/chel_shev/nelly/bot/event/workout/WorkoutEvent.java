@@ -2,7 +2,6 @@ package dev.chel_shev.nelly.bot.event.workout;
 
 import dev.chel_shev.nelly.bot.event.Event;
 import dev.chel_shev.nelly.bot.event.EventId;
-import dev.chel_shev.nelly.entity.CalendarEntity;
 import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
@@ -38,6 +37,10 @@ public class WorkoutEvent extends Event {
     }
 
     public void incStep() {
-        step++;
+        if (step < workout.getExercises().size() - 1) step++;
+    }
+
+    public void decStep() {
+        if (step > 0) step--;
     }
 }

@@ -129,11 +129,18 @@ public final class KeyboardFactory {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> rowAction = new ArrayList<>();
         WorkoutEventEntity workoutEvent = (WorkoutEventEntity) event;
-        if (workoutEvent.getWorkout().getExercises().size() > workoutEvent.getStep() + 1) {
-            rowAction.add(InlineKeyboardButton.builder().text(INLINE_CANCEL.label).callbackData(INLINE_CANCEL.label).build());
+        int amountExercises = workoutEvent.getWorkout().getExercises().size();
+        int step = workoutEvent.getStep();
+        rowAction.add(InlineKeyboardButton.builder().text(INLINE_CANCEL.label).callbackData(INLINE_CANCEL.label).build());
+        if (amountExercises > 0 && step == -1) {
+            rowAction.add(InlineKeyboardButton.builder().text(INLINE_START.label).callbackData(INLINE_NEXT.label).build());
+        } else if (amountExercises > step + 1 && step > 0) {
+            rowAction.add(InlineKeyboardButton.builder().text(INLINE_PREV.label).callbackData(INLINE_PREV.label).build());
+            rowAction.add(InlineKeyboardButton.builder().text(INLINE_NEXT.label).callbackData(INLINE_NEXT.label).build());
+        } else if (amountExercises > step + 1) {
             rowAction.add(InlineKeyboardButton.builder().text(INLINE_NEXT.label).callbackData(INLINE_NEXT.label).build());
         } else {
-            rowAction.add(InlineKeyboardButton.builder().text(INLINE_CANCEL.label).callbackData(INLINE_CANCEL.label).build());
+            rowAction.add(InlineKeyboardButton.builder().text(INLINE_PREV.label).callbackData(INLINE_PREV.label).build());
             rowAction.add(InlineKeyboardButton.builder().text(INLINE_DONE.label).callbackData(INLINE_DONE.label).build());
         }
         rows.add(rowAction);

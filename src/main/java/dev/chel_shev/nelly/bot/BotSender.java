@@ -111,15 +111,17 @@ public class BotSender {
     public <E extends Event> Message sendMessage(E e) {
         InputFile photo;
         WorkoutEntity workout = ((WorkoutEvent) e).getWorkout();
-        ExerciseEntity exercise = workout.getExercises().get(((WorkoutEvent) e).getStep()).getExercise();
+        int step = ((WorkoutEvent) e).getStep();
+        int amountExercises = workout.getExercises().size();
+        ExerciseEntity exercise = workout.getExercises().get(step).getExercise();
         if (e.getClosed()) {
             deleteMessage(e);
             return sendMessage(e.getUser(), e.getKeyboardType(), e.getAnswerMessage(), true);
         }
-        String massage = "__" + exercise.getName() + "__" + " " + (!isNull(exercise.getComment()) ? ("(" + exercise.getComment() + ")" + " ") : "") + "`" + exercise.getReps() * ((WorkoutEvent) e).getLevel() + exercise.getType().getLabel() + "`";
+        String massage = (step + 1) + " / " + amountExercises + " | __" + exercise.getName() + "__" + " " + (!isNull(exercise.getComment()) ? ("(" + exercise.getComment() + ")" + " ") : "") + "`" + exercise.getReps() * ((WorkoutEvent) e).getLevel() + exercise.getType().getLabel() + "`";
         if (isNull(exercise.getFileId())) {
             deleteMessage(e);
-            photo = new InputFile(new ByteArrayInputStream(((WorkoutEvent) e).getWorkout().getExercises().get(((WorkoutEvent) e).getStep()).getExercise().getImage()), exercise.getName());
+            photo = new InputFile(new ByteArrayInputStream(exercise.getImage()), exercise.getName());
             return sendMessage(e.getUser(), e.getKeyboardType(), photo, massage, (WorkoutEventEntity) e.getEntity());
         } else {
             photo = new InputFile(exercise.getFileId());

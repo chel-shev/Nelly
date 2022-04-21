@@ -21,6 +21,8 @@ public enum KeyboardType {
     // inline keyboard
     INLINE_CANCEL("⏹"),
     INLINE_NEXT("⏩"),
+    INLINE_START("▶"),
+    INLINE_PREV("⏪"),
     INLINE_DONE("✅"),
 
     WORKOUT_LIST(""),
