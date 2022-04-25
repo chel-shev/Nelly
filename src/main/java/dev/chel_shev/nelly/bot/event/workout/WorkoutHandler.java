@@ -22,10 +22,10 @@ public class WorkoutHandler extends EventHandler<WorkoutEvent> {
 
     @Override
     public void inlinePreparationLogic(WorkoutEvent e, CallbackQuery callbackQuery) {
-        if (callbackQuery.getData().equals(INLINE_NEXT.label)) {
+        if (INLINE_NEXT.getLabel().equals(callbackQuery.getData())) {
             e.incStep();
             e.setKeyboardType(WORKOUT_PROCESS);
-        } else if (callbackQuery.getData().equals(INLINE_PREV.label)) {
+        } else if (INLINE_PREV.getLabel().equals(callbackQuery.getData())) {
             e.decStep();
             e.setKeyboardType(WORKOUT_PROCESS);
         } else {

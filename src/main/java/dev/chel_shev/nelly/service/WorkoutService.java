@@ -40,12 +40,14 @@ public class WorkoutService {
     public void initNextEvent(WorkoutEventEntity e, UserEntity user) {
         LocalDateTime eventDateTime = e.getEventDateTime();
         switch (e.getPeriodType()) {
-            case EVERY_YEAR -> e.setEventDateTime(eventDateTime.plusYears(1));
-            case EVERY_MOUTH -> e.setEventDateTime(eventDateTime.plusMonths(1));
+            case ONCE -> e.setEventDateTime(eventDateTime.withYear(1970));
             case EVERY_ONE -> e.setEventDateTime(eventDateTime.plusDays(1));
             case EVERY_TWO -> e.setEventDateTime(eventDateTime.plusDays(2));
             case EVERY_THREE -> e.setEventDateTime(eventDateTime.plusDays(3));
-            case ONCE -> e.setEventDateTime(eventDateTime.withYear(1970));
+            case EVERY_FOUR -> e.setEventDateTime(eventDateTime.plusDays(4));
+            case EVERY_WEEK -> e.setEventDateTime(eventDateTime.plusDays(7));
+            case EVERY_YEAR -> e.setEventDateTime(eventDateTime.plusYears(1));
+            case EVERY_MOUTH -> e.setEventDateTime(eventDateTime.plusMonths(1));
         }
         if (e.getEventDateTime().isBefore(LocalDateTime.now()))
             return;

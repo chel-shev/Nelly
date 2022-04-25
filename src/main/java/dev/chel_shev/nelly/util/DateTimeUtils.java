@@ -1,7 +1,9 @@
 package dev.chel_shev.nelly.util;
 
 import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
+import dev.chel_shev.nelly.type.DayOfWeekRu;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -61,9 +63,15 @@ public class DateTimeUtils {
         throw new TelegramBotException(user, "Проверь дату, мне кажется ты ошибся");
     }
 
-    public static LocalDateTime getTimeFromTimeout(String date, UserEntity user) {
+    public static LocalDateTime getTimeFromTimeout(String date, WorkoutEntity workout, UserEntity user) {
         try {
-            return LocalDateTime.now().plusDays(Long.parseLong(date));
+            LocalDateTime now = LocalDateTime.now();
+            DayOfWeekRu dayOfWeekRu = DayOfWeekRu.getShortName(date);
+            if (workout.getBasicTime().isBefore(LocalTime.now(user.getZoneOffset())))
+                now = now.plusDays(1);
+            while (now.getDayOfWeek().getValue() != dayOfWeekRu.getValue())
+                now = now.plusDays(1);
+            return now.with(workout.getBasicTime());
         } catch (Exception e) {
             throw new TelegramBotException(user, "Проверь дату, мне кажется ты ошибся");
         }

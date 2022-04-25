@@ -7,9 +7,9 @@ import dev.chel_shev.nelly.entity.finance.AccountEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.service.AccountService;
 import dev.chel_shev.nelly.service.WorkoutService;
+import dev.chel_shev.nelly.type.DayOfWeekRu;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.type.PeriodType;
-import dev.chel_shev.nelly.type.TimeoutType;
 import dev.chel_shev.nelly.util.ApplicationContextUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
@@ -92,14 +92,14 @@ public final class KeyboardFactory {
                 inlineKeyboard.setKeyboard(getButtons(workoutService.getUnusedWorkout(user)));
                 return inlineKeyboard;
             }
-            case TIMEOUT_LIST -> {
+            case DAY_OF_WEEK_LIST -> {
                 InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
-                inlineKeyboard.setKeyboard(getButtons(Arrays.stream(TimeoutType.values()).toList().stream().map(e -> String.valueOf(e.getLabel())).toList()));
+                inlineKeyboard.setKeyboard(getButtons(Arrays.stream(DayOfWeekRu.values()).toList().stream().map(e -> String.valueOf(e.getShortName())).toList()));
                 return inlineKeyboard;
             }
             case PERIOD_LIST -> {
                 InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
-                inlineKeyboard.setKeyboard(getButtons(Arrays.stream(PeriodType.values()).toList().stream().map(Enum::name).toList()));
+                inlineKeyboard.setKeyboard(getButtons(Arrays.stream(PeriodType.values()).toList().stream().map(PeriodType::getLabel).toList()));
                 return inlineKeyboard;
             }
             case WORKOUT_PROCESS -> {

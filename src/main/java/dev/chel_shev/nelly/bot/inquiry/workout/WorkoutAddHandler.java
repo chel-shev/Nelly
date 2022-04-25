@@ -58,12 +58,13 @@ public class WorkoutAddHandler extends InquiryHandler<WorkoutAddInquiry> {
         if (isNullOrEmpty(i.getWorkoutName())) {
             i.setWorkoutName(callbackQuery.getData());
             i.setAnswerMessage("Через сколько дней начнем?");
-            i.setKeyboardType(TIMEOUT_LIST);
+            i.setKeyboardType(DAY_OF_WEEK_LIST);
         } else if (isNull(i.getWorkoutTime())) {
-            i.setWorkoutTime(DateTimeUtils.getTimeFromTimeout(callbackQuery.getData(), i.getUser()));
+            WorkoutEntity workout = service.getByName(i.getWorkoutName());
+            i.setWorkoutTime(DateTimeUtils.getTimeFromTimeout(callbackQuery.getData(), workout, i.getUser()));
             i.setAnswerMessage("Выбери период занятий:");
             i.setKeyboardType(PERIOD_LIST);
         } else
-            i.setPeriodType(PeriodType.valueOf(callbackQuery.getData()));
+            i.setPeriodType(PeriodType.getByLabel(callbackQuery.getData()));
     }
 }

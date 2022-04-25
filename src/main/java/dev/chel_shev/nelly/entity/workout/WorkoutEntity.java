@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.List;
 
 @Setter
@@ -18,6 +19,7 @@ public class WorkoutEntity {
     private String name;
     private byte[] image;
     private String fileId;
+    private LocalTime basicTime = LocalTime.of(8, 0);
 
     @OneToMany(mappedBy = "workout", fetch = FetchType.EAGER)
     private List<WorkoutExerciseEntity> exercises;

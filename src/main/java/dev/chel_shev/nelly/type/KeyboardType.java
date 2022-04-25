@@ -26,6 +26,7 @@ public enum KeyboardType {
     INLINE_DONE("✅"),
 
     WORKOUT_LIST(""),
+    DAY_OF_WEEK_LIST(""),
     TIMEOUT_LIST(""),
     WORKOUT_PROCESS(""),
     PERIOD_LIST("");
