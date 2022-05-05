@@ -3,7 +3,7 @@ package dev.chel_shev.nelly.service;
 import dev.chel_shev.nelly.entity.finance.AccountEntity;
 import dev.chel_shev.nelly.entity.finance.AccountHistoryEntity;
 import dev.chel_shev.nelly.entity.finance.LoanEntity;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.repository.ClientHistoryRepository;
 import dev.chel_shev.nelly.repository.LoanRepository;
 import dev.chel_shev.nelly.type.InquiryType;

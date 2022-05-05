@@ -4,7 +4,7 @@ package dev.chel_shev.nelly.bot.inquiry;
 import dev.chel_shev.nelly.entity.CommandEntity;
 import dev.chel_shev.nelly.entity.inquiry.CommonInquiryEntity;
 import dev.chel_shev.nelly.entity.inquiry.InquiryEntity;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.bot.utils.InquiryId;
 import dev.chel_shev.nelly.type.InquiryType;

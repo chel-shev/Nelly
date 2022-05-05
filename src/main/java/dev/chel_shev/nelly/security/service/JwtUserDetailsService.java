@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.security.service;
 
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.repository.UserRepository;
 import dev.chel_shev.nelly.security.client.UserDetails;
 import lombok.RequiredArgsConstructor;

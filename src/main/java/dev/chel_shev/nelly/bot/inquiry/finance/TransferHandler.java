@@ -58,14 +58,14 @@ public class TransferHandler extends InquiryFinanceHandler<TransferInquiryFinanc
         }
         if (TelegramBotUtils.getArgs(message.getText()).isEmpty()) {
             i.setAnswerMessage(aSer.generateAnswer(SECOND, transferConfig));
-            i.setKeyboardType(ACCOUNTS);
+            i.setKeyboardType(ACCOUNT_LIST);
             return;
         }
         AccountEntity account = getAccount(i, message.getText().split(" ")[1]);
         if (isNull(i.getAccount())) {
             i.setAccount(account);
             i.setAnswerMessage(aSer.generateAnswer(THIRD, transferConfig));
-            i.setKeyboardType(ACCOUNTS);
+            i.setKeyboardType(ACCOUNT_LIST);
         } else {
             i.setAccountOut(account);
             i.setAnswerMessage(aSer.generateAnswer(FOURTH, transferConfig));

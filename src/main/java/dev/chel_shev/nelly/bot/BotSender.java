@@ -4,7 +4,7 @@ import dev.chel_shev.nelly.bot.event.Event;
 import dev.chel_shev.nelly.bot.event.workout.WorkoutEvent;
 import dev.chel_shev.nelly.bot.inquiry.Inquiry;
 import dev.chel_shev.nelly.bot.utils.KeyboardFactory;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
 import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
@@ -89,6 +89,7 @@ public class BotSender {
         try {
             sendMessage.setReplyMarkup(keyboardFactory.createKeyboard(keyboardType, user));
             sendMessage.enableMarkdown(markdown);
+            sendMessage.disableWebPagePreview();
             return telegramBot.execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();

@@ -1,13 +1,15 @@
 package dev.chel_shev.nelly.bot.utils;
 
-import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
 import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.service.AccountService;
+import dev.chel_shev.nelly.service.RightService;
 import dev.chel_shev.nelly.service.WorkoutService;
 import dev.chel_shev.nelly.type.DayOfWeekRu;
+import dev.chel_shev.nelly.type.InquiryType;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.type.PeriodType;
 import dev.chel_shev.nelly.util.ApplicationContextUtils;
@@ -25,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static dev.chel_shev.nelly.type.InquiryType.*;
 import static dev.chel_shev.nelly.type.KeyboardType.*;
@@ -35,6 +38,7 @@ import static dev.chel_shev.nelly.type.KeyboardType.*;
 public final class KeyboardFactory {
 
     private final WorkoutService workoutService;
+    private final RightService rightService;
 
     public ReplyKeyboard createKeyboard(KeyboardType type, UserEntity user) {
         return createKeyboard(type, user, null);
@@ -42,68 +46,66 @@ public final class KeyboardFactory {
 
     public ReplyKeyboard createKeyboard(KeyboardType type, UserEntity user, EventEntity event) {
         ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup();
-        KeyboardRow inquiriesFirstRow = new KeyboardRow();
-        KeyboardRow inquiriesSecondRow = new KeyboardRow();
+        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
         keyboard.setSelective(true);
         keyboard.setResizeKeyboard(true);
         keyboard.setOneTimeKeyboard(false);
         switch (type) {
             case COMMON -> {
-                inquiriesFirstRow.addAll(Arrays.asList(FINANCE.label, BDAY.label));
-//                inquiriesSecondRow.addAll(Arrays.asList(REMINDER.label));
-//                inquiriesSecondRow.addAll(Arrays.asList("Спорт", "Английский"));
-                inquiriesSecondRow.addAll(Arrays.asList(WORKOUT.label));
-                keyboard.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow));
+                List<KeyboardRow> buttons = getButtons(user, true, FINANCE, BDAY, WORKOUT, REMINDER, YOUTUBE);
+                keyboard.setKeyboard(buttons);
                 return keyboard;
             }
             case WORKOUT -> {
-                inquiriesFirstRow.addAll(Arrays.asList(WORKOUT_ADD.keyLabel, WORKOUT_REMOVE.keyLabel));
-                keyboard.setKeyboard(Arrays.asList(inquiriesFirstRow, getBackRow()));
+                List<KeyboardRow> buttons = getButtons(WORKOUT_ADD, WORKOUT_REMOVE);
+                buttons.add(getBackRow());
+                keyboard.setKeyboard(buttons);
                 return keyboard;
             }
             case BDAY -> {
-                inquiriesFirstRow.addAll(Arrays.asList(BDAY_ADD.keyLabel, BDAY_REMOVE.keyLabel));
-                keyboard.setKeyboard(Arrays.asList(inquiriesFirstRow, getBackRow()));
+                List<KeyboardRow> buttons = getButtons(BDAY_ADD, BDAY_REMOVE);
+                buttons.add(getBackRow());
+                keyboard.setKeyboard(buttons);
                 return keyboard;
             }
             case FINANCE -> {
-                inquiriesFirstRow.addAll(Arrays.asList(EXPENSE.keyLabel, INCOME.keyLabel));
-                inquiriesSecondRow.addAll(Arrays.asList(LOAN.keyLabel, TRANSFER.keyLabel));
-                keyboard.setKeyboard(Arrays.asList(inquiriesFirstRow, inquiriesSecondRow, getBackRow()));
+                List<KeyboardRow> buttons = getButtons(EXPENSE, INCOME, LOAN, TRANSFER);
+                buttons.add(getBackRow());
+                keyboard.setKeyboard(buttons);
                 return keyboard;
             }
             case REMINDER -> {
-                inquiriesFirstRow.addAll(Arrays.asList(REMINDER_ADD.keyLabel, REMINDER_REMOVE.keyLabel));
-                keyboard.setKeyboard(Arrays.asList(inquiriesFirstRow, getBackRow()));
+                List<KeyboardRow> buttons = getButtons(REMINDER_ADD, REMINDER_REMOVE);
+                buttons.add(getBackRow());
+                keyboard.setKeyboard(buttons);
                 return keyboard;
             }
             case CANCEL -> {
                 keyboard.setKeyboard(Collections.singletonList(getCancelRow()));
                 return keyboard;
             }
-            case ACCOUNTS -> {
-                List<KeyboardRow> rowList = new ArrayList<>(getAccountRowList(user));
+            case ACCOUNT_LIST -> {
+                ApplicationContext appCtx = ApplicationContextUtils.getApplicationContext();
+                AccountService accountService = (AccountService) appCtx.getBean("accountService");
+                List<String> accountList = accountService.getAccountListByUserId(user.getId()).stream().map(AccountEntity::getInfoString).collect(Collectors.toList());
+                List<KeyboardRow> rowList = new ArrayList<>(getButtons(accountList));
                 rowList.add(getCancelRow());
                 keyboard.setKeyboard(rowList);
                 return keyboard;
             }
             case WORKOUT_LIST -> {
-                InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
-                inlineKeyboard.setKeyboard(getButtons(workoutService.getUnusedWorkout(user)));
+                inlineKeyboard.setKeyboard(getInlineButtons(workoutService.getUnusedWorkout(user)));
                 return inlineKeyboard;
             }
             case DAY_OF_WEEK_LIST -> {
-                InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
-                inlineKeyboard.setKeyboard(getButtons(Arrays.stream(DayOfWeekRu.values()).toList().stream().map(e -> String.valueOf(e.getShortName())).toList()));
+                inlineKeyboard.setKeyboard(getInlineButtons(Arrays.stream(DayOfWeekRu.values()).toList().stream().map(e -> String.valueOf(e.getShortName())).toList()));
                 return inlineKeyboard;
             }
             case PERIOD_LIST -> {
-                InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
-                inlineKeyboard.setKeyboard(getButtons(Arrays.stream(PeriodType.values()).toList().stream().map(PeriodType::getLabel).toList()));
+                inlineKeyboard.setKeyboard(getInlineButtons(Arrays.stream(PeriodType.values()).toList().stream().map(PeriodType::getLabel).toList()));
                 return inlineKeyboard;
             }
             case WORKOUT_PROCESS -> {
-                InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
                 inlineKeyboard.setKeyboard(getWorkoutProcess(event));
                 return inlineKeyboard;
             }
@@ -147,7 +149,41 @@ public final class KeyboardFactory {
         return rows;
     }
 
-    private List<List<InlineKeyboardButton>> getButtons(List<String> titles) {
+    private List<KeyboardRow> getButtons(UserEntity user, Boolean checkRight, KeyboardType... buttons) {
+        List<String> strings;
+        if (checkRight)
+            strings = Stream.of(buttons).filter(e -> rightService.isAvailable(user, e.resource)).map(KeyboardType::getLabel).toList();
+        else
+            strings = Stream.of(buttons).map(KeyboardType::getLabel).toList();
+        return getButtons(strings);
+    }
+
+    private List<KeyboardRow> getButtons(InquiryType... buttons) {
+        List<String> strings = Stream.of(buttons).map(InquiryType::getKeyLabel).toList();
+        return getButtons(strings);
+    }
+
+    private List<KeyboardRow> getButtons(List<String> titles) {
+        List<KeyboardRow> rows = new ArrayList<>();
+        List<String> rowNames = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        for (int i = 0; i < titles.size(); i++) {
+            if (i % 2 == 0) {
+                if (i != 0) {
+                    row.addAll(rowNames);
+                    rows.add(row);
+                }
+                row = new KeyboardRow();
+                rowNames = new ArrayList<>();
+            }
+            rowNames.add(titles.get(i));
+        }
+        row.addAll(rowNames);
+        rows.add(row);
+        return rows;
+    }
+
+    private List<List<InlineKeyboardButton>> getInlineButtons(List<String> titles) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> rowNames = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();
@@ -162,29 +198,6 @@ public final class KeyboardFactory {
             }
             InlineKeyboardButton button = InlineKeyboardButton.builder().text(titles.get(i)).callbackData(titles.get(i)).build();
             rowNames.add(button);
-        }
-        row.addAll(rowNames);
-        rows.add(row);
-        return rows;
-    }
-
-    private List<KeyboardRow> getAccountRowList(UserEntity user) {
-        ApplicationContext appCtx = ApplicationContextUtils.getApplicationContext();
-        AccountService accountService = (AccountService) appCtx.getBean("accountService");
-        List<String> accountList = accountService.getAccountListByUserId(user.getId()).stream().map(AccountEntity::getInfoString).collect(Collectors.toList());
-        List<KeyboardRow> rows = new ArrayList<>();
-        List<String> rowNames = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-        for (int i = 0; i < accountList.size(); i++) {
-            if (i % 2 == 0) {
-                if (i != 0) {
-                    row.addAll(rowNames);
-                    rows.add(row);
-                }
-                row = new KeyboardRow();
-                rowNames = new ArrayList<>();
-            }
-            rowNames.add(accountList.get(i));
         }
         row.addAll(rowNames);
         rows.add(row);

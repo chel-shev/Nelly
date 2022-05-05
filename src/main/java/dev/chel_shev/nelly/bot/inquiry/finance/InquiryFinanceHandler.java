@@ -34,7 +34,7 @@ public abstract class InquiryFinanceHandler<IF extends InquiryFinance> extends I
             else i.setMessage(message.getText());
         } else if (TelegramBotUtils.getArgs(message.getText()).isEmpty()) {
             i.setAnswerMessage("Выберите счет, с которым будет производится операция:");
-            i.setKeyboardType(ACCOUNTS);
+            i.setKeyboardType(ACCOUNT_LIST);
         } else {
             AccountEntity account = getAccount(i, message.getText().split(" ")[1]);
             i.setAccount(account);

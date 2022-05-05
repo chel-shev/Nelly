@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.util;
 
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.type.DayOfWeekRu;

@@ -1,12 +1,13 @@
 package dev.chel_shev.nelly.service;
 
 import dev.chel_shev.nelly.entity.CalendarEntity;
-import dev.chel_shev.nelly.entity.UserEntity;
 import dev.chel_shev.nelly.entity.event.BdayEventEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.repository.BdayEventRepository;
 import dev.chel_shev.nelly.repository.CalendarRepository;
+import dev.chel_shev.nelly.repository.EventRepository;
 import dev.chel_shev.nelly.repository.WorkoutEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class CalendarService {
 
     private final CalendarRepository repository;
+    private final EventRepository eventRepository;
     private final BdayEventRepository bdayEventRepository;
     private final WorkoutEventRepository workoutEventRepository;
 
@@ -55,5 +57,11 @@ public class CalendarService {
                 return (WorkoutEventEntity) calendarEntity.getEvent();
             return null;
         }).filter(Objects::nonNull).toList();
+    }
+
+    public void deleteByUser(UserEntity user) {
+        List<CalendarEntity> allByUser = repository.findAllByUser(user);
+        eventRepository.deleteAll(allByUser.stream().map(CalendarEntity::getEvent).toList());
+        repository.deleteAll(allByUser);
     }
 }

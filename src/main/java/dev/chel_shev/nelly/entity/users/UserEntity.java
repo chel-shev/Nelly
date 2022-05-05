@@ -1,9 +1,11 @@
-package dev.chel_shev.nelly.entity;
+package dev.chel_shev.nelly.entity.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.chel_shev.nelly.entity.CalendarEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.finance.AccountEntity;
 import dev.chel_shev.nelly.entity.inquiry.InquiryEntity;
+import dev.chel_shev.nelly.type.RoleType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,6 +36,9 @@ public class UserEntity {
     private String password;
 
     private ZoneOffset zoneOffset = ZoneOffset.of("+3");
+
+    @ManyToOne
+    private RoleEntity role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<AccountEntity> accountList;

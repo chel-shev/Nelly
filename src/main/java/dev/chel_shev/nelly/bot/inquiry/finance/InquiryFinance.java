@@ -3,7 +3,7 @@ package dev.chel_shev.nelly.bot.inquiry.finance;
 import dev.chel_shev.nelly.entity.finance.AccountEntity;
 import dev.chel_shev.nelly.entity.inquiry.FinanceInquiryEntity;
 import dev.chel_shev.nelly.entity.inquiry.InquiryEntity;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.bot.inquiry.Inquiry;
 import lombok.Getter;
 import lombok.Setter;

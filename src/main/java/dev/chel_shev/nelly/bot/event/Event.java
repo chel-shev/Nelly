@@ -1,13 +1,11 @@
 package dev.chel_shev.nelly.bot.event;
 
-import dev.chel_shev.nelly.bot.utils.InquiryId;
 import dev.chel_shev.nelly.entity.CalendarEntity;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.CommonEventEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.type.EventType;
-import dev.chel_shev.nelly.type.InquiryType;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.type.PeriodType;
 import lombok.Data;

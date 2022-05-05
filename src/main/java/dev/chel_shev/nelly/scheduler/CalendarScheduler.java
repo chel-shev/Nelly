@@ -3,7 +3,7 @@ package dev.chel_shev.nelly.scheduler;
 import dev.chel_shev.nelly.bot.BotResources;
 import dev.chel_shev.nelly.bot.BotSender;
 import dev.chel_shev.nelly.entity.CalendarEntity;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.repository.CalendarRepository;
 import dev.chel_shev.nelly.repository.UserRepository;
 import dev.chel_shev.nelly.util.DateTimeUtils;

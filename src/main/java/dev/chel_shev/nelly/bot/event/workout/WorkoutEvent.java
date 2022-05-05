@@ -2,7 +2,7 @@ package dev.chel_shev.nelly.bot.event.workout;
 
 import dev.chel_shev.nelly.bot.event.Event;
 import dev.chel_shev.nelly.bot.event.EventId;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;

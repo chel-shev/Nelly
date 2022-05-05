@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.exception;
 
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

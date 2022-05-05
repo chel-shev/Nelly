@@ -1,12 +1,12 @@
 package dev.chel_shev.nelly.entity;
 
 import dev.chel_shev.nelly.entity.event.EventEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -20,7 +20,7 @@ public class CalendarEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private EventEntity event;
 
     @ManyToOne

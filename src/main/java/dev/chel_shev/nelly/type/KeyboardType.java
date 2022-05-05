@@ -7,32 +7,37 @@ import java.util.Map;
 
 public enum KeyboardType {
 
-    NONE(""),
-    FINANCE("\uD83D\uDCB0 Финансы"),
-    REMINDER("\uD83D\uDD14 Напоминания"),
-    CANCEL("\uD83D\uDDD9 Отмена"),
+    FINANCE("\uD83D\uDCB0 Финансы", "Finance"),
+    REMINDER("\uD83D\uDD14 Напоминания", "Reminder"),
+    BDAY("\uD83D\uDCC6 ДР", "Birthday"),
+    WORKOUT("\uD83E\uDD38\u200D♀️ Спорт", "Workout"),
+    YOUTUBE("\uD83C\uDF9E Youtube","Youtube"),
 
-    BDAY("\uD83D\uDCC6 ДР"),
-    COMMON(""),
-    BACK("⬅ Назад"),
-    WORKOUT("\uD83E\uDD38\u200D♀️ Спорт"),
+    CANCEL("\uD83D\uDDD9 Отмена", ""),
+    BACK("⬅ Назад", ""),
+    COMMON("", ""),
+    NONE("", ""),
 
-    ACCOUNTS(""),
     // inline keyboard
-    INLINE_CANCEL("⏹"),
-    INLINE_NEXT("⏩"),
-    INLINE_START("▶"),
-    INLINE_PREV("⏪"),
-    INLINE_DONE("✅"),
+    WORKOUT_PROCESS("", ""),
+    INLINE_CANCEL("⏹", ""),
+    INLINE_NEXT("⏩", ""),
+    INLINE_START("▶", ""),
+    INLINE_PREV("⏪", ""),
+    INLINE_DONE("✅", ""),
 
-    WORKOUT_LIST(""),
-    DAY_OF_WEEK_LIST(""),
-    TIMEOUT_LIST(""),
-    WORKOUT_PROCESS(""),
-    PERIOD_LIST("");
+    // list keyboard
+    ACCOUNT_LIST("", ""),
+    WORKOUT_LIST("", ""),
+    DAY_OF_WEEK_LIST("", ""),
+    TIMEOUT_LIST("", ""),
+    PERIOD_LIST("", "");
 
     @Getter
     public final String label;
+
+    @Getter
+    public final String resource;
 
     public static final Map<String, KeyboardType> KEYBOARD_LABEL_MAP = new HashMap<>();
 
@@ -43,8 +48,9 @@ public enum KeyboardType {
         }
     }
 
-    KeyboardType(String label) {
+    KeyboardType(String label, String resource) {
         this.label = label;
+        this.resource = resource;
     }
 
     public static KeyboardType getFromLabel(String label) {

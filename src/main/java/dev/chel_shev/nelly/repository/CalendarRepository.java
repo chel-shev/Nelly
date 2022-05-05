@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.repository;
 
 import dev.chel_shev.nelly.entity.CalendarEntity;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,4 +15,6 @@ public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> 
     List<CalendarEntity> findAllByUserAndEvent_Closed(UserEntity user, Boolean closed);
 
     boolean existsByEventAndUser(EventEntity event, UserEntity user);
+
+    List<CalendarEntity> findAllByUser(UserEntity user);
 }

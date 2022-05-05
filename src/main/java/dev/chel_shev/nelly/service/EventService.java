@@ -4,6 +4,7 @@ import dev.chel_shev.nelly.bot.event.Event;
 import dev.chel_shev.nelly.bot.event.EventFactory;
 import dev.chel_shev.nelly.bot.inquiry.bot.UnknownUserConfig;
 import dev.chel_shev.nelly.entity.event.EventEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.repository.EventRepository;
 import dev.chel_shev.nelly.type.CommandLevel;

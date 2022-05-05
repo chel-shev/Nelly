@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.controller;
 
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.security.JwtTokenProvider;
 import dev.chel_shev.nelly.security.dto.JwtResponse;
 import dev.chel_shev.nelly.service.UserService;

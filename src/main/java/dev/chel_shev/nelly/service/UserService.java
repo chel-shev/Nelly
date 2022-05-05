@@ -1,10 +1,11 @@
 package dev.chel_shev.nelly.service;
 
 import dev.chel_shev.nelly.entity.finance.AccountEntity;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.exception.EasyFinanceException;
 import dev.chel_shev.nelly.repository.AccountRepository;
 import dev.chel_shev.nelly.repository.UserRepository;
+import dev.chel_shev.nelly.type.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,16 +19,20 @@ public class UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
+    private final RightService rightService;
+    private final CalendarService calendarService;
 
     public boolean isExist(Long chatId) {
         return repository.existsByChatId(chatId);
     }
 
     public void save(UserEntity user) {
+        user.setRole(rightService.getRole(RoleType.USER));
         repository.saveAndFlush(user);
     }
 
     public void delete(UserEntity user) {
+        calendarService.deleteByUser(user);
         repository.delete(user);
     }
 

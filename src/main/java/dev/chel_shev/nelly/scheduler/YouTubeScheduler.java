@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.scheduler;
 
 import dev.chel_shev.nelly.bot.BotSender;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.YouTubeCacheEntity;
 import dev.chel_shev.nelly.entity.YouTubeEntity;
 import dev.chel_shev.nelly.repository.UserRepository;
@@ -53,6 +53,7 @@ public class YouTubeScheduler {
                 if (!e.getTotalItemCount().equals(youTubeEntity.getTotalItemCount())) {
                     log.info("ChannelId: " + e.getChannelId() + " | ItemCount: " + e.getTotalItemCount() + " | In the db: " + youTubeEntity.getTotalItemCount());
                     List<VideoDTO> lastVideos = playlistApi.getLastVideos(e.getPlaylistId()).stream().sorted(Comparator.comparing(VideoDTO::getPublishedAt, Comparator.nullsLast(Comparator.reverseOrder()))).toList();
+                    StringBuilder videos = new StringBuilder();
                     lastVideos.stream()
                             .filter(v -> {
                                 boolean after = !all.contains(v.getVideoId()) && v.getPublishedAt().isAfter(youTubeEntity.getLastPublished());
@@ -60,9 +61,11 @@ public class YouTubeScheduler {
                                 return after;
                             })
                             .forEach(v -> {
-                                sender.sendMessage(user.get(), KeyboardType.COMMON, URL_VIDEO + v.getVideoId(), false);
+                                videos.append(URL_VIDEO).append(v.getVideoId()).append("\n");
                                 youTubeCacheRepository.save(new YouTubeCacheEntity(v.getVideoId(), v.getPublishedAt()));
                             });
+                    if(!videos.isEmpty())
+                        sender.sendMessage(user.get(), KeyboardType.COMMON, e.getTitle() + "\n" + videos, false);
                     updateLastPublished(e, lastVideos.get(0));
                 }
             } else {

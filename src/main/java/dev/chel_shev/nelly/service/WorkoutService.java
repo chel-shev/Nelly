@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.service;
 
 import dev.chel_shev.nelly.entity.CalendarEntity;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
 import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;

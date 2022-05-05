@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.entity.inquiry;
 
 import dev.chel_shev.nelly.entity.CommandEntity;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.bot.inquiry.Inquiry;
 import dev.chel_shev.nelly.type.InquiryType;
 import dev.chel_shev.nelly.type.KeyboardType;

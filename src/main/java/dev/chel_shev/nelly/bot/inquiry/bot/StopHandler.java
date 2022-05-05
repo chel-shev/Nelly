@@ -5,10 +5,14 @@ import dev.chel_shev.nelly.service.UserService;
 import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
+
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class StopHandler extends InquiryHandler<StopInquiry> {
 
@@ -20,5 +24,13 @@ public class StopHandler extends InquiryHandler<StopInquiry> {
         userService.delete(i.getUser());
         i.setAnswerMessage(aSer.generateAnswer(CommandLevel.FIRST, stopConfig));
         i.setKeyboardType(KeyboardType.NONE);
+    }
+
+    public StopInquiry execute(StopInquiry i, Message message) {
+        if (message.getText().equals(CANCEL.label))
+            return cancel(i);
+        executionLogic(i);
+        log.info("EXECUTE {}", i);
+        return i;
     }
 }

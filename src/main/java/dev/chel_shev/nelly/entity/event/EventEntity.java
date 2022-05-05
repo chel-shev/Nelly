@@ -36,7 +36,7 @@ public abstract class EventEntity {
     @Enumerated(EnumType.STRING)
     private KeyboardType keyboardType;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private CalendarEntity calendar;
 
     EventEntity(EventType eventType, PeriodType periodType, LocalDateTime eventDateTime) {

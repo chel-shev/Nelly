@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.controller;
 
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

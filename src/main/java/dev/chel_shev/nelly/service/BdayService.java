@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.BdayEventEntity;
 import dev.chel_shev.nelly.repository.BdayEventRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.task;
 
 import dev.chel_shev.nelly.bot.BotSender;
-import dev.chel_shev.nelly.entity.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.BdayEventEntity;
 import dev.chel_shev.nelly.service.BdayService;
 import dev.chel_shev.nelly.type.KeyboardType;
