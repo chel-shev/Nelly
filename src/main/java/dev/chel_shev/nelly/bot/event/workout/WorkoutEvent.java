@@ -5,10 +5,13 @@ import dev.chel_shev.nelly.bot.event.EventId;
 import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
+import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
 import dev.chel_shev.nelly.type.EventType;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Setter
 @Getter
@@ -33,11 +36,11 @@ public class WorkoutEvent extends Event {
 
     @Override
     public boolean isNotReadyForExecute() {
-        return step != workout.getExercises().size();
+        return !step.equals(workout.getCountExercise());
     }
 
     public void incStep() {
-        if (step < workout.getExercises().size() - 1) step++;
+        if (step < workout.getCountExercise() - 1) step++;
     }
 
     public void decStep() {

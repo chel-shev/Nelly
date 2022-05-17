@@ -1,10 +1,10 @@
 package dev.chel_shev.nelly.bot.inquiry.bday;
 
+import dev.chel_shev.nelly.bot.event.Event;
 import dev.chel_shev.nelly.bot.inquiry.InquiryHandler;
-import dev.chel_shev.nelly.entity.CalendarEntity;
 import dev.chel_shev.nelly.entity.event.BdayEventEntity;
 import dev.chel_shev.nelly.service.BdayService;
-import dev.chel_shev.nelly.service.CalendarService;
+import dev.chel_shev.nelly.service.EventService;
 import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.util.DateTimeUtils;
 import dev.chel_shev.nelly.util.TelegramBotUtils;
@@ -27,22 +27,21 @@ import static dev.chel_shev.nelly.type.KeyboardType.CANCEL;
 public class BdayAddHandler extends InquiryHandler<BdayAddInquiry> {
 
     private final BdayService service;
-    private final CalendarService calendarService;
+    private final EventService<? extends Event> eventService;
     private final BdayAddConfig bdayAddConfig;
 
     @Override
     public void executionLogic(BdayAddInquiry i) {
-        if (calendarService.isExist(i.getName(), i.getBdayDate(), i.getUser())) {
+        if (eventService.isExist(i.getName(), i.getBdayDate(), i.getUser())) {
             i.setAnswerMessage(aSer.generateAnswer(CommandLevel.SECOND, bdayAddConfig));
         } else {
             LocalDateTime now = LocalDateTime.now();
             BdayEventEntity bdayEvent;
             if (i.getBdayDate().withYear(now.getYear()).isAfter(now))
-                bdayEvent = service.save(new BdayEventEntity(i.getName(), i.getBdayDate(), i.getBdayDate().withYear(now.getYear()).withHour(8).withMinute(0).withSecond(0)));
+                bdayEvent = new BdayEventEntity(i.getName(), i.getBdayDate(), i.getBdayDate().withYear(now.getYear()).withHour(8).withMinute(0).withSecond(0), i.getUser());
             else
-                bdayEvent = service.save(new BdayEventEntity(i.getName(), i.getBdayDate(), i.getBdayDate().withYear(now.getYear() + 1).withHour(8).withMinute(0).withSecond(0)));
-            bdayEvent = service.save(bdayEvent);
-            calendarService.addEvent(bdayEvent, i.getUser());
+                bdayEvent = new BdayEventEntity(i.getName(), i.getBdayDate(), i.getBdayDate().withYear(now.getYear() + 1).withHour(8).withMinute(0).withSecond(0), i.getUser());
+            service.save(bdayEvent);
             i.setAnswerMessage(aSer.generateAnswer(CommandLevel.FIRST, bdayAddConfig));
         }
         i.setClosed(true);

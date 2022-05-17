@@ -20,7 +20,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final RightService rightService;
-    private final CalendarService calendarService;
 
     public boolean isExist(Long chatId) {
         return repository.existsByChatId(chatId);
@@ -32,7 +31,6 @@ public class UserService {
     }
 
     public void delete(UserEntity user) {
-        calendarService.deleteByUser(user);
         repository.delete(user);
     }
 

@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.entity.event;
 
 import dev.chel_shev.nelly.bot.event.Event;
-import dev.chel_shev.nelly.entity.CalendarEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.type.EventType;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.type.PeriodType;
@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Getter
@@ -36,13 +37,14 @@ public abstract class EventEntity {
     @Enumerated(EnumType.STRING)
     private KeyboardType keyboardType;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private CalendarEntity calendar;
+    @ManyToOne
+    private UserEntity user;
 
-    EventEntity(EventType eventType, PeriodType periodType, LocalDateTime eventDateTime) {
+    EventEntity(EventType eventType, PeriodType periodType, LocalDateTime eventDateTime, UserEntity user) {
         this.eventType = eventType;
         this.eventDateTime = eventDateTime;
         this.periodType = periodType;
+        this.user = user;
     }
 
     public EventEntity(Event event) {
@@ -54,6 +56,10 @@ public abstract class EventEntity {
         this.answerMessage = event.getAnswerMessage();
         this.answerMessageId = event.getAnswerMessageId();
         this.keyboardType = event.getKeyboardType();
-        this.calendar = event.getCalendar();
+        this.user = event.getUser();
+    }
+
+    public ZonedDateTime getEventZonedDateTime() {
+        return eventDateTime.atZone(getUser().getZoneOffset());
     }
 }

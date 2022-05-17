@@ -7,7 +7,7 @@ import dev.chel_shev.nelly.bot.inquiry.Inquiry;
 import dev.chel_shev.nelly.bot.inquiry.InquiryHandler;
 import dev.chel_shev.nelly.bot.utils.HandlerFactory;
 import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.repository.ExerciseRepository;
+import dev.chel_shev.nelly.repository.WorkoutExercisesRepository;
 import dev.chel_shev.nelly.service.EventService;
 import dev.chel_shev.nelly.service.InquiryService;
 import dev.chel_shev.nelly.type.KeyboardType;
@@ -34,7 +34,7 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class NellyNotBot<I extends Inquiry, E extends Event> extends TelegramLongPollingBot {
 
-    private final ExerciseRepository exerciseRepository;
+    private final WorkoutExercisesRepository workoutExercisesRepository;
     private final BotSender sender;
     private final InquiryService<I> inquiryService;
     private final EventService<E> eventService;

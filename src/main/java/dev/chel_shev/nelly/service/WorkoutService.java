@@ -1,11 +1,11 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.CalendarEntity;
-import dev.chel_shev.nelly.entity.users.UserEntity;
+import dev.chel_shev.nelly.bot.event.Event;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
-import dev.chel_shev.nelly.repository.ExerciseRepository;
+import dev.chel_shev.nelly.entity.workout.WorkoutExercisesEntity;
 import dev.chel_shev.nelly.repository.WorkoutEventRepository;
 import dev.chel_shev.nelly.repository.WorkoutRepository;
 import dev.chel_shev.nelly.type.KeyboardType;
@@ -14,18 +14,20 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class WorkoutService {
     private final WorkoutRepository repository;
     private final WorkoutEventRepository eventRepository;
-    private final CalendarService calendarService;
-    private final ExerciseRepository exerciseRepository;
+    private final EventService<? extends Event> eventService;
+    private final ExerciseService exerciseService;
 
     public List<String> getUnusedWorkout(UserEntity user) {
-        List<String> allWorkouts = repository.findAll().stream().map(WorkoutEntity::getName).toList();
-        List<String> byUserWorkouts = calendarService.getUserWorkout(user).stream().map(e -> e.getWorkout().getName()).toList();
+        Set<String> allWorkouts = repository.findAll().stream().map(WorkoutEntity::getName).collect(Collectors.toSet());
+        Set<String> byUserWorkouts = eventService.getUserWorkouts(user).stream().map(e -> e.getWorkout().getName()).collect(Collectors.toSet());
         return allWorkouts.stream().filter(e -> !byUserWorkouts.contains(e)).toList();
     }
 
@@ -37,7 +39,7 @@ public class WorkoutService {
         return repository.findByName(workoutName);
     }
 
-    public void initNextEvent(WorkoutEventEntity e, UserEntity user) {
+    public void initNextEvent(WorkoutEventEntity e) {
         LocalDateTime eventDateTime = e.getEventDateTime();
         switch (e.getPeriodType()) {
             case ONCE -> e.setEventDateTime(eventDateTime.withYear(1970));
@@ -55,16 +57,14 @@ public class WorkoutService {
         e.setAnswerMessageId(null);
         e.setStep(-1);
         e.setKeyboardType(KeyboardType.WORKOUT_PROCESS);
-        WorkoutEventEntity workoutEvent = save(e);
-        CalendarEntity calendarEntity = calendarService.addEvent(workoutEvent, user);
-        workoutEvent.setCalendar(calendarEntity);
-        save(workoutEvent);
+        save(e);
     }
 
     public void updateExercise(WorkoutEventEntity workoutEvent, String fileId) {
-        ExerciseEntity exerciseEntity = workoutEvent.getWorkout().getExercises().get(workoutEvent.getStep()).getExercise();
+        List<WorkoutExercisesEntity> exerciseList = exerciseService.getExerciseList(workoutEvent.getWorkout().getId());
+        ExerciseEntity exerciseEntity = exerciseList.get(workoutEvent.getStep()).getExercise();
         exerciseEntity.setFileId(fileId);
-        exerciseRepository.save(exerciseEntity);
+        exerciseService.save(exerciseEntity);
     }
 
     public void updateWorkout(WorkoutEventEntity workoutEvent, String fileId) {

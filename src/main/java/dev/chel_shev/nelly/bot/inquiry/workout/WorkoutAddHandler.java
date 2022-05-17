@@ -1,10 +1,10 @@
 package dev.chel_shev.nelly.bot.inquiry.workout;
 
+import dev.chel_shev.nelly.bot.event.Event;
 import dev.chel_shev.nelly.bot.inquiry.InquiryHandler;
-import dev.chel_shev.nelly.entity.CalendarEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
-import dev.chel_shev.nelly.service.CalendarService;
+import dev.chel_shev.nelly.service.EventService;
 import dev.chel_shev.nelly.service.WorkoutService;
 import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.PeriodType;
@@ -14,8 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
-
-import java.time.LocalDateTime;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static dev.chel_shev.nelly.type.KeyboardType.*;
@@ -27,7 +25,6 @@ import static java.util.Objects.isNull;
 public class WorkoutAddHandler extends InquiryHandler<WorkoutAddInquiry> {
 
     private final WorkoutAddConfig workoutAddConfig;
-    private final CalendarService calendarService;
     private final WorkoutService service;
 
     @Override
@@ -44,10 +41,8 @@ public class WorkoutAddHandler extends InquiryHandler<WorkoutAddInquiry> {
 
     public void inlineExecutionLogic(WorkoutAddInquiry i, CallbackQuery callbackQuery) {
         WorkoutEntity workout = service.getByName(i.getWorkoutName());
-        WorkoutEventEntity workoutEvent = service.save(new WorkoutEventEntity(-1, 1,  workout, i.getPeriodType(), i.getWorkoutTime().withHour(8).withMinute(0)));
-        CalendarEntity calendarEntity = calendarService.addEvent(workoutEvent, i.getUser());
-        workoutEvent.setCalendar(calendarEntity);
-        service.save(workoutEvent);
+        WorkoutEventEntity entity = new WorkoutEventEntity(-1, 1, workout, i.getPeriodType(), i.getWorkoutTime(), i.getUser());
+        service.save(entity);
         i.setAnswerMessage(aSer.generateAnswer(CommandLevel.FIRST, workoutAddConfig));
         i.setClosed(true);
         i.setKeyboardType(WORKOUT);

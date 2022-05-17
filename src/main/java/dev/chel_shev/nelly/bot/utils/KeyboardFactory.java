@@ -4,6 +4,7 @@ import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
 import dev.chel_shev.nelly.entity.finance.AccountEntity;
 import dev.chel_shev.nelly.entity.users.UserEntity;
+import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.service.AccountService;
 import dev.chel_shev.nelly.service.RightService;
@@ -22,10 +23,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -131,7 +129,7 @@ public final class KeyboardFactory {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> rowAction = new ArrayList<>();
         WorkoutEventEntity workoutEvent = (WorkoutEventEntity) event;
-        int amountExercises = workoutEvent.getWorkout().getExercises().size();
+        int amountExercises = workoutEvent.getWorkout().getCountExercise();
         int step = workoutEvent.getStep();
         rowAction.add(InlineKeyboardButton.builder().text(INLINE_CANCEL.label).callbackData(INLINE_CANCEL.label).build());
         if (amountExercises > 0 && step == -1) {

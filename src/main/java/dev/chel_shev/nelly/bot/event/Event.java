@@ -1,9 +1,8 @@
 package dev.chel_shev.nelly.bot.event;
 
-import dev.chel_shev.nelly.entity.CalendarEntity;
-import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.CommonEventEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.type.EventType;
 import dev.chel_shev.nelly.type.KeyboardType;
@@ -25,7 +24,6 @@ public abstract class Event {
     private Integer answerMessageId;
     private KeyboardType keyboardType;
     private UserEntity user;
-    private CalendarEntity calendar;
 
     public boolean isNotReadyForExecute() {
         return false;
@@ -51,7 +49,6 @@ public abstract class Event {
         this.answerMessage = entity.getAnswerMessage();
         this.answerMessageId = entity.getAnswerMessageId();
         this.keyboardType = entity.getKeyboardType();
-        this.calendar = entity.getCalendar();
         this.user = user;
         log.info("INIT {}", this);
     }

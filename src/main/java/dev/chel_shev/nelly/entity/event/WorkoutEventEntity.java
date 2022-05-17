@@ -1,6 +1,7 @@
 package dev.chel_shev.nelly.entity.event;
 
 import dev.chel_shev.nelly.bot.event.workout.WorkoutEvent;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
 import dev.chel_shev.nelly.type.EventType;
 import dev.chel_shev.nelly.type.PeriodType;
@@ -26,8 +27,8 @@ public class WorkoutEventEntity extends EventEntity {
     @ManyToOne
     private WorkoutEntity workout;
 
-    public WorkoutEventEntity(int step, int level, WorkoutEntity workout, PeriodType periodType, LocalDateTime eventDateTime) {
-        super(EventType.WORKOUT, periodType, eventDateTime);
+    public WorkoutEventEntity(int step, int level, WorkoutEntity workout, PeriodType periodType, LocalDateTime eventDateTime, UserEntity user) {
+        super(EventType.WORKOUT, periodType, eventDateTime, user);
         this.step = step;
         this.level = level;
         this.workout = workout;

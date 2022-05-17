@@ -4,10 +4,12 @@ import dev.chel_shev.nelly.bot.event.Event;
 import dev.chel_shev.nelly.bot.event.workout.WorkoutEvent;
 import dev.chel_shev.nelly.bot.inquiry.Inquiry;
 import dev.chel_shev.nelly.bot.utils.KeyboardFactory;
-import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
+import dev.chel_shev.nelly.entity.workout.WorkoutExercisesEntity;
+import dev.chel_shev.nelly.service.ExerciseService;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.ApplicationContextUtils;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.util.Objects.isNull;
 
@@ -35,6 +39,7 @@ import static java.util.Objects.isNull;
 public class BotSender {
 
     private final KeyboardFactory keyboardFactory;
+    private final ExerciseService exerciseService;
 
     public <I extends Inquiry> void updateMessage(I inquiry) {
         EditMessageText editMessageText = EditMessageText.builder().text(inquiry.getAnswerMessage()).chatId(String.valueOf(inquiry.getUser().getChatId())).messageId(inquiry.getAnswerMessageId()).build();
@@ -110,16 +115,20 @@ public class BotSender {
     }
 
     public <E extends Event> Message sendMessage(E e) {
-        InputFile photo;
-        WorkoutEntity workout = ((WorkoutEvent) e).getWorkout();
-        int step = ((WorkoutEvent) e).getStep();
-        int amountExercises = workout.getExercises().size();
-        ExerciseEntity exercise = workout.getExercises().get(step).getExercise();
         if (e.getClosed()) {
             deleteMessage(e);
             return sendMessage(e.getUser(), e.getKeyboardType(), e.getAnswerMessage(), true);
         }
-        String massage = (step + 1) + " / " + amountExercises + " | __" + exercise.getName() + "__" + " " + (!isNull(exercise.getComment()) ? ("(" + exercise.getComment() + ")" + " ") : "") + "`" + exercise.getReps() * ((WorkoutEvent) e).getLevel() + exercise.getType().getLabel() + "`";
+        InputFile photo;
+        WorkoutEntity workout = ((WorkoutEvent) e).getWorkout();
+        int step = ((WorkoutEvent) e).getStep();
+        int amountExercises = workout.getCountExercise();
+        List<WorkoutExercisesEntity> exerciseList = exerciseService.getExerciseList(workout.getId());
+        ExerciseEntity exercise = exerciseList.get(step).getExercise();
+        String massage = Markdown.code((step + 1) + " / " + amountExercises) + " | " +
+                Markdown.code(exercise.getName()) +
+                Markdown.code((!isNull(exercise.getComment()) ? ("(" + exercise.getComment() + ")") : "")) + " | " +
+                Markdown.code(exercise.getReps() * ((WorkoutEvent) e).getLevel() + exercise.getType().getLabel());
         if (isNull(exercise.getFileId())) {
             deleteMessage(e);
             photo = new InputFile(new ByteArrayInputStream(exercise.getImage()), exercise.getName());

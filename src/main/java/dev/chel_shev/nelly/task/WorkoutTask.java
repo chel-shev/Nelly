@@ -38,7 +38,7 @@ public class WorkoutTask extends TimerTask {
             Message message = sender.sendMessage(user, KeyboardType.WORKOUT_PROCESS, photo, "Сегодня по плану: " + name, workoutEvent);
             workoutEvent.setAnswerMessageId(message.getMessageId());
             workoutService.save(workoutEvent);
-            workoutService.initNextEvent(workoutEvent, user);
+            workoutService.initNextEvent(workoutEvent);
             workoutService.updateWorkout(workoutEvent, resources.getPhoto(message).getFileId());
         } catch (Exception ex) {
             System.out.println("error running thread " + ex.getMessage());
