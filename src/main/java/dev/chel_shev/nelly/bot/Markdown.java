@@ -36,4 +36,9 @@ public class Markdown {
         String underlineMark = "||";
         return underlineMark + text + underlineMark;
     }
+
+    static public String link(String text, String link) {
+        String linkMark = "[%s](%s)";
+        return String.format(linkMark, text, link);
+    }
 }
