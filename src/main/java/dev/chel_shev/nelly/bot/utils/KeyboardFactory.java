@@ -2,9 +2,8 @@ package dev.chel_shev.nelly.bot.utils;
 
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
-import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
 import dev.chel_shev.nelly.entity.users.UserEntity;
-import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.service.AccountService;
 import dev.chel_shev.nelly.service.RightService;

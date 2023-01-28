@@ -7,6 +7,7 @@ import java.util.Map;
 
 public enum EventType {
     BDAY("День Рождения", "/bday"),
+    YOUTUBE("Youtube", "/youtube"),
     WORKOUT("Воркаут", "/workout");
 
     @Getter

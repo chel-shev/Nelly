@@ -5,6 +5,7 @@ import dev.chel_shev.nelly.bot.BotSender;
 import dev.chel_shev.nelly.entity.event.BdayEventEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
+import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.service.BdayService;
 import dev.chel_shev.nelly.service.WorkoutService;
 import dev.chel_shev.nelly.task.BdayTask;
@@ -28,11 +29,11 @@ public class TaskCreator {
     private final WorkoutService workoutService;
     private final BdayService bdayService;
 
-    public void create(EventEntity event, BotSender sender, BotResources resources) {
+    public void create(EventEntity event, UserEntity user, BotSender sender, BotResources resources) {
         Timer time = new Timer();
-        Date date = Date.from(event.getEventZonedDateTime().toInstant());
+        Date date = Date.from(event.getEventDateTime().atZone(user.getZoneOffset()).toInstant());
         if (event instanceof BdayEventEntity bdayEvent) {
-            BdayTask bdayTask = new BdayTask(bdayService, sender, event.getUser(), bdayEvent);
+            BdayTask bdayTask = new BdayTask(bdayService, sender, user, bdayEvent);
             log.info("Task created with time = " + date);
             time.schedule(bdayTask, date);
         } else if (event instanceof WorkoutEventEntity workoutEvent) {
@@ -41,7 +42,7 @@ public class TaskCreator {
                 file = new InputFile(new ByteArrayInputStream(workoutEvent.getWorkout().getImage()), workoutEvent.getWorkout().getName());
             else
                 file = new InputFile(workoutEvent.getWorkout().getFileId());
-            WorkoutTask bdayTask = new WorkoutTask(workoutService, sender, resources, event.getUser(), file, workoutEvent.getWorkout().getName(), event);
+            WorkoutTask bdayTask = new WorkoutTask(workoutService, sender, resources, user, file, workoutEvent.getWorkout().getName(), event);
             log.info("Task created with time = " + date);
             time.schedule(bdayTask, date);
         }

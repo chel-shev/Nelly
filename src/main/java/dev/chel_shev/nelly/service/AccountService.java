@@ -1,8 +1,8 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.repository.AccountRepository;
+import dev.chel_shev.nelly.repository.finance.AccountRepository;
 import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

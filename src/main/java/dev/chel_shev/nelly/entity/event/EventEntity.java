@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.entity.event;
 
 import dev.chel_shev.nelly.bot.event.Event;
-import dev.chel_shev.nelly.entity.users.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserSubscriptionEntity;
 import dev.chel_shev.nelly.type.EventType;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.type.PeriodType;
@@ -11,7 +11,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Entity
 @Getter
@@ -36,15 +35,14 @@ public abstract class EventEntity {
     private Integer answerMessageId;
     @Enumerated(EnumType.STRING)
     private KeyboardType keyboardType;
-
     @ManyToOne
-    private UserEntity user;
+    private UserSubscriptionEntity userSubscription;
 
-    EventEntity(EventType eventType, PeriodType periodType, LocalDateTime eventDateTime, UserEntity user) {
+    EventEntity(EventType eventType, PeriodType periodType, LocalDateTime eventDateTime, UserSubscriptionEntity userSubscription) {
         this.eventType = eventType;
         this.eventDateTime = eventDateTime;
         this.periodType = periodType;
-        this.user = user;
+        this.userSubscription = userSubscription;
     }
 
     public EventEntity(Event event) {
@@ -56,10 +54,6 @@ public abstract class EventEntity {
         this.answerMessage = event.getAnswerMessage();
         this.answerMessageId = event.getAnswerMessageId();
         this.keyboardType = event.getKeyboardType();
-        this.user = event.getUser();
-    }
-
-    public ZonedDateTime getEventZonedDateTime() {
-        return eventDateTime.atZone(getUser().getZoneOffset());
+        this.userSubscription = event.getUserSubscription();
     }
 }

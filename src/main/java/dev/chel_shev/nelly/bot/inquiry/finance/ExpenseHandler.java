@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.bot.inquiry.finance;
 
-import dev.chel_shev.nelly.entity.finance.ExpenseEntity;
-import dev.chel_shev.nelly.entity.finance.ExpenseProductEntity;
+import dev.chel_shev.nelly.entity.event.finance.ExpenseEntity;
+import dev.chel_shev.nelly.entity.event.finance.ExpenseProductEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.service.ExpenseService;
 import dev.chel_shev.nelly.type.CommandLevel;

@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.bot.inquiry.finance;
 
-import dev.chel_shev.nelly.entity.finance.LoanEntity;
+import dev.chel_shev.nelly.entity.event.finance.LoanEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.service.LoanService;
 import dev.chel_shev.nelly.type.KeyboardType;

@@ -1,11 +1,11 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.finance.AccountEntity;
-import dev.chel_shev.nelly.entity.finance.AccountHistoryEntity;
-import dev.chel_shev.nelly.entity.finance.ExpenseEntity;
-import dev.chel_shev.nelly.entity.finance.ExpenseProductEntity;
-import dev.chel_shev.nelly.repository.ClientHistoryRepository;
-import dev.chel_shev.nelly.repository.ExpenseRepository;
+import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.event.finance.AccountHistoryEntity;
+import dev.chel_shev.nelly.entity.event.finance.ExpenseEntity;
+import dev.chel_shev.nelly.entity.event.finance.ExpenseProductEntity;
+import dev.chel_shev.nelly.repository.user.ClientHistoryRepository;
+import dev.chel_shev.nelly.repository.finance.ExpenseRepository;
 import dev.chel_shev.nelly.type.InquiryType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

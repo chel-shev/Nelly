@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.bot.inquiry.finance;
 
-import dev.chel_shev.nelly.entity.finance.IncomeEntity;
+import dev.chel_shev.nelly.entity.event.finance.IncomeEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.service.IncomeService;
 import lombok.RequiredArgsConstructor;

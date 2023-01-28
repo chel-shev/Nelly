@@ -4,8 +4,8 @@ import dev.chel_shev.nelly.bot.BotResources;
 import dev.chel_shev.nelly.bot.BotSender;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.users.UserEntity;
-import dev.chel_shev.nelly.repository.EventRepository;
-import dev.chel_shev.nelly.repository.UserRepository;
+import dev.chel_shev.nelly.repository.event.EventRepository;
+import dev.chel_shev.nelly.repository.user.UserRepository;
 import dev.chel_shev.nelly.util.DateTimeUtils;
 import dev.chel_shev.nelly.util.TaskCreator;
 import lombok.RequiredArgsConstructor;
@@ -35,11 +35,11 @@ public class CalendarScheduler {
         log.debug("CalendarScheduler is finished!");
     }
 
-    private void createTasks(UserEntity userEntity) {
-        List<EventEntity> calendarList = eventRepository.findAllByUserAndClosed(userEntity, false);
-        calendarList.forEach(e -> {
-            if (isNextMinute(e.getEventDateTime(), e.getUser().getZoneOffset()))
-                taskCreator.create(e, sender, resources);
+    private void createTasks(UserEntity user) {
+        List<EventEntity> calendarList = eventRepository.findAllByUserSubscriptionUserAndClosed(user, false);
+        calendarList.forEach(event -> {
+            if (isNextMinute(event.getEventDateTime(), user.getZoneOffset()))
+                taskCreator.create(event, user, sender, resources);
         });
     }
 }

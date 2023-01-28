@@ -2,17 +2,22 @@ package dev.chel_shev.nelly.service;
 
 import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.BdayEventEntity;
-import dev.chel_shev.nelly.repository.BdayEventRepository;
+import dev.chel_shev.nelly.entity.users.UserSubscriptionEntity;
+import dev.chel_shev.nelly.repository.event.BdayEventRepository;
+import dev.chel_shev.nelly.repository.user.UserSubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
+import static dev.chel_shev.nelly.type.EventType.BDAY;
 
 @Service
 @RequiredArgsConstructor
 public class BdayService {
 
     private final BdayEventRepository repository;
+    private final UserSubscriptionRepository userSubscriptionRepository;
 
     public boolean isExist(String name, LocalDateTime date, UserEntity user) {
         return repository.existsByNameAndDate(name, date);
@@ -30,6 +35,10 @@ public class BdayService {
         LocalDateTime eventDateTime = entity.getEventDateTime();
         entity.setEventDateTime(eventDateTime.plusYears(1));
         save(entity);
+    }
+
+    public UserSubscriptionEntity getSubscription(UserEntity user) {
+        return userSubscriptionRepository.findByUserAndSubscriptionEventType(user, BDAY);
     }
 
 //    @Override

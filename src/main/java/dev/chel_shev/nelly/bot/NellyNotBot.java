@@ -7,7 +7,7 @@ import dev.chel_shev.nelly.bot.inquiry.Inquiry;
 import dev.chel_shev.nelly.bot.inquiry.InquiryHandler;
 import dev.chel_shev.nelly.bot.utils.HandlerFactory;
 import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.repository.WorkoutExercisesRepository;
+import dev.chel_shev.nelly.repository.event.workout.WorkoutExercisesRepository;
 import dev.chel_shev.nelly.service.EventService;
 import dev.chel_shev.nelly.service.InquiryService;
 import dev.chel_shev.nelly.type.KeyboardType;

@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.bot.inquiry.finance;
 
-import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
 import dev.chel_shev.nelly.entity.inquiry.FinanceInquiryEntity;
 import dev.chel_shev.nelly.entity.inquiry.InquiryEntity;
 import dev.chel_shev.nelly.entity.users.UserEntity;

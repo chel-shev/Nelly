@@ -38,6 +38,7 @@ public class EventFactory<E extends Event> {
         return switch (type) {
             case BDAY -> (E) new BdayEvent();
             case WORKOUT -> (E) new WorkoutEvent();
+            case YOUTUBE -> (E) new YoutubeEvent();
         };
     }
 

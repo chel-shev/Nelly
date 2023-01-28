@@ -3,6 +3,7 @@ package dev.chel_shev.nelly.bot.event;
 import dev.chel_shev.nelly.entity.event.CommonEventEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.users.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserSubscriptionEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.type.EventType;
 import dev.chel_shev.nelly.type.KeyboardType;
@@ -23,7 +24,7 @@ public abstract class Event {
     private String answerMessage;
     private Integer answerMessageId;
     private KeyboardType keyboardType;
-    private UserEntity user;
+    private UserSubscriptionEntity userSubscription;
 
     public boolean isNotReadyForExecute() {
         return false;
@@ -41,7 +42,7 @@ public abstract class Event {
         }
     }
 
-    public void init(EventEntity entity, UserEntity user) {
+    public void init(EventEntity entity, UserSubscriptionEntity userSubscription) {
         this.id = entity.getId();
         this.periodType = entity.getPeriodType();
         this.eventDateTime = entity.getEventDateTime();
@@ -49,7 +50,7 @@ public abstract class Event {
         this.answerMessage = entity.getAnswerMessage();
         this.answerMessageId = entity.getAnswerMessageId();
         this.keyboardType = entity.getKeyboardType();
-        this.user = user;
+        this.userSubscription = userSubscription;
         log.info("INIT {}", this);
     }
 }

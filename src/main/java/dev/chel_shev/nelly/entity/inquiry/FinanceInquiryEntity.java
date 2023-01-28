@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.entity.inquiry;
 
-import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
 import dev.chel_shev.nelly.bot.inquiry.finance.InquiryFinance;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

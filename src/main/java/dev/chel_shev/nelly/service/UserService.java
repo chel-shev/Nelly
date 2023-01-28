@@ -1,10 +1,10 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
 import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.exception.EasyFinanceException;
-import dev.chel_shev.nelly.repository.AccountRepository;
-import dev.chel_shev.nelly.repository.UserRepository;
+import dev.chel_shev.nelly.repository.finance.AccountRepository;
+import dev.chel_shev.nelly.repository.user.UserRepository;
 import dev.chel_shev.nelly.type.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

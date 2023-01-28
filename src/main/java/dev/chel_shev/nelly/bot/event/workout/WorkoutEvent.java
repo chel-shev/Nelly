@@ -5,6 +5,7 @@ import dev.chel_shev.nelly.bot.event.EventId;
 import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.EventEntity;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
+import dev.chel_shev.nelly.entity.users.UserSubscriptionEntity;
 import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
 import dev.chel_shev.nelly.type.EventType;
@@ -27,11 +28,11 @@ public class WorkoutEvent extends Event {
     }
 
     @Override
-    public void init(EventEntity entity, UserEntity user) {
-        super.init(entity, user);
-        this.step = ((WorkoutEventEntity) entity).getStep();
-        this.level = ((WorkoutEventEntity) entity).getLevel();
-        this.workout = ((WorkoutEventEntity) entity).getWorkout();
+    public void init(EventEntity event, UserSubscriptionEntity userSubscription) {
+        super.init(event, userSubscription);
+        this.step = ((WorkoutEventEntity) event).getStep();
+        this.level = ((WorkoutEventEntity) event).getLevel();
+        this.workout = ((WorkoutEventEntity) event).getWorkout();
     }
 
     @Override

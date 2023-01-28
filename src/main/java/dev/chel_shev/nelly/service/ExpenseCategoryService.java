@@ -1,9 +1,9 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.finance.ExpenseCategoryEntity;
-import dev.chel_shev.nelly.entity.finance.StatisticCategoryEntity;
-import dev.chel_shev.nelly.repository.ExpenseCategoryRepository;
-import dev.chel_shev.nelly.repository.StatisticCategoryRepository;
+import dev.chel_shev.nelly.entity.event.finance.ExpenseCategoryEntity;
+import dev.chel_shev.nelly.entity.event.finance.StatisticCategoryEntity;
+import dev.chel_shev.nelly.repository.finance.ExpenseCategoryRepository;
+import dev.chel_shev.nelly.repository.finance.StatisticCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

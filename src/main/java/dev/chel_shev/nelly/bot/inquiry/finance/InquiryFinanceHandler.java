@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.bot.inquiry.finance;
 
 import dev.chel_shev.nelly.bot.BotResources;
-import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
 import dev.chel_shev.nelly.exception.TelegramBotException;
 import dev.chel_shev.nelly.bot.inquiry.InquiryHandler;
 import dev.chel_shev.nelly.type.KeyboardType;

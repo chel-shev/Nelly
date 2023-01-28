@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.security.service;
 
 import dev.chel_shev.nelly.entity.users.UserEntity;
-import dev.chel_shev.nelly.repository.UserRepository;
+import dev.chel_shev.nelly.repository.user.UserRepository;
 import dev.chel_shev.nelly.security.client.UserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

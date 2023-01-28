@@ -2,6 +2,7 @@ package dev.chel_shev.nelly.entity.event;
 
 import dev.chel_shev.nelly.bot.event.bday.BdayEvent;
 import dev.chel_shev.nelly.entity.users.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserSubscriptionEntity;
 import dev.chel_shev.nelly.type.EventType;
 import dev.chel_shev.nelly.type.PeriodType;
 import lombok.Getter;
@@ -22,8 +23,8 @@ public class BdayEventEntity extends EventEntity {
     private String name;
     private LocalDateTime date;
 
-    public BdayEventEntity(String name, LocalDateTime date, LocalDateTime eventDateTime, UserEntity user) {
-        super(EventType.BDAY, PeriodType.EVERY_YEAR, eventDateTime, user);
+    public BdayEventEntity(String name, LocalDateTime date, LocalDateTime eventDateTime, UserSubscriptionEntity userSubscription) {
+        super(EventType.BDAY, PeriodType.EVERY_YEAR, eventDateTime, userSubscription);
         this.name = name;
         this.date = date;
     }

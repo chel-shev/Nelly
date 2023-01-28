@@ -2,8 +2,8 @@ package dev.chel_shev.nelly.bot.inquiry.finance;
 
 import com.goebl.david.Response;
 import com.goebl.david.Webb;
-import dev.chel_shev.nelly.entity.finance.ExpenseEntity;
-import dev.chel_shev.nelly.entity.finance.ExpenseProductEntity;
+import dev.chel_shev.nelly.entity.event.finance.ExpenseEntity;
+import dev.chel_shev.nelly.entity.event.finance.ExpenseProductEntity;
 import dev.chel_shev.nelly.service.ExpenseProductService;
 import lombok.Data;
 import org.json.JSONArray;

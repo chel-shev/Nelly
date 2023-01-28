@@ -1,6 +1,7 @@
 package dev.chel_shev.nelly.task;
 
 import dev.chel_shev.nelly.bot.BotSender;
+import dev.chel_shev.nelly.bot.Markdown;
 import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.BdayEventEntity;
 import dev.chel_shev.nelly.service.BdayService;
@@ -26,7 +27,7 @@ public class BdayTask extends TimerTask {
     @Override
     public void run() {
         try {
-            Message message = sender.sendMessage(user, KeyboardType.NONE, eventEntity.getName() + " празднует свой День Рождения, поздравь, если уместно!", true);
+            Message message = sender.sendMessage(user, KeyboardType.NONE, Markdown.bolt(eventEntity.getName()) + " празднует свой День Рождения, поздравь, если уместно!", true);
             eventEntity.setAnswerMessageId(message.getMessageId());
             bdayService.updateEvent(eventEntity);
         } catch (Exception ex) {

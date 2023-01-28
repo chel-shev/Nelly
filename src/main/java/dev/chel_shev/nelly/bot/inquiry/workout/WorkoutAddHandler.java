@@ -41,7 +41,7 @@ public class WorkoutAddHandler extends InquiryHandler<WorkoutAddInquiry> {
 
     public void inlineExecutionLogic(WorkoutAddInquiry i, CallbackQuery callbackQuery) {
         WorkoutEntity workout = service.getByName(i.getWorkoutName());
-        WorkoutEventEntity entity = new WorkoutEventEntity(-1, 1, workout, i.getPeriodType(), i.getWorkoutTime(), i.getUser());
+        WorkoutEventEntity entity = new WorkoutEventEntity(-1, 1, workout, i.getPeriodType(), i.getWorkoutTime(), service.getSubscription(i.getUser()));
         service.save(entity);
         i.setAnswerMessage(aSer.generateAnswer(CommandLevel.FIRST, workoutAddConfig));
         i.setClosed(true);

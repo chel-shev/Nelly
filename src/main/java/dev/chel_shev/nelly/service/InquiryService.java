@@ -8,7 +8,7 @@ import dev.chel_shev.nelly.bot.inquiry.bot.StartInquiry;
 import dev.chel_shev.nelly.bot.inquiry.bot.UnknownConfig;
 import dev.chel_shev.nelly.bot.inquiry.bot.UnknownUserConfig;
 import dev.chel_shev.nelly.bot.inquiry.InquiryFactory;
-import dev.chel_shev.nelly.repository.InquiryRepository;
+import dev.chel_shev.nelly.repository.inquiry.InquiryRepository;
 import dev.chel_shev.nelly.type.CommandLevel;
 import dev.chel_shev.nelly.type.InquiryType;
 import dev.chel_shev.nelly.util.TelegramBotUtils;

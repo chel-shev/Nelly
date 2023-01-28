@@ -3,11 +3,13 @@ package dev.chel_shev.nelly.service;
 import dev.chel_shev.nelly.bot.event.Event;
 import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
 import dev.chel_shev.nelly.entity.users.UserEntity;
+import dev.chel_shev.nelly.entity.users.UserSubscriptionEntity;
 import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
-import dev.chel_shev.nelly.entity.workout.WorkoutExercisesEntity;
-import dev.chel_shev.nelly.repository.WorkoutEventRepository;
-import dev.chel_shev.nelly.repository.WorkoutRepository;
+import dev.chel_shev.nelly.entity.workout.WorkoutExerciseEntity;
+import dev.chel_shev.nelly.repository.event.WorkoutEventRepository;
+import dev.chel_shev.nelly.repository.event.workout.WorkoutRepository;
+import dev.chel_shev.nelly.repository.user.UserSubscriptionRepository;
 import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static dev.chel_shev.nelly.type.EventType.WORKOUT;
+
 @Service
 @RequiredArgsConstructor
 public class WorkoutService {
     private final WorkoutRepository repository;
     private final WorkoutEventRepository eventRepository;
+    private final UserSubscriptionRepository userSubscriptionRepository;
     private final EventService<? extends Event> eventService;
     private final ExerciseService exerciseService;
 
@@ -40,17 +45,8 @@ public class WorkoutService {
     }
 
     public void initNextEvent(WorkoutEventEntity e) {
-        LocalDateTime eventDateTime = e.getEventDateTime();
-        switch (e.getPeriodType()) {
-            case ONCE -> e.setEventDateTime(eventDateTime.withYear(1970));
-            case EVERY_ONE -> e.setEventDateTime(eventDateTime.plusDays(1));
-            case EVERY_TWO -> e.setEventDateTime(eventDateTime.plusDays(2));
-            case EVERY_THREE -> e.setEventDateTime(eventDateTime.plusDays(3));
-            case EVERY_FOUR -> e.setEventDateTime(eventDateTime.plusDays(4));
-            case EVERY_WEEK -> e.setEventDateTime(eventDateTime.plusDays(7));
-            case EVERY_YEAR -> e.setEventDateTime(eventDateTime.plusYears(1));
-            case EVERY_MOUTH -> e.setEventDateTime(eventDateTime.plusMonths(1));
-        }
+        LocalDateTime newEventDateTime = e.getEventDateTime().plus(e.getPeriodType().getAmount());
+        e.setEventDateTime(newEventDateTime);
         if (e.getEventDateTime().isBefore(LocalDateTime.now()))
             return;
         e.setId(null);
@@ -61,7 +57,7 @@ public class WorkoutService {
     }
 
     public void updateExercise(WorkoutEventEntity workoutEvent, String fileId) {
-        List<WorkoutExercisesEntity> exerciseList = exerciseService.getExerciseList(workoutEvent.getWorkout().getId());
+        List<WorkoutExerciseEntity> exerciseList = exerciseService.getExerciseList(workoutEvent.getWorkout().getId());
         ExerciseEntity exerciseEntity = exerciseList.get(workoutEvent.getStep()).getExercise();
         exerciseEntity.setFileId(fileId);
         exerciseService.save(exerciseEntity);
@@ -71,5 +67,9 @@ public class WorkoutService {
         WorkoutEntity workout = workoutEvent.getWorkout();
         workout.setFileId(fileId);
         repository.save(workout);
+    }
+
+    public UserSubscriptionEntity getSubscription(UserEntity user) {
+        return userSubscriptionRepository.findByUserAndSubscriptionEventType(user, WORKOUT);
     }
 }

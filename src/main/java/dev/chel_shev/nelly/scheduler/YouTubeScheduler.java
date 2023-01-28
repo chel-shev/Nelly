@@ -2,11 +2,11 @@ package dev.chel_shev.nelly.scheduler;
 
 import dev.chel_shev.nelly.bot.BotSender;
 import dev.chel_shev.nelly.entity.users.UserEntity;
-import dev.chel_shev.nelly.entity.YouTubeCacheEntity;
-import dev.chel_shev.nelly.entity.YouTubeEntity;
-import dev.chel_shev.nelly.repository.UserRepository;
-import dev.chel_shev.nelly.repository.YouTubeCacheRepository;
-import dev.chel_shev.nelly.repository.YouTubeRepository;
+import dev.chel_shev.nelly.entity.event.youtube.YouTubeCacheEntity;
+import dev.chel_shev.nelly.entity.event.youtube.YouTubeEntity;
+import dev.chel_shev.nelly.repository.user.UserRepository;
+import dev.chel_shev.nelly.repository.event.youtube.YouTubeCacheRepository;
+import dev.chel_shev.nelly.repository.event.youtube.YouTubeRepository;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.DateTimeUtils;
 import dev.chel_shev.nelly.youtube.channel.PlaylistApi;
@@ -65,7 +65,7 @@ public class YouTubeScheduler {
                                 youTubeCacheRepository.save(new YouTubeCacheEntity(v.getVideoId(), v.getPublishedAt()));
                             });
                     if(!videos.isEmpty())
-                        sender.sendMessage(user.get(), KeyboardType.COMMON, e.getTitle() + "\n" + videos, false);
+                        sender.sendMessage(user.get(), KeyboardType.COMMON, "▶️" + e.getTitle() + "\n" + videos, false);
                     updateLastPublished(e, lastVideos.get(0));
                 }
             } else {

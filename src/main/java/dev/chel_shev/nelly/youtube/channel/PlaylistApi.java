@@ -35,7 +35,7 @@ public class PlaylistApi {
         return createVideo(response.getBody());
     }
 
-    private List<VideoDTO> createVideo(JSONObject jsonVideos) {
+    private List<VideoDTO> createVideo(JSONObject jsonVideos) throws JSONException {
         List<VideoDTO> videos = new ArrayList<>();
         JSONArray items = jsonVideos.getJSONArray("items");
         for (Object item : items) {

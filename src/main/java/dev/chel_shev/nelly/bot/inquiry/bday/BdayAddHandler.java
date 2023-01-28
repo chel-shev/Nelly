@@ -38,9 +38,9 @@ public class BdayAddHandler extends InquiryHandler<BdayAddInquiry> {
             LocalDateTime now = LocalDateTime.now();
             BdayEventEntity bdayEvent;
             if (i.getBdayDate().withYear(now.getYear()).isAfter(now))
-                bdayEvent = new BdayEventEntity(i.getName(), i.getBdayDate(), i.getBdayDate().withYear(now.getYear()).withHour(8).withMinute(0).withSecond(0), i.getUser());
+                bdayEvent = new BdayEventEntity(i.getName(), i.getBdayDate(), i.getBdayDate().withYear(now.getYear()).withHour(8).withMinute(0).withSecond(0), service.getSubscription(i.getUser()));
             else
-                bdayEvent = new BdayEventEntity(i.getName(), i.getBdayDate(), i.getBdayDate().withYear(now.getYear() + 1).withHour(8).withMinute(0).withSecond(0), i.getUser());
+                bdayEvent = new BdayEventEntity(i.getName(), i.getBdayDate(), i.getBdayDate().withYear(now.getYear() + 1).withHour(8).withMinute(0).withSecond(0), service.getSubscription(i.getUser()));
             service.save(bdayEvent);
             i.setAnswerMessage(aSer.generateAnswer(CommandLevel.FIRST, bdayAddConfig));
         }

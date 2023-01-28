@@ -8,7 +8,7 @@ import dev.chel_shev.nelly.entity.event.WorkoutEventEntity;
 import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
-import dev.chel_shev.nelly.entity.workout.WorkoutExercisesEntity;
+import dev.chel_shev.nelly.entity.workout.WorkoutExerciseEntity;
 import dev.chel_shev.nelly.service.ExerciseService;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.ApplicationContextUtils;
@@ -23,6 +23,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMe
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -57,7 +58,7 @@ public class BotSender {
     }
 
     public <E extends Event> void deleteMessage(E event) {
-        DeleteMessage editMessageText = DeleteMessage.builder().chatId(String.valueOf(event.getUser().getChatId())).messageId(event.getAnswerMessageId()).build();
+        DeleteMessage editMessageText = DeleteMessage.builder().chatId(String.valueOf(event.getUserSubscription().getUser().getChatId())).messageId(event.getAnswerMessageId()).build();
         updateMessage(editMessageText);
     }
 
@@ -95,6 +96,10 @@ public class BotSender {
             sendMessage.setReplyMarkup(keyboardFactory.createKeyboard(keyboardType, user));
             sendMessage.enableMarkdown(markdown);
             sendMessage.disableWebPagePreview();
+//            List<MessageEntity> entities = new ArrayList<>();
+//            MessageEntity entity = MessageEntity.builder().customEmojiId("5820934185170242766").text("▶️").length(2).offset(0).type("custom_emoji").build();
+//            entities.add(entity);
+//            sendMessage.setEntities(entities);
             return telegramBot.execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
@@ -117,13 +122,13 @@ public class BotSender {
     public <E extends Event> Message sendMessage(E e) {
         if (e.getClosed()) {
             deleteMessage(e);
-            return sendMessage(e.getUser(), e.getKeyboardType(), e.getAnswerMessage(), true);
+            return sendMessage(e.getUserSubscription().getUser(), e.getKeyboardType(), e.getAnswerMessage(), true);
         }
         InputFile photo;
         WorkoutEntity workout = ((WorkoutEvent) e).getWorkout();
         int step = ((WorkoutEvent) e).getStep();
         int amountExercises = workout.getCountExercise();
-        List<WorkoutExercisesEntity> exerciseList = exerciseService.getExerciseList(workout.getId());
+        List<WorkoutExerciseEntity> exerciseList = exerciseService.getExerciseList(workout.getId());
         ExerciseEntity exercise = exerciseList.get(step).getExercise();
         String massage = Markdown.code((step + 1) + " / " + amountExercises) + " | " +
                 Markdown.code(exercise.getName()) +
@@ -132,10 +137,10 @@ public class BotSender {
         if (isNull(exercise.getFileId())) {
             deleteMessage(e);
             photo = new InputFile(new ByteArrayInputStream(exercise.getImage()), exercise.getName());
-            return sendMessage(e.getUser(), e.getKeyboardType(), photo, massage, (WorkoutEventEntity) e.getEntity());
+            return sendMessage(e.getUserSubscription().getUser(), e.getKeyboardType(), photo, massage, (WorkoutEventEntity) e.getEntity());
         } else {
             photo = new InputFile(exercise.getFileId());
-            return updateMessage(e.getUser(), e.getKeyboardType(), photo, massage, (WorkoutEventEntity) e.getEntity());
+            return updateMessage(e.getUserSubscription().getUser(), e.getKeyboardType(), photo, massage, (WorkoutEventEntity) e.getEntity());
         }
     }
 
