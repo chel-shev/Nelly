@@ -1,12 +1,11 @@
 package dev.chel_shev.nelly.scheduler;
 
 import dev.chel_shev.nelly.bot.BotSender;
-import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.event.youtube.YouTubeCacheEntity;
 import dev.chel_shev.nelly.entity.event.youtube.YouTubeEntity;
-import dev.chel_shev.nelly.repository.user.UserRepository;
-import dev.chel_shev.nelly.repository.event.youtube.YouTubeCacheRepository;
-import dev.chel_shev.nelly.repository.event.youtube.YouTubeRepository;
+import dev.chel_shev.nelly.entity.users.UserEntity;
+import dev.chel_shev.nelly.service.UserService;
+import dev.chel_shev.nelly.service.YouTubeService;
 import dev.chel_shev.nelly.type.KeyboardType;
 import dev.chel_shev.nelly.util.DateTimeUtils;
 import dev.chel_shev.nelly.youtube.channel.PlaylistApi;
@@ -22,18 +21,14 @@ import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class YouTubeScheduler {
 
-    private final YouTubeRepository youTubeRepository;
-    private final YouTubeCacheRepository youTubeCacheRepository;
-    private final UserRepository userRepository;
+    private final YouTubeService youTubeService;
+    private final UserService userService;
     private final BotSender sender;
     private final PlaylistApi playlistApi;
     private final SubscriptionsApi subscriptionsApi;
@@ -43,10 +38,10 @@ public class YouTubeScheduler {
     @Scheduled(cron = DateTimeUtils.EVERY_MINUTE)
     public void schedule() {
         log.debug("YouTubeScheduler" + VERSION + " is started!");
-        Map<String, YouTubeEntity> subsCashed = youTubeRepository.findAll().stream().collect(Collectors.toMap(YouTubeEntity::getChannelId, Function.identity()));
-        List<String> all = youTubeCacheRepository.findAll().stream().map(YouTubeCacheEntity::getVideoId).toList();
+        Map<String, YouTubeEntity> subsCashed = youTubeService.getVideoId2Youtube();
+        List<String> all = youTubeService.getAllVideoIds();
         List<SubscriptionDTO> subs = subscriptionsApi.getSubscriptions();
-        Optional<UserEntity> user = userRepository.findByUserName("chel_shev");
+        UserEntity user = userService.getUserByName("chel_shev");
         subs.forEach(e -> {
             if (subsCashed.containsKey(e.getChannelId())) {
                 YouTubeEntity youTubeEntity = subsCashed.get(e.getChannelId());
@@ -62,25 +57,17 @@ public class YouTubeScheduler {
                             })
                             .forEach(v -> {
                                 videos.append(URL_VIDEO).append(v.getVideoId()).append("\n");
-                                youTubeCacheRepository.save(new YouTubeCacheEntity(v.getVideoId(), v.getPublishedAt()));
+                                youTubeService.saveYoutubeCache(new YouTubeCacheEntity(v.getVideoId(), v.getPublishedAt()));
                             });
-                    if(!videos.isEmpty())
-                        sender.sendMessage(user.get(), KeyboardType.COMMON, "▶️" + e.getTitle() + "\n" + videos, false);
-                    updateLastPublished(e, lastVideos.get(0));
+                    if (!videos.isEmpty())
+                        sender.sendMessage(user, KeyboardType.COMMON, "▶️" + e.getTitle() + "\n" + videos, false);
+                    youTubeService.updateLastPublished(e, lastVideos.get(0));
                 }
             } else {
                 YouTubeEntity youTubeEntity = new YouTubeEntity(e.getChannelId(), e.getPlaylistId(), e.getTitle(), e.getTotalItemCount(), ZonedDateTime.now().minusHours(2));
-                youTubeRepository.save(youTubeEntity);
+                youTubeService.saveYoutube(youTubeEntity);
             }
         });
         log.debug("YouTubeScheduler" + VERSION + " is finished!");
-    }
-
-    private void updateLastPublished(SubscriptionDTO sub, VideoDTO video) {
-        YouTubeEntity youTubeEntity = youTubeRepository.findByChannelId(sub.getChannelId()).orElseGet(() -> new YouTubeEntity(sub.getChannelId(), sub.getPlaylistId(), sub.getTitle(), sub.getTotalItemCount(), video.getPublishedAt()));
-        youTubeEntity.setLastPublished(video.getPublishedAt());
-        youTubeEntity.setTotalItemCount(sub.getTotalItemCount());
-        youTubeEntity.setTitle(sub.getTitle());
-        youTubeRepository.save(youTubeEntity);
     }
 }
