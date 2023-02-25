@@ -26,7 +26,7 @@ public class UserSubscriptionEntity {
     @ManyToOne
     private SubscriptionEntity subscription;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "userSubscription", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventEntity> eventList;
 
     @Data
