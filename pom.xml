@@ -11,7 +11,7 @@
 
     <groupId>dev.chel_shev</groupId>
     <artifactId>Nelly</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <name>Nelly</name>
     <description>Nelly not bot</description>
     <properties>

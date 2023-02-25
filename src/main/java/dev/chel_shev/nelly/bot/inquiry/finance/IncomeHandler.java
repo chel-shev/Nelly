@@ -30,7 +30,7 @@ public class IncomeHandler extends InquiryFinanceHandler<IncomeInquiryFinance> {
             if (isDoubleParam(i))
                 saveIncome(i);
             else {
-                i.setAnswerMessage(aSer.generateAnswer(FIRST, incomeConfig));
+                i.setAnswerMessage(aSer.generateAnswer(THIRD, incomeConfig));
                 i.setKeyboardType(CANCEL);
             }
         } catch (JSONException | NullPointerException e) {

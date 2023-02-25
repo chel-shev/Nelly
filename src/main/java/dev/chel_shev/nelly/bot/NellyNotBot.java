@@ -58,14 +58,18 @@ public class NellyNotBot<I extends Inquiry, E extends Event> extends TelegramLon
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage()) {
-            processMessage(update.getMessage());
-        } else if (update.hasCallbackQuery()) {
-            try {
-                processCallback(update.getCallbackQuery());
-            } catch (TelegramBotException e) {
-                processEvent(update.getCallbackQuery());
+        try {
+            if (update.hasMessage()) {
+                processMessage(update.getMessage());
+            } else if (update.hasCallbackQuery()) {
+                try {
+                    processCallback(update.getCallbackQuery());
+                } catch (TelegramBotException e) {
+                    processEvent(update.getCallbackQuery());
+                }
             }
+        } catch (TelegramBotException e) {
+            sender.sendMessage(e.getUser(), KeyboardType.CANCEL, e.getMessage(), true);
         }
     }
 
