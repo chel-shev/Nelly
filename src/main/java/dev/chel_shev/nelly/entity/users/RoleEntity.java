@@ -1,9 +1,9 @@
 package dev.chel_shev.nelly.entity.users;
 
 import dev.chel_shev.nelly.type.RoleType;
+import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -18,6 +18,6 @@ public class RoleEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @OneToMany(mappedBy = "resource")
-    private List<RoleResourceEntity> resources;
+//    @OneToMany(mappedBy = "resource")
+//    private List<RoleResourceEntity> resources;
 }

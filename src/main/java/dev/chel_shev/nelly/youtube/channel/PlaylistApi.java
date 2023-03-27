@@ -2,7 +2,6 @@ package dev.chel_shev.nelly.youtube.channel;
 
 import com.goebl.david.Response;
 import com.goebl.david.Webb;
-import dev.chel_shev.nelly.youtube.channel.VideoDTO;
 import dev.chel_shev.nelly.youtube.YouTubeConfigurer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

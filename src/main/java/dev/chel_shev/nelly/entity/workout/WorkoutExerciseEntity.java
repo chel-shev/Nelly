@@ -1,8 +1,8 @@
 package dev.chel_shev.nelly.entity.workout;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 @Data

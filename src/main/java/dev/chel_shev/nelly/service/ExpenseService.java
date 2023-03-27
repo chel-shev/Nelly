@@ -1,16 +1,16 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
-import dev.chel_shev.nelly.entity.event.finance.AccountHistoryEntity;
-import dev.chel_shev.nelly.entity.event.finance.ExpenseEntity;
-import dev.chel_shev.nelly.entity.event.finance.ExpenseProductEntity;
+import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.finance.AccountHistoryEntity;
+import dev.chel_shev.nelly.entity.finance.ExpenseEntity;
+import dev.chel_shev.nelly.entity.finance.ExpenseProductEntity;
 import dev.chel_shev.nelly.repository.user.ClientHistoryRepository;
 import dev.chel_shev.nelly.repository.finance.ExpenseRepository;
 import dev.chel_shev.nelly.type.InquiryType;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -47,7 +47,7 @@ public class ExpenseService {
     public void save(ExpenseEntity expense, AccountEntity account, long sum) {
         account.subAccountBalance(sum);
         accS.save(account);
-        AccountHistoryEntity entity = new AccountHistoryEntity(null, sum, account.getAccountBalance(), InquiryType.EXPENSE, expense.getDate(), account);
+        AccountHistoryEntity entity = new AccountHistoryEntity(null, sum, account.getAccountBalance(), "/expense", expense.getDate(), account);
         cliHisR.save(entity);
         save(expense, account);
     }
@@ -55,7 +55,7 @@ public class ExpenseService {
     public void saveAll(List<ExpenseEntity> expenseList, AccountEntity account, long sum) {
         account.subAccountBalance(sum);
         accS.save(account);
-        AccountHistoryEntity entity = new AccountHistoryEntity(null, sum, account.getAccountBalance(), InquiryType.EXPENSE, expenseList.get(0).getDate(), account);
+        AccountHistoryEntity entity = new AccountHistoryEntity(null, sum, account.getAccountBalance(), "/expense", expenseList.get(0).getDate(), account);
         cliHisR.save(entity);
         expenseList.forEach(expense -> save(expense, account));
     }

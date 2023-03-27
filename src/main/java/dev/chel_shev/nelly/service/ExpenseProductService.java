@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.event.finance.ExpenseCategoryEntity;
-import dev.chel_shev.nelly.entity.event.finance.ExpenseProductEntity;
+import dev.chel_shev.nelly.entity.finance.ExpenseCategoryEntity;
+import dev.chel_shev.nelly.entity.finance.ExpenseProductEntity;
 import dev.chel_shev.nelly.repository.finance.ExpenseProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

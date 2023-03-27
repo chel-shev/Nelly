@@ -2,8 +2,8 @@ package dev.chel_shev.nelly.youtube.subscriptions;
 
 import com.goebl.david.Response;
 import com.goebl.david.Webb;
-import dev.chel_shev.nelly.entity.event.youtube.YouTubeEntity;
-import dev.chel_shev.nelly.repository.event.youtube.YouTubeRepository;
+import dev.chel_shev.nelly.entity.youtube.YouTubeEntity;
+import dev.chel_shev.nelly.repository.youtube.YouTubeRepository;
 import dev.chel_shev.nelly.youtube.YouTubeConfigurer;
 import dev.chel_shev.nelly.youtube.channel.ChannelApi;
 import lombok.RequiredArgsConstructor;

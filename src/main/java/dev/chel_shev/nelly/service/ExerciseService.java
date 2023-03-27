@@ -2,8 +2,8 @@ package dev.chel_shev.nelly.service;
 
 import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutExerciseEntity;
-import dev.chel_shev.nelly.repository.event.workout.ExerciseRepository;
-import dev.chel_shev.nelly.repository.event.workout.WorkoutExercisesRepository;
+import dev.chel_shev.nelly.repository.workout.ExerciseRepository;
+import dev.chel_shev.nelly.repository.workout.WorkoutExercisesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

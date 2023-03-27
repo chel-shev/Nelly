@@ -1,14 +1,14 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.event.finance.ExpenseCategoryEntity;
-import dev.chel_shev.nelly.entity.event.finance.StatisticCategoryEntity;
+import dev.chel_shev.nelly.entity.finance.ExpenseCategoryEntity;
+import dev.chel_shev.nelly.entity.finance.StatisticCategoryEntity;
 import dev.chel_shev.nelly.repository.finance.ExpenseCategoryRepository;
 import dev.chel_shev.nelly.repository.finance.StatisticCategoryRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;

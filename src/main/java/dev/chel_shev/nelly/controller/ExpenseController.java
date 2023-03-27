@@ -1,7 +1,7 @@
 package dev.chel_shev.nelly.controller;
 
 import dev.chel_shev.nelly.dto.ExpenseWrapper;
-import dev.chel_shev.nelly.entity.event.finance.ExpenseEntity;
+import dev.chel_shev.nelly.entity.finance.ExpenseEntity;
 import dev.chel_shev.nelly.service.ExpenseService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,8 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
-import dev.chel_shev.nelly.entity.event.finance.AccountHistoryEntity;
-import dev.chel_shev.nelly.entity.event.finance.IncomeEntity;
+import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.finance.AccountHistoryEntity;
+import dev.chel_shev.nelly.entity.finance.IncomeEntity;
 import dev.chel_shev.nelly.repository.user.ClientHistoryRepository;
 import dev.chel_shev.nelly.repository.finance.IncomeRepository;
 import dev.chel_shev.nelly.type.InquiryType;
@@ -20,7 +20,7 @@ public class IncomeService {
     public void save(IncomeEntity income, AccountEntity account) {
         account.addAccountBalance(income.getAmount());
         accS.save(account);
-        AccountHistoryEntity entity = new AccountHistoryEntity(null, income.getAmount(), account.getAccountBalance(), InquiryType.INCOME, income.getDate(), account);
+        AccountHistoryEntity entity = new AccountHistoryEntity(null, income.getAmount(), account.getAccountBalance(), "/income", income.getDate(), account);
         cliHisR.save(entity);
         incR.save(income);
     }

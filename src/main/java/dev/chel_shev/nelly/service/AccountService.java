@@ -1,9 +1,8 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
-import dev.chel_shev.nelly.exception.TelegramBotException;
+import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.exception.NellyException;
 import dev.chel_shev.nelly.repository.finance.AccountRepository;
-import dev.chel_shev.nelly.type.KeyboardType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ public class AccountService {
                 .stream()
                 .filter(AccountEntity::isMain)
                 .findFirst()
-                .orElseThrow(() -> new TelegramBotException("Пользователь не найден!", KeyboardType.CANCEL));
+                .orElseThrow(() -> new NellyException("Пользователь не найден!"));
     }
 
     public Collection<AccountEntity> getAccountListByChatId(Long chatId) {

@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.repository.finance;
 
-import dev.chel_shev.nelly.entity.event.finance.ExpenseProductEntity;
+import dev.chel_shev.nelly.entity.finance.ExpenseProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

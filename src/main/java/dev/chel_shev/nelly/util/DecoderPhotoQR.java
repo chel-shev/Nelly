@@ -4,8 +4,7 @@ import com.google.common.base.Strings;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
-import dev.chel_shev.nelly.exception.TelegramBotException;
-import dev.chel_shev.nelly.type.KeyboardType;
+import dev.chel_shev.nelly.exception.NellyException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -31,7 +30,7 @@ public class DecoderPhotoQR {
                 return null;
             return result.getText();
         } catch (NotFoundException e) {
-            throw new TelegramBotException("Ошибка получения фотографии!", KeyboardType.CANCEL);
+            throw new NellyException("Ошибка получения фотографии!");
         }
     }
 }

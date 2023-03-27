@@ -1,6 +1,6 @@
 package dev.chel_shev.nelly.repository.finance;
 
-import dev.chel_shev.nelly.entity.event.finance.StatisticCategoryEntity;
+import dev.chel_shev.nelly.entity.finance.StatisticCategoryEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 

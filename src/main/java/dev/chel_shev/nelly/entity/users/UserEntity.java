@@ -1,22 +1,20 @@
 package dev.chel_shev.nelly.entity.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.chel_shev.nelly.entity.event.EventEntity;
-import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
-import dev.chel_shev.nelly.entity.inquiry.InquiryEntity;
+import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import javax.persistence.*;
 import java.time.ZoneOffset;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
+@Table(name = "employee")
 @NoArgsConstructor
 public class UserEntity {
 
@@ -40,12 +38,6 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<AccountEntity> accountList;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<InquiryEntity> inquiryList;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserSubscriptionEntity> subscriptionList;
 
     public UserEntity(Long id, String firstName, String lastName, String userName, Long chatId) {
         this.id = id;

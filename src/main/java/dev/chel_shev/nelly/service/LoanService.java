@@ -1,9 +1,8 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
-import dev.chel_shev.nelly.entity.event.finance.AccountHistoryEntity;
-import dev.chel_shev.nelly.entity.event.finance.LoanEntity;
-import dev.chel_shev.nelly.entity.users.UserEntity;
+import dev.chel_shev.nelly.entity.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.finance.AccountHistoryEntity;
+import dev.chel_shev.nelly.entity.finance.LoanEntity;
 import dev.chel_shev.nelly.repository.user.ClientHistoryRepository;
 import dev.chel_shev.nelly.repository.finance.LoanRepository;
 import dev.chel_shev.nelly.type.InquiryType;
@@ -20,8 +19,8 @@ public class LoanService {
     private final AccountService accS;
     private final ClientHistoryRepository cliHisR;
 
-    public Collection<LoanEntity> getLoanByClient(UserEntity user) {
-        return loaR.findAllByAccountUser(user);
+    public Collection<LoanEntity> getLoanByClient(String chatId) {
+        return loaR.findAllByAccountUser(chatId);
     }
 
     public void save(LoanEntity loan, AccountEntity account) {
@@ -30,7 +29,7 @@ public class LoanService {
         else
             account.subAccountBalance(loan.getAmount());
         accS.save(account);
-        AccountHistoryEntity entity = new AccountHistoryEntity(null, loan.getAmount(), account.getAccountBalance(), InquiryType.LOAN, loan.getDateStart(), account);
+        AccountHistoryEntity entity = new AccountHistoryEntity(null, loan.getAmount(), account.getAccountBalance(), "/loan", loan.getDateStart(), account);
         cliHisR.save(entity);
         loaR.save(loan);
     }

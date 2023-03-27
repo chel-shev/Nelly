@@ -1,9 +1,9 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.event.youtube.YouTubeCacheEntity;
-import dev.chel_shev.nelly.entity.event.youtube.YouTubeEntity;
-import dev.chel_shev.nelly.repository.event.youtube.YouTubeCacheRepository;
-import dev.chel_shev.nelly.repository.event.youtube.YouTubeRepository;
+import dev.chel_shev.nelly.entity.youtube.YouTubeCacheEntity;
+import dev.chel_shev.nelly.entity.youtube.YouTubeEntity;
+import dev.chel_shev.nelly.repository.youtube.YouTubeCacheRepository;
+import dev.chel_shev.nelly.repository.youtube.YouTubeRepository;
 import dev.chel_shev.nelly.youtube.channel.VideoDTO;
 import dev.chel_shev.nelly.youtube.subscriptions.SubscriptionDTO;
 import lombok.RequiredArgsConstructor;

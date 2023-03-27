@@ -1,13 +1,13 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.nelly.entity.event.finance.AccountEntity;
+import dev.chel_shev.nelly.entity.finance.AccountEntity;
 import dev.chel_shev.nelly.entity.users.UserEntity;
-import dev.chel_shev.nelly.exception.EasyFinanceException;
+import dev.chel_shev.nelly.exception.NellyException;
 import dev.chel_shev.nelly.repository.finance.AccountRepository;
 import dev.chel_shev.nelly.repository.user.UserRepository;
 import dev.chel_shev.nelly.type.RoleType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final RightService rightService;
 
@@ -36,8 +36,8 @@ public class UserService {
 
     public UserEntity signUp(UserEntity user) {
         if (repository.existsByUserName(user.getUserName()))
-            throw new EasyFinanceException(String.format("Username: '%s' already exists!", user.getUserName()));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+            throw new NellyException(String.format("Username: '%s' already exists!", user.getUserName()));
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return repository.save(user);
     }
 

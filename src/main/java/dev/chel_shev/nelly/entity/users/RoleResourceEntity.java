@@ -1,8 +1,8 @@
 package dev.chel_shev.nelly.entity.users;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.persistence.*;
 
 @Entity
 @Data

@@ -7,13 +7,9 @@ import java.util.Map;
 
 public enum KeyboardType {
 
-    FINANCE("\uD83D\uDCB0 Финансы", "Finance"),
     REMINDER("\uD83D\uDD14 Напоминания", "Reminder"),
     BDAY("\uD83D\uDCC6 ДР", "Birthday"),
-    WORKOUT("\uD83E\uDD38\u200D♀️ Спорт", "Workout"),
     YOUTUBE("\uD83C\uDF9E Youtube","Youtube"),
-
-    CANCEL("\uD83D\uDDD9 Отмена", ""),
     BACK("⬅ Назад", ""),
     COMMON("", ""),
     NONE("", ""),
