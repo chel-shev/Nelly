@@ -28,7 +28,7 @@ public abstract class FastInquiry {
     private boolean closed;
     private FastUserEntity user;
     private FastCommandEntity command;
-    private List<String> keyboardButtonList;
+    private List<String> keyboardButtons;
     private FastKeyboardType keyboardType;
 
     public void init(FastInquiryEntity entity, FastUserEntity user) {

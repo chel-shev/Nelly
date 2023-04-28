@@ -75,16 +75,16 @@ public class FastBot<I extends FastInquiry, E extends FastEvent> extends Telegra
 
     public void processMessage(Message message) {
         Message reply;
-        I inquiry = inquiryService.getInquiry(message);
-        FastInquiryHandler<I> inquiryHandler = handlerFactory.getHandler(inquiry.getClass());
+        I i = inquiryService.getInquiry(message);
+        FastInquiryHandler<I> inquiryHandler = handlerFactory.getHandler(i.getClass());
         try {
-            if (inquiry.isNotReadyForExecute()) inquiry = inquiryHandler.prepare(inquiry, message);
-            if (!inquiry.isNotReadyForExecute()) inquiry = inquiryHandler.execute(inquiry, message);
-            reply = sender.sendMessage(inquiry.getUser().getChatId(), inquiry.getAnswerMessage(), inquiry.getKeyboardType(), inquiry.getKeyboardButtonList(), true);
+            if (i.isNotReadyForExecute()) i = inquiryHandler.prepare(i, message);
+            if (!i.isNotReadyForExecute()) i = inquiryHandler.execute(i, message);
+            reply = sender.sendMessage(i.getUser().getChatId(), i.getAnswerMessage(), i.getKeyboardType(), i.getKeyboardButtons(), true);
         } catch (FastBotException ex) {
             reply = sender.sendMessage(ex.getChatId(), ex.getMessage(), true);
         }
-        inquiryHandler.updateInquiry(inquiry, reply);
+        inquiryHandler.updateInquiry(i, reply);
     }
 
     public void processCallback(CallbackQuery callbackQuery) {
@@ -97,7 +97,7 @@ public class FastBot<I extends FastInquiry, E extends FastEvent> extends Telegra
                 sender.deleteMessage(inquiry.getUser().getChatId(), inquiry.getAnswerMessageId());
                 sender.sendMessage(inquiry.getUser().getChatId(), inquiry.getAnswerMessage(), true);
             } else
-                sender.updateMessage(inquiry.getUser().getChatId(), inquiry.getMessageId(), inquiry.getMessage(), true);
+                sender.updateMessage(inquiry.getUser().getChatId(), inquiry.getAnswerMessageId(), inquiry.getAnswerMessage(), inquiry.getKeyboardType(), inquiry.getKeyboardButtons(), true);
         } catch (FastBotException ex) {
             sender.sendMessage(ex.getChatId(), ex.getMessage(), true);
         }
@@ -105,12 +105,19 @@ public class FastBot<I extends FastInquiry, E extends FastEvent> extends Telegra
 
     private void processEvent(CallbackQuery callbackQuery) {
         E event = eventService.getEvent(callbackQuery);
-        Message reply;
+        Message reply = null;
         FastEventHandler<E> eventHandler = eventHandlerFactory.getHandler(event.getClass());
         try {
             if (event.isNotReadyForExecute()) event = eventHandler.inlinePrepare(event, callbackQuery);
             if (!event.isNotReadyForExecute()) event = eventHandler.inlineExecute(event, callbackQuery);
-            reply = sender.sendMessage(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessage(), true);
+            if (event.hasMedia() && event.getFile().isNew())
+                reply = sender.sendPhoto(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessage(), event.getFile(), event.getKeyboardType(), event.getKeyboardButtons());
+            if (event.hasMedia())
+                sender.updatePhoto(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessageId(), event.getAnswerMessage(), event.getFile(), event.getKeyboardType(), event.getKeyboardButtons());
+            else {
+                sender.deleteMessage(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessageId());
+                sender.sendMessage(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessage(), true);
+            }
         } catch (FastBotException ex) {
             reply = sender.sendMessage(ex.getChatId(), ex.getMessage(), true);
         }

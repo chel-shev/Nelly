@@ -24,7 +24,7 @@ public class ReminderAddHandler extends FastInquiryHandler<ReminderAddInquiry> {
     private final ReminderAddConfig reminderAddConfig;
 
     @Override
-    public void executionLogic(ReminderAddInquiry i) {
+    public void executionLogic(ReminderAddInquiry i, Message message) {
 //        if (service.isExist(i.getName())) {
 //            calendarService.removeEvent(i.getName(), i.getUser());
 //            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, i));
@@ -40,13 +40,13 @@ public class ReminderAddHandler extends FastInquiryHandler<ReminderAddInquiry> {
         if (fastUtils.getArgs(message.getText()).isEmpty()) {
             i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.THIRD, reminderAddConfig));
             i.setKeyboardType(FastKeyboardType.REPLY);
-            i.setKeyboardButtonList(Arrays.asList("Отмена"));
+            i.setKeyboardButtons(Arrays.asList("Отмена"));
         } else if (isNullOrEmpty(i.getName())) {
             i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.FOURTH, reminderAddConfig));
             i.setMessage(fastUtils.getArgs(message.getText()));
             i.setName(i.getArgFromMassage(message.getText(), 0));
             i.setKeyboardType(FastKeyboardType.REPLY);
-            i.setKeyboardButtonList(Arrays.asList("периоды"));
+            i.setKeyboardButtons(Arrays.asList("периоды"));
         } else {
 
         }

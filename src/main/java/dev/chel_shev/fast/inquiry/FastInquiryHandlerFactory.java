@@ -34,7 +34,7 @@ public class FastInquiryHandlerFactory<I extends FastInquiry> {
     }
 
     public void registerHandler(Class<I> dataType, FastInquiryHandler<I> handlerType) {
-        log.info(String.valueOf(dataType));
+        log.debug(String.valueOf(dataType));
         FastInquiryId inquiryId = dataType.getAnnotation(FastInquiryId.class);
         if (null != inquiryId)
             commandService.save(inquiryId.command(), inquiryId.label(), inquiryId.type());

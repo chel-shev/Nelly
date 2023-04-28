@@ -3,13 +3,14 @@ package dev.chel_shev.fast.inquiry.keyboard;
 import dev.chel_shev.fast.inquiry.FastInquiryHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
 @RequiredArgsConstructor
 public abstract class FastKeyboardInquiryHandler extends FastInquiryHandler<FastKeyboardInquiry> {
 
     @Override
-    public void executionLogic(FastKeyboardInquiry i) {
+    public void executionLogic(FastKeyboardInquiry i, Message message) {
 //        switch (getFromLabel(i.getMessage())) {
 //            case BDAY -> {
 //                i.setAnswerMessage("Ну давай изменим пару дат :)");

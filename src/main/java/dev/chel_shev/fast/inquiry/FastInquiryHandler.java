@@ -1,5 +1,6 @@
 package dev.chel_shev.fast.inquiry;
 
+import dev.chel_shev.fast.FastSender;
 import dev.chel_shev.fast.FastUtils;
 import dev.chel_shev.fast.service.FastAnswerService;
 import dev.chel_shev.fast.service.FastInquiryService;
@@ -19,6 +20,7 @@ public abstract class FastInquiryHandler<I extends FastInquiry> {
     protected FastAnswerService answerService;
     protected FastKeyboardService keyboardService;
     protected FastUtils fastUtils;
+    protected FastSender sender;
 
     /**
      * Inquiry execution logic
@@ -26,7 +28,7 @@ public abstract class FastInquiryHandler<I extends FastInquiry> {
      * @param i - Received inquiry
      * @return - Processed inquiry
      */
-    protected void executionLogic(I i) {
+    protected void executionLogic(I i, Message message) {
     }
 
     /**
@@ -42,7 +44,7 @@ public abstract class FastInquiryHandler<I extends FastInquiry> {
     public I execute(I i, Message message) {
         if (message.getText().equals("Отмена"))
             return cancel(i);
-        executionLogic(i);
+        executionLogic(i, message);
         save(i);
         log.info("EXECUTE {}", i);
         return i;
@@ -109,6 +111,11 @@ public abstract class FastInquiryHandler<I extends FastInquiry> {
         this.fastUtils = fastUtils;
     }
 
+    @Autowired
+    public final void setFastSender(FastSender sender) {
+        this.sender = sender;
+    }
+
     public void updateInquiry(I i, Message reply) {
         if (null == i) return;
         i.setAnswerMessage(reply.getText());
@@ -119,6 +126,12 @@ public abstract class FastInquiryHandler<I extends FastInquiry> {
             log.info("NOT FOUND {}", i);
         }
         log.info("UPDATE {}", i);
+    }
+
+    public void closeLastInquiry(Message m) {
+        I lastInquiry = inquiryService.getLastInquiry(m);
+        if (!lastInquiry.isClosed())
+            sender.deleteMessage(lastInquiry.getUser().getChatId(), lastInquiry.getAnswerMessageId());
     }
 
     public void inlineExecutionLogic(I i, CallbackQuery callbackQuery) {

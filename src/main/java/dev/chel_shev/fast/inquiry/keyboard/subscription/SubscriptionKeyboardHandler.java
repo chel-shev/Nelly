@@ -5,6 +5,7 @@ import dev.chel_shev.fast.type.FastBotCommandLevel;
 import dev.chel_shev.fast.type.FastKeyboardType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
 @RequiredArgsConstructor
@@ -13,9 +14,9 @@ public class SubscriptionKeyboardHandler extends FastInquiryHandler<Subscription
     private final SubscriptionKeyboardConfig subscriptionKeyboardConfig;
 
     @Override
-    public void executionLogic(SubscriptionKeyboardInquiry i) {
+    public void executionLogic(SubscriptionKeyboardInquiry i, Message message) {
         i.setKeyboardType(FastKeyboardType.REPLY);
-        i.setKeyboardButtonList(keyboardService.getButtons(SubscriptionKeyboardInquiry.class));
+        i.setKeyboardButtons(keyboardService.getButtons(SubscriptionKeyboardInquiry.class));
         i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.FIRST, subscriptionKeyboardConfig));
     }
 }

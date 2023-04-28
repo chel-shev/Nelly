@@ -16,7 +16,7 @@ public class FastUserService {
     private final FastAnswerService answerService;
     private final UnknownUserConfig unknownUserConfig;
 
-    public Optional<FastUserEntity> getUserByChatId(String chatId) {
+    public Optional<FastUserEntity> getFastUserByChatId(String chatId) {
         return userRepository.findByChatId(chatId);
 //                .orElseThrow(() -> new FastBotException(answerService.generateAnswer(FastBotCommandLevel.FIRST, unknownUserConfig)));
     }

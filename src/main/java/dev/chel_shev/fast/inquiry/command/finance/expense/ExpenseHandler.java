@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -29,7 +30,7 @@ public class ExpenseHandler extends InquiryFinanceHandler<ExpenseInquiryFinance>
     private final ExpenseConfig expenseConfig;
 
     @Override
-    public void executionLogic(ExpenseInquiryFinance i) {
+    public void executionLogic(ExpenseInquiryFinance i, Message message) {
         try {
             if (isDoubleParam(i)) {
                 savePurchase(i);
@@ -51,7 +52,7 @@ public class ExpenseHandler extends InquiryFinanceHandler<ExpenseInquiryFinance>
         i.setClosed(true);
         i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.FIRST, expenseConfig, i.getAccount().getInfoString()));
         i.setKeyboardType(FastKeyboardType.REPLY);
-        i.setKeyboardButtonList(Arrays.asList("FINANCE"));
+        i.setKeyboardButtons(Arrays.asList("FINANCE"));
     }
 
     private void saveReceipt(ExpenseInquiryFinance i) throws JSONException {
@@ -63,7 +64,7 @@ public class ExpenseHandler extends InquiryFinanceHandler<ExpenseInquiryFinance>
         i.setClosed(true);
         i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.SECOND, expenseConfig));
         i.setKeyboardType(FastKeyboardType.REPLY);
-        i.setKeyboardButtonList(Arrays.asList("FINANCE"));
+        i.setKeyboardButtons(Arrays.asList("FINANCE"));
         log.info("COMPLETE {}", i);
     }
 

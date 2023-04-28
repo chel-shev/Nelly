@@ -28,7 +28,7 @@ public class YouTubeConfigurer {
         return new HashMap<>() {{
             put("key", DEVELOPER_KEY);
             put("part", "snippet");
-            put("maxResults", 10);
+            put("maxResults", 5);
             put("playlistId", channelId);
         }};
     }

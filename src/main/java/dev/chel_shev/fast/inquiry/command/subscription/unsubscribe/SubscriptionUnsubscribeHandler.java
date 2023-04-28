@@ -2,12 +2,9 @@ package dev.chel_shev.fast.inquiry.command.subscription.unsubscribe;
 
 import dev.chel_shev.fast.entity.FastCommandEntity;
 import dev.chel_shev.fast.inquiry.FastInquiryHandler;
-import dev.chel_shev.fast.inquiry.command.subscription.subscribe.SubscriptionSubscribeConfig;
-import dev.chel_shev.fast.inquiry.command.subscription.subscribe.SubscriptionSubscribeInquiry;
 import dev.chel_shev.fast.inquiry.keyboard.subscription.SubscriptionKeyboardInquiry;
 import dev.chel_shev.fast.service.FastCommandService;
 import dev.chel_shev.fast.service.FastUserSubscriptionService;
-import dev.chel_shev.fast.type.FastBotCommandLevel;
 import dev.chel_shev.fast.type.FastKeyboardType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
-
-import java.util.Arrays;
 
 import static java.util.Objects.isNull;
 
@@ -36,7 +31,7 @@ public class SubscriptionUnsubscribeHandler extends FastInquiryHandler<Subscript
     protected void preparationLogic(SubscriptionUnsubscribeInquiry i, Message message) {
         if (i.getMessage().isEmpty()) {
             i.setKeyboardType(FastKeyboardType.INLINE);
-            i.setKeyboardButtonList(subscriptionService.getSubscriptions(i.getUser()));
+            i.setKeyboardButtons(subscriptionService.getSubscriptions(i.getUser()));
             i.setAnswerMessage("Подписки:");
         }
     }
@@ -47,7 +42,7 @@ public class SubscriptionUnsubscribeHandler extends FastInquiryHandler<Subscript
             subscriptionService.removeSubscription(i.getUser(), i.getSubscription());
             i.setAnswerMessage("Подписка удалена!");
             i.setKeyboardType(FastKeyboardType.REPLY);
-            i.setKeyboardButtonList(keyboardService.getButtons(SubscriptionKeyboardInquiry.class));
+            i.setKeyboardButtons(keyboardService.getButtons(SubscriptionKeyboardInquiry.class));
             i.setClosed(true);
         }
     }

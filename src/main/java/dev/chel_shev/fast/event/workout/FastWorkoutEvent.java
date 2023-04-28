@@ -9,6 +9,8 @@ import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.InputStream;
+
 @Setter
 @Getter
 @FastEventId(command = "/workout")

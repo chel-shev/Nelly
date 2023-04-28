@@ -24,6 +24,9 @@ public class FastUserSubscriptionEntity {
     @ManyToOne
     private FastCommandEntity command;
 
+    @ManyToOne
+    private FastCommandEntity parentCommand;
+
     @Enumerated(EnumType.STRING)
     private SubscriptionType type;
     private String name;

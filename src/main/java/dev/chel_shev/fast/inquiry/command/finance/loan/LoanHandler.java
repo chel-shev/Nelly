@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -27,7 +28,7 @@ public class LoanHandler extends InquiryFinanceHandler<LoanInquiryFinance> {
     private final LoanConfig loanConfig;
 
     @Override
-    public void executionLogic(LoanInquiryFinance i) {
+    public void executionLogic(LoanInquiryFinance i, Message message) {
         log.info("PROCESS LoanInquiry(inquiryId: {}, text: {}, date: {}, completed: {})", i.getId(), i.getMessage(), i.getDate(), i.isClosed());
         try {
             if (isDoubleParam(i))
@@ -35,7 +36,7 @@ public class LoanHandler extends InquiryFinanceHandler<LoanInquiryFinance> {
             else{
                 i.setAnswerMessage(answerService.generateAnswer(FIRST, loanConfig));
                 i.setKeyboardType(FastKeyboardType.REPLY);
-                i.setKeyboardButtonList(Arrays.asList("Отмена"));
+                i.setKeyboardButtons(Arrays.asList("Отмена"));
             }
         } catch (JSONException | NullPointerException e) {
             throw new FastBotException(i.getUser().getChatId(), "Ошибка добавления!");
@@ -69,7 +70,7 @@ public class LoanHandler extends InquiryFinanceHandler<LoanInquiryFinance> {
         loanService.save(loanEntity, i.getAccount());
         i.setAnswerMessage(answerService.generateAnswer(SECOND, loanConfig, i.getAccount().getInfoString()));
         i.setKeyboardType(FastKeyboardType.REPLY);
-        i.setKeyboardButtonList(Arrays.asList("FINANCE"));
+        i.setKeyboardButtons(Arrays.asList("FINANCE"));
         i.setClosed(true);
     }
 }

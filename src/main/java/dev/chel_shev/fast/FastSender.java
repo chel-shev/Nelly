@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.ByteArrayInputStream;
@@ -39,28 +40,24 @@ public class FastSender {
         return sendMessage(message);
     }
 
-    public Message sendPhoto(String chatId, String textMessage, InputFile photo, FastKeyboardType type, List<String> buttons, String imageName) {
+    public void updateMessage(String chatId, Integer messageId, String textMessage, FastKeyboardType type, List<String> buttons, boolean markdown) {
+        var builder = EditMessageText.builder();
+        if (markdown) builder.parseMode("Markdown");
+        EditMessageText message = builder.text(textMessage).chatId(chatId).messageId(messageId).build();
+        message.setReplyMarkup((InlineKeyboardMarkup) keyboardFactory.getKeyBoard(type, buttons));
+        updateMessage(message);
+    }
+
+    public Message sendPhoto(String chatId, String textMessage, InputFile photo, FastKeyboardType type, List<String> buttons) {
         SendPhoto message = SendPhoto.builder().parseMode("Markdown").chatId(chatId).photo(photo).caption(textMessage).build();
         message.setReplyMarkup(keyboardFactory.getKeyBoard(type, buttons));
         return sendMessage(message);
     }
 
-    public Message sendPhoto(String chatId, byte[] image, String imageName, String textMessage) {
-        InputFile photo = new InputFile(new ByteArrayInputStream(image), imageName);
-        SendPhoto message = SendPhoto.builder().parseMode("Markdown").chatId(chatId).photo(photo).caption(textMessage).build();
-        return sendMessage(message);
-    }
-
-    public void updateMessage(String chatId, Integer messageId, String textMessage, boolean markdown) {
-        var builder = EditMessageText.builder();
-        if (markdown) builder.parseMode("Markdown");
-        EditMessageText message = builder.text(textMessage).chatId(chatId).messageId(messageId).build();
-        updateMessage(message);
-    }
-
-    public void updatePhoto(String chatId, Integer messageId, String fileId, String textMessage) {
-        InputMediaPhoto media = InputMediaPhoto.builder().parseMode("Markdown").media(new InputFile(fileId).getAttachName()).caption(textMessage).build();
+    public void updatePhoto(String chatId, Integer messageId, String textMessage, InputFile photo, FastKeyboardType type, List<String> buttons) {
+        InputMediaPhoto media = InputMediaPhoto.builder().parseMode("Markdown").media(photo.getAttachName()).caption(textMessage).build();
         EditMessageMedia message = EditMessageMedia.builder().chatId(chatId).messageId(messageId).media(media).build();
+        message.setReplyMarkup((InlineKeyboardMarkup) keyboardFactory.getKeyBoard(type, buttons));
         updateMessage(message);
     }
 

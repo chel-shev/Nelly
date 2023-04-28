@@ -22,7 +22,7 @@ public class StopHandler extends FastCommandInquiryHandler<StopInquiry> {
     private final FastEventService<? extends FastEvent> eventService;
 
     @Override
-    public void executionLogic(StopInquiry i) {
+    public void executionLogic(StopInquiry i, Message m) {
         eventService.deleteByUser(i.getUser());
         inquiryService.deleteByUser(i.getUser());
         userService.delete(i.getUser());
@@ -30,10 +30,10 @@ public class StopHandler extends FastCommandInquiryHandler<StopInquiry> {
         i.setKeyboardType(FastKeyboardType.REPLY);
     }
 
-    public StopInquiry execute(StopInquiry i, Message message) {
-        if (message.getText().equals("Отмена"))
+    public StopInquiry execute(StopInquiry i, Message m) {
+        if (m.getText().equals("Отмена"))
             return cancel(i);
-        executionLogic(i);
+        executionLogic(i, m);
         log.info("EXECUTE {}", i);
         return i;
     }

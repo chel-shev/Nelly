@@ -1,17 +1,25 @@
 package dev.chel_shev.fast.service;
 
+import dev.chel_shev.fast.FastBotException;
 import dev.chel_shev.fast.entity.user.FastUserEntity;
 import dev.chel_shev.fast.entity.event.FastEventEntity;
+import dev.chel_shev.fast.entity.user.FastUserSubscriptionEntity;
 import dev.chel_shev.fast.event.FastEvent;
 import dev.chel_shev.fast.event.FastEventFactory;
 import dev.chel_shev.fast.inquiry.command.unknownUser.UnknownUserConfig;
 import dev.chel_shev.fast.repository.FastEventRepository;
+import dev.chel_shev.fast.repository.UserSubscriptionRepository;
+import dev.chel_shev.fast.type.SubscriptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Optional;
+
+import static dev.chel_shev.fast.type.FastBotCommandLevel.FIRST;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +31,7 @@ public class FastCommonEventService<E extends FastEvent> implements FastEventSer
     private final FastAnswerService answerService;
     private final UnknownUserConfig unknownUserConfig;
     private final FastEventFactory<E> eventFactory;
+    private final UserSubscriptionRepository userSubscriptionRepository;
 
 
     public void removeEvent() {
@@ -50,13 +59,14 @@ public class FastCommonEventService<E extends FastEvent> implements FastEventSer
     }
 
     public E getEvent(CallbackQuery callbackQuery) {
-//        var userSubscription = userSubscriptionService.getUserByChatId(callbackQuery.getMessage().getChatId());
-//        if (null == userSubscription || null == userSubscription.getUser())
-//            throw new FastBotException(answerService.generateAnswer(CommandLevel.FIRST, unknownUserConfig));
-//        var eventEntity = repository.findByUserSubscriptionUserAndAnswerMessageId(userSubscription.getUser(), callbackQuery.getMessage().getMessageId()).orElseThrow(() -> new FastBotException("Event not found!"));
-//        var event = eventFactory.getEvent(eventEntity.getEventType().getCommand());
-//        event.init(eventEntity, userSubscription);
-        return null;
+        Optional<FastUserEntity> user = userService.getFastUserByChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
+        if (user.isEmpty())
+            throw new FastBotException(answerService.generateAnswer(FIRST, unknownUserConfig));
+        var eventEntity = repository.findByUser_FastUserAndAnswerMessageId(user.get(), callbackQuery.getMessage().getMessageId()).orElseThrow(() -> new FastBotException("Event not found!"));
+        FastUserSubscriptionEntity subscriptionEntity = userSubscriptionRepository.findByFastUser_ChatIdAndCommandAndTypeIn(user.get().getChatId(), eventEntity.getUser().getCommand(), Collections.singleton(SubscriptionType.MAIN));
+        var event = eventFactory.getEvent(eventEntity.getUser().getCommand().getName());
+        event.init(eventEntity, subscriptionEntity);
+        return event;
     }
 
     public Long save(E e) {

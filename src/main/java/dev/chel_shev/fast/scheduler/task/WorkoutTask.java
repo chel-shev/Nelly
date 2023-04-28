@@ -36,7 +36,7 @@ public class WorkoutTask extends TimerTask {
     public void run() {
         try {
             event.setKeyboardButtons(workoutEventService.getWorkoutProcess(event));
-            Message message = sender.sendPhoto(event.getUserSubscription().getFastUser().getChatId(), "Сегодня по плану: " + name, photo, FastKeyboardType.REPLY, event.getKeyboardButtons(), photo.getAttachName());
+            Message message = sender.sendPhoto(event.getUserSubscription().getFastUser().getChatId(), "Сегодня по плану: " + name, photo, FastKeyboardType.INLINE, event.getKeyboardButtons());
             event.setAnswerMessageId(message.getMessageId());
             workoutEventService.save(event);
             workoutEventService.initNextEvent(event);

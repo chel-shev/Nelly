@@ -18,7 +18,7 @@ public class ReminderRemoveHandler extends FastInquiryHandler<ReminderRemoveInqu
     private final ReminderRemoveConfig reminderRemoveConfig;
 
     @Override
-    public void executionLogic(ReminderRemoveInquiry i) {
+    public void executionLogic(ReminderRemoveInquiry i, Message message) {
 //        if (service.isExist(i.getName())) {
 //            calendarService.removeEvent(i.getName(), i.getUser());
 //            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, i));
@@ -34,7 +34,7 @@ public class ReminderRemoveHandler extends FastInquiryHandler<ReminderRemoveInqu
         if (fastUtils.getArgs(message.getText()).isEmpty()) {
             i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.THIRD, reminderRemoveConfig));
             i.setKeyboardType(FastKeyboardType.REPLY);
-            i.setKeyboardButtonList(Arrays.asList("Отмена"));
+            i.setKeyboardButtons(Arrays.asList("Отмена"));
         } else if (i.getName().isEmpty()) {
             i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.FOURTH, reminderRemoveConfig));
             i.setMessage(fastUtils.getArgs(message.getText()));

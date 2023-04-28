@@ -6,6 +6,7 @@ import dev.chel_shev.fast.inquiry.keyboard.subscription.SubscriptionKeyboardInqu
 import dev.chel_shev.fast.service.FastCommandService;
 import dev.chel_shev.fast.service.FastUserSubscriptionService;
 import dev.chel_shev.fast.type.FastKeyboardType;
+import dev.chel_shev.fast.type.SubscriptionType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,7 +29,7 @@ public class SubscriptionSubscribeHandler extends FastInquiryHandler<Subscriptio
     private final FastCommandService commandService;
 
     @Override
-    public void executionLogic(SubscriptionSubscribeInquiry i) {
+    public void executionLogic(SubscriptionSubscribeInquiry i, Message message) {
 //        if (service.isExist(i.getName())) {
 //            calendarService.removeEvent(i.getName(), i.getUser());
 //            i.setAnswerMessage(answerService.generateAnswer(CommandLevel.FIRST, i));
@@ -43,7 +44,7 @@ public class SubscriptionSubscribeHandler extends FastInquiryHandler<Subscriptio
     public void preparationLogic(SubscriptionSubscribeInquiry i, Message message) {
         if (i.getMessage().isEmpty()) {
             i.setKeyboardType(FastKeyboardType.INLINE);
-            i.setKeyboardButtonList(subscriptionService.getAvailableSubscriptions(i.getUser()));
+            i.setKeyboardButtons(subscriptionService.getAvailableSubscriptions(i.getUser()));
             i.setAnswerMessage("Доступные подписки:");
         }
     }
@@ -51,10 +52,10 @@ public class SubscriptionSubscribeHandler extends FastInquiryHandler<Subscriptio
     @Override
     public void inlineExecutionLogic(SubscriptionSubscribeInquiry i, CallbackQuery callbackQuery) {
         if (!isNull(i.getSubscription())) {
-            subscriptionService.addSubscription(i.getUser(), i.getSubscription());
+            subscriptionService.addSubscription(i.getUser(), i.getSubscription(), i.getSubscription(), SubscriptionType.MAIN, i.getSubscription().getName());
             i.setAnswerMessage("Подписка добавлена!");
             i.setKeyboardType(FastKeyboardType.REPLY);
-            i.setKeyboardButtonList(keyboardService.getButtons(SubscriptionKeyboardInquiry.class));
+            i.setKeyboardButtons(keyboardService.getButtons(SubscriptionKeyboardInquiry.class));
             i.setClosed(true);
         }
     }

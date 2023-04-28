@@ -25,7 +25,7 @@ public class BdayRemoveHandler extends FastInquiryHandler<BdayRemoveInquiry> {
     private final BdayRemoveConfig bdayRemoveConfig;
 
     @Override
-    public void executionLogic(BdayRemoveInquiry i) {
+    public void executionLogic(BdayRemoveInquiry i, Message message) {
         remove(i);
     }
 
@@ -34,7 +34,7 @@ public class BdayRemoveHandler extends FastInquiryHandler<BdayRemoveInquiry> {
         if (fastUtils.getArgs(message.getText()).isEmpty()) {
             i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.THIRD, bdayRemoveConfig));
             i.setKeyboardType(FastKeyboardType.INLINE);
-            i.setKeyboardButtonList(service.getAllBdayName(i.getUser()));
+            i.setKeyboardButtons(service.getAllBdayName(i.getUser()));
         } else {
             i.setMessage(fastUtils.getArgs(message.getText()));
             i.setName(i.getArgFromMassage(message.getText(), 0));
@@ -44,7 +44,7 @@ public class BdayRemoveHandler extends FastInquiryHandler<BdayRemoveInquiry> {
     public BdayRemoveInquiry cancel(BdayRemoveInquiry i) {
         super.cancel(i);
         i.setKeyboardType(FastKeyboardType.REPLY);
-        i.setKeyboardButtonList(Arrays.asList("Добавить", "Удалить"));
+        i.setKeyboardButtons(Arrays.asList("Добавить", "Удалить"));
         return i;
     }
 
@@ -70,6 +70,6 @@ public class BdayRemoveHandler extends FastInquiryHandler<BdayRemoveInquiry> {
         }
         i.setClosed(true);
         i.setKeyboardType(FastKeyboardType.REPLY);
-        i.setKeyboardButtonList(keyboardService.getButtons(BdayKeyboardInquiry.class));
+        i.setKeyboardButtons(keyboardService.getButtons(BdayKeyboardInquiry.class));
     }
 }

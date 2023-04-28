@@ -1,12 +1,15 @@
 package dev.chel_shev.fast.inquiry.command.workout.add;
 
+import dev.chel_shev.fast.entity.FastCommandEntity;
 import dev.chel_shev.fast.entity.event.FastWorkoutEventEntity;
 import dev.chel_shev.fast.inquiry.FastInquiryHandler;
+import dev.chel_shev.fast.service.FastCommandService;
 import dev.chel_shev.fast.service.FastUserSubscriptionService;
 import dev.chel_shev.fast.service.WorkoutEventService;
 import dev.chel_shev.fast.type.FastBotCommandLevel;
 import dev.chel_shev.fast.type.FastKeyboardType;
 import dev.chel_shev.fast.type.FastPeriodType;
+import dev.chel_shev.fast.type.SubscriptionType;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
 import dev.chel_shev.nelly.service.WorkoutService;
 import dev.chel_shev.nelly.util.DateTimeUtils;
@@ -31,40 +34,44 @@ public class WorkoutAddHandler extends FastInquiryHandler<WorkoutAddInquiry> {
     private final WorkoutService service;
     private final WorkoutEventService eventService;
     private final FastUserSubscriptionService subscriptionService;
+    private final FastCommandService commandService;
 
     @Override
     public void preparationLogic(WorkoutAddInquiry i, Message message) {
         if (isNullOrEmpty(i.getWorkoutName())) {
             i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.THIRD, workoutAddConfig));
             i.setKeyboardType(FastKeyboardType.INLINE);
-            i.setKeyboardButtonList(service.getAvailableWorkouts(i.getUser().getChatId()));
+            i.setKeyboardButtons(service.getAvailableWorkouts(i.getUser().getChatId()));
         }
     }
 
-    public void inlineExecutionLogic(WorkoutAddInquiry i, CallbackQuery callbackQuery) {
+    public void inlineExecutionLogic(WorkoutAddInquiry i, CallbackQuery cq) {
         WorkoutEntity workout = service.getByName(i.getWorkoutName());
-        FastWorkoutEventEntity entity = new FastWorkoutEventEntity(-1, 1, i.getCommand(), workout, i.getPeriodType(), i.getWorkoutTime(), subscriptionService.getSubscription(i.getUser(), i.getCommand()));
+        FastCommandEntity command = commandService.getCommandByLabelOrName(i.getWorkoutName());
+        FastCommandEntity parentCommand = commandService.getCommand("/workout");
+        FastWorkoutEventEntity entity = new FastWorkoutEventEntity(-1, 1, command, workout, i.getPeriodType(), i.getWorkoutTime(), subscriptionService.getSubscription(i.getUser(), parentCommand, SubscriptionType.MAIN));
+        subscriptionService.addSubscription(i.getUser(), command, parentCommand, SubscriptionType.SUB, i.getWorkoutName());
         eventService.save(entity);
         i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.FIRST, workoutAddConfig));
         i.setClosed(true);
         i.setKeyboardType(FastKeyboardType.INLINE);
-        i.setKeyboardButtonList(new ArrayList<>());
+        i.setKeyboardButtons(new ArrayList<>());
     }
 
     @Override
-    public void inlinePreparationLogic(WorkoutAddInquiry i, CallbackQuery callbackQuery) {
+    public void inlinePreparationLogic(WorkoutAddInquiry i, CallbackQuery cq) {
         if (isNullOrEmpty(i.getWorkoutName())) {
-            i.setWorkoutName(callbackQuery.getData());
-            i.setAnswerMessage("Через сколько дней начнем?");
+            i.setWorkoutName(cq.getData());
+            i.setAnswerMessage("С какого дня начнем?");
             i.setKeyboardType(FastKeyboardType.INLINE);
-            i.setKeyboardButtonList(new ArrayList<>());//DAY_OF_WEEK_LIST
+            i.setKeyboardButtons(DateTimeUtils.getDayOfWeek());
         } else if (isNull(i.getWorkoutTime())) {
             WorkoutEntity workout = service.getByName(i.getWorkoutName());
-            i.setWorkoutTime(DateTimeUtils.getTimeFromTimeout(callbackQuery.getData(), workout, ZoneOffset.of("+3")));
+            i.setWorkoutTime(DateTimeUtils.getTimeFromTimeout(cq.getData(), workout, ZoneOffset.of("+3")));
             i.setAnswerMessage("Выбери период занятий:");
             i.setKeyboardType(FastKeyboardType.INLINE);
-            i.setKeyboardButtonList(new ArrayList<>());//PERIOD_LIST
+            i.setKeyboardButtons(DateTimeUtils.getPeriodList());
         } else
-            i.setPeriodType(FastPeriodType.getByLabel(callbackQuery.getData()));
+            i.setPeriodType(FastPeriodType.getByLabel(cq.getData()));
     }
 }

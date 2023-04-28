@@ -3,6 +3,7 @@ package dev.chel_shev.fast.event;
 import dev.chel_shev.fast.FastBotResource;
 import dev.chel_shev.fast.service.FastAnswerService;
 import dev.chel_shev.fast.service.FastEventService;
+import dev.chel_shev.fast.service.FastKeyboardService;
 import dev.chel_shev.fast.service.FastUserService;
 import dev.chel_shev.fast.type.FastKeyboardType;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public abstract class FastEventHandler<E extends FastEvent> {
     protected FastAnswerService answerService;
     protected FastUserService userService;
     protected FastBotResource botResources;
+    protected FastKeyboardService keyboardService;
 
     /**
      * Event execution logic
@@ -100,10 +102,14 @@ public abstract class FastEventHandler<E extends FastEvent> {
     }
 
     @Autowired
-    public final void setEventService(@Qualifier("fastBotResource") FastBotResource botResources) {
+    public final void setFastBotResource(@Qualifier("fastBotResource") FastBotResource botResources) {
         this.botResources = botResources;
     }
 
+    @Autowired
+    public final void setFastBotResource(FastKeyboardService keyboardService) {
+        this.keyboardService = keyboardService;
+    }
 
     @Autowired
     public final void setAnswerService(@Qualifier("fastAnswerService") FastAnswerService answerService) {

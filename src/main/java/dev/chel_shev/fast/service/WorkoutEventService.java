@@ -9,11 +9,14 @@ import dev.chel_shev.fast.repository.FastEventRepository;
 import dev.chel_shev.fast.repository.event.WorkoutEventRepository;
 import dev.chel_shev.fast.type.FastKeyboardType;
 import dev.chel_shev.fast.repository.UserSubscriptionRepository;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static dev.chel_shev.nelly.type.KeyboardType.*;
 import static dev.chel_shev.nelly.type.KeyboardType.INLINE_DONE;
@@ -22,12 +25,10 @@ import static dev.chel_shev.nelly.type.KeyboardType.INLINE_DONE;
 public class WorkoutEventService extends FastCommonEventService<BdayEvent> {
 
     private final WorkoutEventRepository eventRepository;
-    private final UserSubscriptionRepository userSubscriptionRepository;
 
-    public WorkoutEventService(FastEventRepository repository, FastUserService userService, FastAnswerService answerService, UnknownUserConfig unknownUserConfig, FastEventFactory eventFactory, WorkoutEventRepository eventRepository, UserSubscriptionRepository userSubscriptionRepository) {
-        super(repository, userService, answerService, unknownUserConfig, eventFactory);
+    public WorkoutEventService(FastEventRepository repository, FastUserService userService, FastAnswerService answerService, UnknownUserConfig unknownUserConfig, FastEventFactory eventFactory, WorkoutEventRepository eventRepository, UserSubscriptionRepository userSubscriptionRepository, UserSubscriptionRepository subscriptionRepository) {
+        super(repository, userService, answerService, unknownUserConfig, eventFactory, subscriptionRepository);
         this.eventRepository = eventRepository;
-        this.userSubscriptionRepository = userSubscriptionRepository;
     }
 
     public void initNextEvent(FastWorkoutEvent event) {

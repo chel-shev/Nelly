@@ -35,7 +35,7 @@ public class FastInquiryServiceImpl<I extends FastInquiry> implements FastInquir
     public I getInquiry(CallbackQuery callbackQuery) {
         String chatId = callbackQuery.getMessage().getChatId().toString();
         Integer messageId = callbackQuery.getMessage().getMessageId();
-        Optional<FastUserEntity> user = userService.getUserByChatId(chatId);
+        Optional<FastUserEntity> user = userService.getFastUserByChatId(chatId);
         if (user.isEmpty())
             throw new FastBotException(answerService.generateAnswer(FastBotCommandLevel.FIRST, unknownUserConfig), chatId);
         var inquiryEntity = getInquiry(chatId, messageId);
@@ -46,7 +46,7 @@ public class FastInquiryServiceImpl<I extends FastInquiry> implements FastInquir
 
     public I getLastInquiry(Message message) {
         String chatId = message.getChatId().toString();
-        Optional<FastUserEntity> user = userService.getUserByChatId(chatId);
+        Optional<FastUserEntity> user = userService.getFastUserByChatId(chatId);
         if (user.isEmpty())
             throw new FastBotException(answerService.generateAnswer(FastBotCommandLevel.FIRST, unknownUserConfig), chatId);
         try {
@@ -64,7 +64,7 @@ public class FastInquiryServiceImpl<I extends FastInquiry> implements FastInquir
         String chatId = message.getChatId().toString();
         var command = commandService.getCommandByLabelOrName(message.getText());
         var inquiry = inquiryFactory.getInquiry(command.getName());
-        Optional<FastUserEntity> user = userService.getUserByChatId(chatId);
+        Optional<FastUserEntity> user = userService.getFastUserByChatId(chatId);
         if (user.isEmpty() && !(inquiry instanceof StartInquiry))
             throw new FastBotException(answerService.generateAnswer(FastBotCommandLevel.FIRST, unknownUserConfig), chatId);
         inquiry.init(fastUtils.getArgs(message.getText()), message.getMessageId(), user.orElseGet(() -> new FastUserEntity(message)), command);
@@ -74,7 +74,7 @@ public class FastInquiryServiceImpl<I extends FastInquiry> implements FastInquir
     public I getKeyboardInquiry(Message message) {
         String chatId = message.getChatId().toString();
         String text = message.getText();
-        Optional<FastUserEntity> user = userService.getUserByChatId(chatId);
+        Optional<FastUserEntity> user = userService.getFastUserByChatId(chatId);
         if (user.isEmpty())
             throw new FastBotException(answerService.generateAnswer(FastBotCommandLevel.FIRST, unknownUserConfig), chatId);
         FastCommandEntity commandByLabel = commandService.getCommandByLabel(text);

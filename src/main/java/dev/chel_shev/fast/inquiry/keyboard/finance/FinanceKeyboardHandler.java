@@ -5,6 +5,7 @@ import dev.chel_shev.fast.type.FastBotCommandLevel;
 import dev.chel_shev.fast.type.FastKeyboardType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
 @RequiredArgsConstructor
@@ -12,9 +13,9 @@ public class FinanceKeyboardHandler extends FastInquiryHandler<FinanceKeyboardIn
 
     private final FinanceKeyboardConfig bdayKeyboardConfig;
     @Override
-    public void executionLogic(FinanceKeyboardInquiry i) {
+    public void executionLogic(FinanceKeyboardInquiry i, Message message) {
         i.setKeyboardType(FastKeyboardType.REPLY);
-        i.setKeyboardButtonList(keyboardService.getButtons(FinanceKeyboardInquiry.class));
+        i.setKeyboardButtons(keyboardService.getButtons(FinanceKeyboardInquiry.class));
 //        i.setAnswerMessage(answerService.generateAnswer());
         i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.FIRST, bdayKeyboardConfig));
     }

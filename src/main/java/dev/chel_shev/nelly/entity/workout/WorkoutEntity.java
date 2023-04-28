@@ -1,5 +1,6 @@
 package dev.chel_shev.nelly.entity.workout;
 
+import dev.chel_shev.fast.entity.FastCommandEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,4 +19,6 @@ public class WorkoutEntity {
     private String fileId;
     private Integer countExercise;
     private LocalTime basicTime = LocalTime.of(8, 0);
+    @ManyToOne
+    private FastCommandEntity command;
 }

@@ -34,13 +34,13 @@ public abstract class InquiryFinanceHandler<IF extends InquiryFinance> extends F
         } else if (fastUtils.getArgs(message.getText()).isEmpty()) {
             i.setAnswerMessage("Выберите счет, с которым будет производится операция:");
             i.setKeyboardType(FastKeyboardType.REPLY);
-            i.setKeyboardButtonList(Arrays.asList("аккаунты"));
+            i.setKeyboardButtons(Arrays.asList("аккаунты"));
         } else {
             AccountEntity account = getAccount(i, message.getText().split(" ")[1]);
             i.setAccount(account);
             i.setAnswerMessage(getTextInfo(i));
             i.setKeyboardType(FastKeyboardType.REPLY);
-            i.setKeyboardButtonList(Arrays.asList("Отмена"));
+            i.setKeyboardButtons(Arrays.asList("Отмена"));
         }
     }
 
@@ -49,7 +49,7 @@ public abstract class InquiryFinanceHandler<IF extends InquiryFinance> extends F
     public IF cancel(IF i) {
         super.cancel(i);
         i.setKeyboardType(FastKeyboardType.REPLY);
-        i.setKeyboardButtonList(Arrays.asList("FINANCE"));
+        i.setKeyboardButtons(Arrays.asList("FINANCE"));
         return i;
     }
 

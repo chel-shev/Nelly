@@ -29,7 +29,7 @@ public class TransferHandler extends InquiryFinanceHandler<TransferInquiryFinanc
     private final TransferConfig transferConfig;
 
     @Override
-    public void executionLogic(TransferInquiryFinance i) {
+    public void executionLogic(TransferInquiryFinance i, Message message) {
         log.info("PROCESS Transfer {}", i);
         try {
             saveTransfer(i);
@@ -44,7 +44,7 @@ public class TransferHandler extends InquiryFinanceHandler<TransferInquiryFinanc
         TransferEntity transferEntity = new TransferEntity(i.getAccountOut(), i.getAccount(), value, LocalDateTime.now());
         transferService.save(transferEntity);
         i.setKeyboardType(FastKeyboardType.REPLY);
-        i.setKeyboardButtonList(Arrays.asList("FINANCE"));
+        i.setKeyboardButtons(Arrays.asList("FINANCE"));
         i.setAnswerMessage(answerService.generateAnswer(FIRST, transferConfig, i.getAccountOut().getInfoString(), i.getAccount().getInfoString()));
         i.setClosed(true);
     }
@@ -61,7 +61,7 @@ public class TransferHandler extends InquiryFinanceHandler<TransferInquiryFinanc
         if (fastUtils.getArgs(message.getText()).isEmpty()) {
             i.setAnswerMessage(answerService.generateAnswer(SECOND, transferConfig));
             i.setKeyboardType(FastKeyboardType.REPLY);
-            i.setKeyboardButtonList(Arrays.asList("аккаунты"));
+            i.setKeyboardButtons(Arrays.asList("аккаунты"));
             return;
         }
         AccountEntity account = getAccount(i, message.getText().split(" ")[1]);
@@ -69,12 +69,12 @@ public class TransferHandler extends InquiryFinanceHandler<TransferInquiryFinanc
             i.setAccount(account);
             i.setAnswerMessage(answerService.generateAnswer(THIRD, transferConfig));
             i.setKeyboardType(FastKeyboardType.REPLY);
-            i.setKeyboardButtonList(Arrays.asList("аккаунты"));
+            i.setKeyboardButtons(Arrays.asList("аккаунты"));
         } else {
             i.setAccountOut(account);
             i.setAnswerMessage(answerService.generateAnswer(FOURTH, transferConfig));
             i.setKeyboardType(FastKeyboardType.REPLY);
-            i.setKeyboardButtonList(Arrays.asList("Отмена"));
+            i.setKeyboardButtons(Arrays.asList("Отмена"));
         }
     }
 

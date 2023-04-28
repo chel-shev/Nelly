@@ -4,6 +4,7 @@ import dev.chel_shev.nelly.entity.users.UserEntity;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
 import dev.chel_shev.nelly.exception.NellyException;
 import dev.chel_shev.nelly.type.DayOfWeekRu;
+import dev.chel_shev.nelly.type.PeriodType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 public class DateTimeUtils {
@@ -75,6 +77,14 @@ public class DateTimeUtils {
         } catch (Exception e) {
             throw new NellyException("Проверь дату, мне кажется ты ошибся");
         }
+    }
+
+    public static List<String> getPeriodList(){
+        return Arrays.stream(PeriodType.values()).map(PeriodType::getLabel).toList();
+    }
+
+    public static List<String> getDayOfWeek(){
+        return Arrays.stream(DayOfWeekRu.values()).map(DayOfWeekRu::getShortName).toList();
     }
 
     public static boolean isNextHour(LocalDateTime dateTime, ZoneOffset offset) {

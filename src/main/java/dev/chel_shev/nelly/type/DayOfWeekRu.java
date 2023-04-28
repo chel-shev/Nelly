@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum DayOfWeekRu{
+public enum     DayOfWeekRu{
 
     MONDAY("пн.", "Понедельник"),
     TUESDAY("вт.", "Вторник"),

@@ -51,7 +51,7 @@ public class FastCommandService {
     }
 
     public List<FastCommandEntity> getAllSubscription() {
-        return repository.findAllByTypeIn(Arrays.asList(FastInquiryType.COMMAND_SUBSCRIPTION, FastInquiryType.KEYBOARD_SUBSCRIPTION));
+        return repository.findAllByTypeIn(Arrays.asList(FastInquiryType.KEYBOARD_SUBSCRIPTION));
     }
 
     static class CommandServiceException extends RuntimeException {
