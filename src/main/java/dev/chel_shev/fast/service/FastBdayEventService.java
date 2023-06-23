@@ -3,6 +3,8 @@ package dev.chel_shev.fast.service;
 import dev.chel_shev.fast.entity.event.FastBdayEventEntity;
 import dev.chel_shev.fast.entity.event.FastEventEntity;
 import dev.chel_shev.fast.entity.user.FastUserEntity;
+import dev.chel_shev.fast.event.FastEvent;
+import dev.chel_shev.fast.event.FastEventHandler;
 import dev.chel_shev.fast.event.bday.BdayEvent;
 import dev.chel_shev.fast.repository.event.BdayEventRepository;
 import dev.chel_shev.nelly.entity.users.UserEntity;
@@ -43,6 +45,11 @@ public class FastBdayEventService implements FastEventService<BdayEvent> {
     }
 
     @Override
+    public BdayEvent getEvent(String callbackQuery) {
+        return null;
+    }
+
+    @Override
     public Long save(BdayEvent bdayEvent) {
         return null;
     }
@@ -62,6 +69,11 @@ public class FastBdayEventService implements FastEventService<BdayEvent> {
         LocalDateTime eventDateTime = entity.getDateTime();
         entity.setDateTime(eventDateTime.plusYears(1));
         repository.save((FastBdayEventEntity) entity);
+    }
+
+    @Override
+    public void initNextEvent(BdayEvent bdayEvent) {
+
     }
 
     public List<String> getAllBdayName(FastUserEntity userEntity) {

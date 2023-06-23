@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 import static java.util.Objects.nonNull;
 
-@Slf4j
+@Slf4j(topic = "inquiry")
 @Getter
 @Setter
 @Component

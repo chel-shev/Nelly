@@ -1,9 +1,14 @@
 package dev.chel_shev.fast.scheduler;
 
-import dev.chel_shev.fast.FastBotMarkdown;
+import dev.chel_shev.fast.FastMarkdown;
 import dev.chel_shev.fast.FastSender;
 import dev.chel_shev.fast.entity.user.FastUserEntity;
+import dev.chel_shev.fast.event.FastEvent;
+import dev.chel_shev.fast.event.youtube.YoutubeEvent;
+import dev.chel_shev.fast.inquiry.keyboard.common.CommonKeyboardInquiry;
+import dev.chel_shev.fast.service.FastKeyboardService;
 import dev.chel_shev.fast.service.FastUserService;
+import dev.chel_shev.fast.type.FastKeyboardType;
 import dev.chel_shev.nelly.entity.youtube.YouTubeCacheEntity;
 import dev.chel_shev.nelly.entity.youtube.YouTubeEntity;
 import dev.chel_shev.nelly.service.YouTubeService;
@@ -17,17 +22,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class YouTubeScheduler {
 
+    private final FastKeyboardService keyboardService;
     private final YouTubeService youTubeService;
     private final FastUserService userService;
     private final FastSender sender;
@@ -43,6 +48,9 @@ public class YouTubeScheduler {
         List<String> all = youTubeService.getAllVideoIds();
         List<SubscriptionDTO> subs = subscriptionsApi.getSubscriptions();
         FastUserEntity user = userService.getFastUserByName("chel_shev");
+        ZoneOffset zoneOffset = user.getZoneOffset();
+        GregorianCalendar calendar = GregorianCalendar.from(LocalDateTime.now().atZone(zoneOffset));
+        boolean mute = calendar.get(Calendar.HOUR_OF_DAY) > 0 && calendar.get(Calendar.HOUR_OF_DAY) < 8;
         subs.forEach(e -> {
             if (subsCashed.containsKey(e.getChannelId())) {
                 YouTubeEntity youTubeEntity = subsCashed.get(e.getChannelId());
@@ -58,11 +66,14 @@ public class YouTubeScheduler {
                                 return after;
                             })
                             .forEach(v -> {
-                                videos.append(FastBotMarkdown.link(indexes.next(), URL_VIDEO + v.getVideoId())).append(", ");
+                                videos.append(FastMarkdown.link(indexes.next(), URL_VIDEO + v.getVideoId())).append(", ");
                                 youTubeService.saveYoutubeCache(new YouTubeCacheEntity(v.getVideoId(), v.getPublishedAt()));
                             });
-                    if (!videos.isEmpty())
-                        sender.sendMessage(user.getChatId(),e.getTitle() + ": " + videos.substring(0, videos.length() - 2), true);
+                    if (!videos.isEmpty()) {
+//                        sender.sendMessage(user.getChatId(),e.getTitle() + ": " + videos.substring(0, videos.length() - 2), FastKeyboardType.REPLY, keyboardService.getButtons(CommonKeyboardInquiry.class), true);
+                        FastEvent event = new YoutubeEvent();
+                        sender.sendMessage(user.getChatId(), e.getTitle() + ": " + videos.substring(0, videos.length() - 2), FastKeyboardType.REPLY, keyboardService.getButtons(CommonKeyboardInquiry.class), true, mute);
+                    }
                     youTubeService.updateLastPublished(e, lastVideos.get(0));
                 }
             } else {

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface FastBotInquiryRepository extends JpaRepository<FastInquiryEntity, Long> {
+public interface FastInquiryRepository extends JpaRepository<FastInquiryEntity, Long> {
     Optional<FastInquiryEntity> findTopByUser_ChatIdOrderByDateDesc(String chatId);
     List<FastInquiryEntity> findAllByUser(FastUserEntity userEntity);
     Optional<FastInquiryEntity> findByUser_ChatIdAndAnswerMessageId(String chatId, Integer answerMessageId);

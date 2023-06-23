@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <jmxConfigurator/>
+    <appender name="all" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/nelly.log</file>
+        <encoder>
+            <pattern>[%d{yyyy.MM.dd HH:mm:ss.SSS}] [%-5level] [%thread] [%class.%method\(\) at line %line]\t\t%message%n%xException{full, exceptionOccurrenceEvaluator}
+            </pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/archive/nelly_%d{yyyy-MM-dd}_%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>1MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+    <appender name="event" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/event.log</file>
+        <encoder>
+            <pattern>[%d{yyyy.MM.dd HH:mm:ss.SSS}] [%-5level] [%thread] [%class.%method\(\) at line %line]\t\t%message%n%xException{full, exceptionOccurrenceEvaluator}
+            </pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/archive/event_%d{yyyy-MM-dd}_%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>1MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+    <appender name="inquiry" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/inquiry.log</file>
+        <encoder>
+            <pattern>[%d{yyyy.MM.dd HH:mm:ss.SSS}] [%-5level] [%thread] [%class.%method\(\) at line %line]\t\t%message%n%xException{full, exceptionOccurrenceEvaluator}
+            </pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/archive/inquiry_%d{yyyy-MM-dd}_%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>1MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="all"/>
+    </root>
+    <logger name="event">
+        <appender-ref ref="event"/>
+        <level value="debug"/>
+    </logger>
+    <logger name="inquiry">
+        <appender-ref ref="inquiry"/>
+        <level value="debug"/>
+    </logger>
+</Configuration>

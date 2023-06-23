@@ -3,7 +3,6 @@ package dev.chel_shev.fast.event.workout;
 import dev.chel_shev.fast.entity.event.FastWorkoutEventEntity;
 import dev.chel_shev.fast.event.FastEventHandler;
 import dev.chel_shev.fast.inquiry.keyboard.common.CommonKeyboardInquiry;
-import dev.chel_shev.fast.service.WorkoutEventService;
 import dev.chel_shev.fast.type.FastBotCommandLevel;
 import dev.chel_shev.fast.type.FastKeyboardType;
 import dev.chel_shev.nelly.entity.workout.ExerciseEntity;
@@ -16,7 +15,6 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 
 import static dev.chel_shev.nelly.type.KeyboardType.*;
 import static java.util.Objects.isNull;
@@ -28,7 +26,6 @@ public class FastWorkoutHandler extends FastEventHandler<FastWorkoutEvent> {
 
     private final FastWorkoutConfig workoutConfig;
     private final WorkoutService workoutService;
-    private final WorkoutEventService workoutEventService;
 
     @Override
     public void inlinePreparationLogic(FastWorkoutEvent e, CallbackQuery callbackQuery) {
@@ -59,7 +56,7 @@ public class FastWorkoutHandler extends FastEventHandler<FastWorkoutEvent> {
 
     private void setWorkoutInfo(FastWorkoutEvent e) {
         e.setKeyboardType(FastKeyboardType.INLINE);
-        e.setKeyboardButtons(workoutEventService.getWorkoutProcess(e));
+        e.setKeyboardButtons(workoutService.getWorkoutProcess(e));
         ExerciseEntity exercise = workoutService.getExercise(e.getWorkout().getId(), e.getStep());
         e.setAnswerMessage(workoutService.getWorkoutTitle(exercise, e.getWorkout().getCountExercise(), e.getStep(), e.getLevel()));
         if (null != exercise.getFileId())

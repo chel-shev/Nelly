@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 
 @Component
-@Slf4j
+@Slf4j(topic = "inquiry")
 @RequiredArgsConstructor
 public class StopHandler extends FastCommandInquiryHandler<StopInquiry> {
 

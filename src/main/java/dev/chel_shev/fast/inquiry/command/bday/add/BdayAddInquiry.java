@@ -18,7 +18,7 @@ import static java.util.Objects.isNull;
 
 @Getter
 @Setter
-@Slf4j
+@Slf4j(topic = "inquiry")
 @FastInquiryId(command = "/bday_add", type = FastInquiryType.COMMAND, label = "\uD83D\uDCC6 Добавить")
 public class BdayAddInquiry extends FastCommandInquiry {
 

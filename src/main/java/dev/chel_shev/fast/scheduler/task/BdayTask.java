@@ -1,11 +1,12 @@
 package dev.chel_shev.fast.scheduler.task;
 
-import dev.chel_shev.fast.FastBotMarkdown;
+import dev.chel_shev.fast.FastMarkdown;
 import dev.chel_shev.fast.FastSender;
 import dev.chel_shev.fast.event.bday.BdayEvent;
 import dev.chel_shev.fast.service.FastEventService;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.Date;
 import java.util.TimerTask;
 
 public class BdayTask extends TimerTask {
@@ -25,7 +26,8 @@ public class BdayTask extends TimerTask {
     @Override
     public void run() {
         try {
-            Message message = sender.sendMessage(chatId, FastBotMarkdown.bolt(event.getName()) + " празднует свой День Рождения, поздравь, если уместно!", true);
+            String textMessage = FastMarkdown.bolt(event.getName()) + " празднует свой День Рождения, поздравь, если уместно!";
+            Message message = sender.sendMessage(chatId, textMessage, true, false);
             event.setAnswerMessageId(message.getMessageId());
             eventService.updateEvent(event.getEntity());
         } catch (Exception ex) {

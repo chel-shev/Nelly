@@ -27,11 +27,16 @@ public class PlaylistApi {
     public List<VideoDTO> getLastVideos(String playlistId) {
         Webb webb = Webb.create();
         log.debug("PLAYLIST_ITEMS " + QUOTA);
-        Response<JSONObject> response = webb.get(URL_PLAYLIST_ITEMS)
-                .params(configurer.getParamsSearch(playlistId))
-                .ensureSuccess()
-                .asJsonObject();
-        return createVideo(response.getBody());
+        try {
+            Response<JSONObject> response = webb.get(URL_PLAYLIST_ITEMS)
+                    .params(configurer.getParamsSearch(playlistId))
+                    .ensureSuccess()
+                    .asJsonObject();
+            return createVideo(response.getBody());
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+        return List.of();
     }
 
     private List<VideoDTO> createVideo(JSONObject jsonVideos) throws JSONException {

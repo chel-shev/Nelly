@@ -42,7 +42,7 @@ public class FastUtils {
                     .replace(" ", "")
                     .trim()) * 100);
         } catch (NumberFormatException e) {
-            throw new FastBotException(i.getUser().getChatId(), "Неверный формат!");
+            throw new FastBotException(i.getUser().getChatId(), "Неверный формат\\!");
         }
     }
 

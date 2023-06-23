@@ -15,7 +15,7 @@ import static java.util.Objects.isNull;
 
 @Getter
 @Setter
-@Slf4j
+@Slf4j(topic = "inquiry")
 @FastInquiryId(command = "/subscription_unsubscribe", type = FastInquiryType.COMMAND, label = "Отписаться")
 public class SubscriptionUnsubscribeInquiry extends FastCommandInquiry {
 

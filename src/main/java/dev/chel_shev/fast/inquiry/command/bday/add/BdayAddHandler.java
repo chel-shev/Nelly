@@ -1,5 +1,6 @@
 package dev.chel_shev.fast.inquiry.command.bday.add;
 
+import dev.chel_shev.fast.FastMarkdown;
 import dev.chel_shev.fast.entity.event.FastBdayEventEntity;
 import dev.chel_shev.fast.event.FastEvent;
 import dev.chel_shev.fast.inquiry.command.FastCommandInquiryHandler;
@@ -24,7 +25,7 @@ import static dev.chel_shev.fast.FastUtils.getLastArgsPast;
 import static java.util.Arrays.asList;
 
 @Service
-@Slf4j
+@Slf4j(topic = "inquiry")
 @RequiredArgsConstructor
 public class BdayAddHandler extends FastCommandInquiryHandler<BdayAddInquiry> {
 
@@ -63,7 +64,7 @@ public class BdayAddHandler extends FastCommandInquiryHandler<BdayAddInquiry> {
     @Override
     public void preparationLogic(BdayAddInquiry i, Message message) {
         if (fastUtils.getArgs(message.getText()).isEmpty()) {
-            i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.THIRD, bdayAddConfig));
+            i.setAnswerMessage(answerService.generateAnswer(FastBotCommandLevel.THIRD, bdayAddConfig, FastMarkdown.code("дд.мм.гггг"), FastMarkdown.code("дд.мм")));
             i.setKeyboardType(FastKeyboardType.REPLY);
             i.setKeyboardButtons(keyboardService.getButton(CancelKeyboardInquiry.class));
         } else {

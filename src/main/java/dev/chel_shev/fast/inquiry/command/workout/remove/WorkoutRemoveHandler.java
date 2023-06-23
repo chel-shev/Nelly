@@ -1,18 +1,11 @@
 package dev.chel_shev.fast.inquiry.command.workout.remove;
 
-import dev.chel_shev.fast.entity.FastCommandEntity;
-import dev.chel_shev.fast.entity.event.FastWorkoutEventEntity;
 import dev.chel_shev.fast.inquiry.command.FastCommandInquiryHandler;
-import dev.chel_shev.fast.inquiry.command.bday.remove.BdayRemoveConfig;
-import dev.chel_shev.fast.inquiry.command.bday.remove.BdayRemoveInquiry;
-import dev.chel_shev.fast.inquiry.command.workout.add.WorkoutAddInquiry;
 import dev.chel_shev.fast.service.FastCommandService;
 import dev.chel_shev.fast.service.FastUserSubscriptionService;
 import dev.chel_shev.fast.service.WorkoutEventService;
 import dev.chel_shev.fast.type.FastBotCommandLevel;
 import dev.chel_shev.fast.type.FastKeyboardType;
-import dev.chel_shev.fast.type.FastPeriodType;
-import dev.chel_shev.fast.type.SubscriptionType;
 import dev.chel_shev.nelly.entity.workout.WorkoutEntity;
 import dev.chel_shev.nelly.service.WorkoutService;
 import dev.chel_shev.nelly.util.DateTimeUtils;
@@ -22,13 +15,11 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static java.util.Objects.isNull;
 
-@Slf4j
+@Slf4j(topic = "inquiry")
 @Service
 @RequiredArgsConstructor
 public class WorkoutRemoveHandler extends FastCommandInquiryHandler<WorkoutRemoveInquiry> {

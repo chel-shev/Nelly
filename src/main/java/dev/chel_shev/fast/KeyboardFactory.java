@@ -1,4 +1,4 @@
-package dev.chel_shev.nelly.bot.utils;
+package dev.chel_shev.fast;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

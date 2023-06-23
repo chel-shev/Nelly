@@ -6,7 +6,8 @@ import dev.chel_shev.fast.event.FastEventHandlerFactory;
 import dev.chel_shev.fast.inquiry.FastInquiry;
 import dev.chel_shev.fast.inquiry.FastInquiryHandler;
 import dev.chel_shev.fast.inquiry.FastInquiryHandlerFactory;
-import dev.chel_shev.fast.service.FastCommonEventService;
+import dev.chel_shev.fast.service.FastEventServiceImpl;
+import dev.chel_shev.fast.service.FastEventService;
 import dev.chel_shev.fast.service.FastInquiryService;
 import jakarta.annotation.PostConstruct;
 import lombok.Data;
@@ -30,19 +31,19 @@ public class FastBot<I extends FastInquiry, E extends FastEvent> extends Telegra
 
     private final FastSender sender;
     private final FastInquiryService<I> inquiryService;
-    private final FastCommonEventService<E> eventService;
-    private final FastInquiryHandlerFactory<I> handlerFactory;
+    private final FastEventService<E> eventService;
+    private final FastInquiryHandlerFactory<I> inquiryHandlerFactory;
     private final FastEventHandlerFactory<E> eventHandlerFactory;
 
     @Value("${bot.api.username}")
     private String botUsername;
 
-    FastBot(@Value("${bot.api.token}") String botToken, FastSender sender, FastInquiryService<I> inquiryService, FastCommonEventService<E> eventService, FastInquiryHandlerFactory<I> handlerFactory, FastEventHandlerFactory<E> eventHandlerFactory) {
+    FastBot(@Value("${bot.api.token}") String botToken, FastSender sender, FastInquiryService<I> inquiryService, FastEventServiceImpl<E> eventService, FastInquiryHandlerFactory<I> inquiryHandlerFactory, FastEventHandlerFactory<E> eventHandlerFactory) {
         super(botToken);
         this.sender = sender;
         this.inquiryService = inquiryService;
         this.eventService = eventService;
-        this.handlerFactory = handlerFactory;
+        this.inquiryHandlerFactory = inquiryHandlerFactory;
         this.eventHandlerFactory = eventHandlerFactory;
     }
 
@@ -69,37 +70,37 @@ public class FastBot<I extends FastInquiry, E extends FastEvent> extends Telegra
                 }
             }
         } catch (FastBotException ex) {
-            sender.sendMessage(ex.getChatId(), ex.getMessage(), true);
+            sender.sendMessage(ex.getChatId(), ex.getMessage(), true, false);
         }
     }
 
     public void processMessage(Message message) {
         Message reply;
         I i = inquiryService.getInquiry(message);
-        FastInquiryHandler<I> inquiryHandler = handlerFactory.getHandler(i.getClass());
+        FastInquiryHandler<I> inquiryHandler = inquiryHandlerFactory.getHandler(i.getClass());
         try {
             if (i.isNotReadyForExecute()) i = inquiryHandler.prepare(i, message);
             if (!i.isNotReadyForExecute()) i = inquiryHandler.execute(i, message);
-            reply = sender.sendMessage(i.getUser().getChatId(), i.getAnswerMessage(), i.getKeyboardType(), i.getKeyboardButtons(), true);
+            reply = sender.sendMessage(i.getUser().getChatId(), i.getAnswerMessage(), i.getKeyboardType(), i.getKeyboardButtons(), true, false);
         } catch (FastBotException ex) {
-            reply = sender.sendMessage(ex.getChatId(), ex.getMessage(), true);
+            reply = sender.sendMessage(ex.getChatId(), ex.getMessage(), true, false);
         }
         inquiryHandler.updateInquiry(i, reply);
     }
 
     public void processCallback(CallbackQuery callbackQuery) {
         I inquiry = inquiryService.getInquiry(callbackQuery);
-        FastInquiryHandler<I> fastInquiryHandler = handlerFactory.getHandler(inquiry.getClass());
+        FastInquiryHandler<I> fastInquiryHandler = inquiryHandlerFactory.getHandler(inquiry.getClass());
         try {
             if (inquiry.isNotReadyForExecute()) inquiry = fastInquiryHandler.inlinePrepare(inquiry, callbackQuery);
             if (!inquiry.isNotReadyForExecute()) {
                 inquiry = fastInquiryHandler.inlineExecute(inquiry, callbackQuery);
                 sender.deleteMessage(inquiry.getUser().getChatId(), inquiry.getAnswerMessageId());
-                sender.sendMessage(inquiry.getUser().getChatId(), inquiry.getAnswerMessage(), true);
+                sender.sendMessage(inquiry.getUser().getChatId(), inquiry.getAnswerMessage(), true, false);
             } else
                 sender.updateMessage(inquiry.getUser().getChatId(), inquiry.getAnswerMessageId(), inquiry.getAnswerMessage(), inquiry.getKeyboardType(), inquiry.getKeyboardButtons(), true);
         } catch (FastBotException ex) {
-            sender.sendMessage(ex.getChatId(), ex.getMessage(), true);
+            sender.sendMessage(ex.getChatId(), ex.getMessage(), true, false);
         }
     }
 
@@ -111,15 +112,15 @@ public class FastBot<I extends FastInquiry, E extends FastEvent> extends Telegra
             if (event.isNotReadyForExecute()) event = eventHandler.inlinePrepare(event, callbackQuery);
             if (!event.isNotReadyForExecute()) event = eventHandler.inlineExecute(event, callbackQuery);
             if (event.hasMedia() && event.getFile().isNew())
-                reply = sender.sendPhoto(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessage(), event.getFile(), event.getKeyboardType(), event.getKeyboardButtons());
+                reply = sender.sendPhoto(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessage(), event.getFile(), event.getKeyboardType(), event.getKeyboardButtons(), true);
             if (event.hasMedia())
-                sender.updatePhoto(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessageId(), event.getAnswerMessage(), event.getFile(), event.getKeyboardType(), event.getKeyboardButtons());
+                sender.updatePhoto(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessageId(), event.getAnswerMessage(), event.getFile(), event.getKeyboardType(), event.getKeyboardButtons(), true);
             else {
                 sender.deleteMessage(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessageId());
-                sender.sendMessage(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessage(), true);
+                sender.sendMessage(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessage(), true, false);
             }
         } catch (FastBotException ex) {
-            reply = sender.sendMessage(ex.getChatId(), ex.getMessage(), true);
+            reply = sender.sendMessage(ex.getChatId(), ex.getMessage(), true, false);
         }
         eventHandler.updateEvent(event, reply);
     }

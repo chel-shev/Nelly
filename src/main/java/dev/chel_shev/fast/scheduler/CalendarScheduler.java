@@ -4,10 +4,8 @@ import dev.chel_shev.fast.FastBotResource;
 import dev.chel_shev.fast.FastSender;
 import dev.chel_shev.fast.entity.event.FastEventEntity;
 import dev.chel_shev.fast.entity.user.FastUserEntity;
-import dev.chel_shev.fast.entity.user.FastUserSubscriptionEntity;
 import dev.chel_shev.fast.repository.FastEventRepository;
 import dev.chel_shev.fast.repository.FastUserRepository;
-import dev.chel_shev.fast.service.FastUserSubscriptionService;
 import dev.chel_shev.nelly.util.DateTimeUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,20 +26,20 @@ public class CalendarScheduler {
     private final FastEventRepository eventRepository;
     private final FastSender sender;
     private final FastBotResource resources;
-    private final TaskCreator taskCreator;
+    private final TaskEventCreator taskEventCreator;
 
     @Scheduled(cron = DateTimeUtils.EVERY_MINUTE)
     public void schedule() {
         log.debug("CalendarScheduler is started!");
-        userRepository.findAll().forEach(this::createTasks);
+        userRepository.findAll().forEach(this::createEventTasks);
         log.debug("CalendarScheduler is finished!");
     }
 
-    private void createTasks(FastUserEntity user) {
+    private void createEventTasks(FastUserEntity user) {
         List<FastEventEntity> calendarList = eventRepository.findAllByUser_FastUserAndClosed(user, false);
         calendarList.forEach(event -> {
             if (isNextMinute(event.getDateTime(), ZoneOffset.of("+3")))
-                taskCreator.create(event, event.getUser(), sender, resources);
+                taskEventCreator.create(event, event.getUser(), sender, resources);
         });
     }
 }

@@ -1,0 +1,35 @@
+package dev.chel_shev.fast.event.language;
+
+import dev.chel_shev.fast.entity.WordEntity;
+import dev.chel_shev.fast.entity.event.FastEventEntity;
+import dev.chel_shev.fast.entity.event.FastWordEventEntity;
+import dev.chel_shev.fast.entity.user.FastUserSubscriptionEntity;
+import dev.chel_shev.fast.event.FastEvent;
+import dev.chel_shev.fast.event.FastEventId;
+import dev.chel_shev.fast.type.FastStudyTimeType;
+import dev.chel_shev.fast.type.FastStudyTimelineType;
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+@FastEventId(command = "/language")
+public class FastLanguageEvent extends FastEvent {
+
+    private WordEntity word;
+    private FastStudyTimeType time;
+    private FastStudyTimelineType timeline;
+
+
+    @Override
+    public void init(FastEventEntity event, FastUserSubscriptionEntity user) {
+        super.init(event, user);
+        this.word = ((FastWordEventEntity) event).getWord();
+        this.time = ((FastWordEventEntity) event).getTime();
+        this.timeline = ((FastWordEventEntity) event).getTimeline();
+    }
+
+    public FastEventEntity getEntity() {
+        return new FastWordEventEntity(this);
+    }
+}

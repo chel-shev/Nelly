@@ -9,15 +9,12 @@ import dev.chel_shev.fast.type.FastPeriodType;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
-import org.telegram.telegrambots.meta.api.objects.media.InputMedia;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Slf4j
+@Slf4j(topic = "event")
 public abstract class FastEvent {
 
     private Long id;

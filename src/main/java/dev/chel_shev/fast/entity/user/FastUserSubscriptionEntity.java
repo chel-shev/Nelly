@@ -1,6 +1,7 @@
 package dev.chel_shev.fast.entity.user;
 
 import dev.chel_shev.fast.entity.FastCommandEntity;
+import dev.chel_shev.fast.type.SubscriptionStatusType;
 import dev.chel_shev.fast.type.SubscriptionType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,9 @@ public class FastUserSubscriptionEntity {
 
     @Enumerated(EnumType.STRING)
     private SubscriptionType type;
+    @Enumerated(EnumType.STRING)
+    private SubscriptionStatusType status;
+
     private String name;
 
     @Data

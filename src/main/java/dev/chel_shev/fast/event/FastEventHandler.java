@@ -1,6 +1,7 @@
 package dev.chel_shev.fast.event;
 
 import dev.chel_shev.fast.FastBotResource;
+import dev.chel_shev.fast.repository.FastEventRepository;
 import dev.chel_shev.fast.service.FastAnswerService;
 import dev.chel_shev.fast.service.FastEventService;
 import dev.chel_shev.fast.service.FastKeyboardService;
@@ -97,7 +98,7 @@ public abstract class FastEventHandler<E extends FastEvent> {
     }
 
     @Autowired
-    public final void setEventService(@Qualifier("fastCommonEventService") FastEventService<E> eventService) {
+    public final void setEventService(@Qualifier("fastEventServiceImpl") FastEventService<E> eventService) {
         this.eventService = eventService;
     }
 

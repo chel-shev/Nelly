@@ -1,16 +1,19 @@
 package dev.chel_shev.fast.service;
 
 import dev.chel_shev.fast.FastBotException;
-import dev.chel_shev.fast.entity.user.FastUserEntity;
 import dev.chel_shev.fast.entity.event.FastEventEntity;
+import dev.chel_shev.fast.entity.user.FastUserEntity;
 import dev.chel_shev.fast.entity.user.FastUserSubscriptionEntity;
 import dev.chel_shev.fast.event.FastEvent;
 import dev.chel_shev.fast.event.FastEventFactory;
+import dev.chel_shev.fast.event.FastEventHandler;
+import dev.chel_shev.fast.event.FastEventHandlerFactory;
 import dev.chel_shev.fast.inquiry.command.unknownUser.UnknownUserConfig;
 import dev.chel_shev.fast.repository.FastEventRepository;
 import dev.chel_shev.fast.repository.UserSubscriptionRepository;
 import dev.chel_shev.fast.type.SubscriptionType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -24,15 +27,19 @@ import static dev.chel_shev.fast.type.FastBotCommandLevel.FIRST;
 @Service
 @RequiredArgsConstructor
 @Primary
-public class FastCommonEventService<E extends FastEvent> implements FastEventService<E> {
+public class FastEventServiceImpl<E extends FastEvent> implements FastEventService<E> {
 
     private final FastEventRepository repository;
     private final FastUserService userService;
     private final FastAnswerService answerService;
     private final UnknownUserConfig unknownUserConfig;
-    private final FastEventFactory<E> eventFactory;
     private final UserSubscriptionRepository userSubscriptionRepository;
+    protected FastEventFactory<E> eventFactory;
 
+    @Autowired
+    public final void setFastEventFactory(FastEventFactory<E> eventFactory) {
+        this.eventFactory = eventFactory;
+    }
 
     public void removeEvent() {
 //        List<FastBdayEventEntity> bdayEntities = bdayEventRepository.findByNameAndUserSubscriptionUser(name, user);
@@ -54,6 +61,10 @@ public class FastCommonEventService<E extends FastEvent> implements FastEventSer
     }
 
     @Override
+    public void initNextEvent(E e) {
+    }
+
+    @Override
     public boolean isExist(String name, FastUserEntity userEntity, LocalDateTime date) {
         return false;
     }
@@ -64,9 +75,13 @@ public class FastCommonEventService<E extends FastEvent> implements FastEventSer
             throw new FastBotException(answerService.generateAnswer(FIRST, unknownUserConfig));
         var eventEntity = repository.findByUser_FastUserAndAnswerMessageId(user.get(), callbackQuery.getMessage().getMessageId()).orElseThrow(() -> new FastBotException("Event not found!"));
         FastUserSubscriptionEntity subscriptionEntity = userSubscriptionRepository.findByFastUser_ChatIdAndCommandAndTypeIn(user.get().getChatId(), eventEntity.getUser().getCommand(), Collections.singleton(SubscriptionType.MAIN));
-        var event = eventFactory.getEvent(eventEntity.getUser().getCommand().getName());
+        var event = getEvent(eventEntity.getUser().getCommand().getName());
         event.init(eventEntity, subscriptionEntity);
         return event;
+    }
+
+    public E getEvent(String command){
+        return eventFactory.getEvent(command);
     }
 
     public Long save(E e) {

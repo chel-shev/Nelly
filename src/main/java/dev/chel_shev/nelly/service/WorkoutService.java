@@ -1,8 +1,9 @@
 package dev.chel_shev.nelly.service;
 
-import dev.chel_shev.fast.FastBotMarkdown;
+import dev.chel_shev.fast.FastMarkdown;
 import dev.chel_shev.fast.entity.FastCommandEntity;
 import dev.chel_shev.fast.entity.user.FastUserSubscriptionEntity;
+import dev.chel_shev.fast.event.workout.FastWorkoutEvent;
 import dev.chel_shev.fast.repository.UserSubscriptionRepository;
 import dev.chel_shev.fast.service.FastCommandService;
 import dev.chel_shev.fast.type.SubscriptionType;
@@ -13,10 +14,13 @@ import dev.chel_shev.nelly.repository.workout.WorkoutRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static dev.chel_shev.nelly.type.KeyboardType.*;
+import static dev.chel_shev.nelly.type.KeyboardType.INLINE_DONE;
 import static java.util.Objects.isNull;
 
 @Service
@@ -57,14 +61,33 @@ public class WorkoutService {
     }
 
     public String getWorkoutTitle(ExerciseEntity exercise, int countExercise, int step, int level) {
-        return FastBotMarkdown.code((step + 1) + " / " + countExercise) + " | " +
-                FastBotMarkdown.code(exercise.getName()) +
-                FastBotMarkdown.code((!isNull(exercise.getComment()) ? ("(" + exercise.getComment() + ")") : "")) + " | " +
-                FastBotMarkdown.code(exercise.getReps() * level + exercise.getType().getLabel());
+        return FastMarkdown.code((step + 1) + " / " + countExercise) + " | " +
+                FastMarkdown.code(exercise.getName()) +
+                FastMarkdown.code((!isNull(exercise.getComment()) ? ("(" + exercise.getComment() + ")") : "")) + " | " +
+                FastMarkdown.code(exercise.getReps() * level + exercise.getType().getLabel());
     }
 
     public ExerciseEntity getExercise(Long id, Integer step) {
         List<WorkoutExerciseEntity> exerciseList = exerciseService.getExerciseList(id);
         return exerciseList.get(step).getExercise();
+    }
+
+    public List<String> getWorkoutProcess(FastWorkoutEvent event) {
+        List<String> buttons = new ArrayList<>();
+        int amountExercises = event.getWorkout().getCountExercise();
+        int step = event.getStep();
+        buttons.add(INLINE_CANCEL.label);
+        if (amountExercises > 0 && step == -1) {
+            buttons.add(INLINE_START.label);
+        } else if (amountExercises > step + 1 && step > 0) {
+            buttons.add(INLINE_PREV.label);
+            buttons.add(INLINE_NEXT.label);
+        } else if (amountExercises > step + 1) {
+            buttons.add(INLINE_NEXT.label);
+        } else {
+            buttons.add(INLINE_PREV.label);
+            buttons.add(INLINE_DONE.label);
+        }
+        return buttons;
     }
 }

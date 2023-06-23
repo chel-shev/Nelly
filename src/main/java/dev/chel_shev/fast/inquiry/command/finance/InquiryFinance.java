@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import static java.util.Objects.isNull;
 
-@Slf4j
+@Slf4j(topic = "inquiry")
 @Getter
 @Setter
 public abstract class InquiryFinance extends FastCommandInquiry {

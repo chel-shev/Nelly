@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Slf4j
+@Slf4j(topic = "inquiry")
 @NoArgsConstructor
 public abstract class FastInquiry {
 
@@ -54,6 +54,12 @@ public abstract class FastInquiry {
         log.info("CREATE {}", this);
     }
 
+    public void init(FastUserEntity userEntity, FastCommandEntity commandEntity) {
+        this.date = LocalDateTime.now();
+        this.user = userEntity;
+        this.command = commandEntity;
+        log.info("CREATE {}", this);
+    }
 
     public String getArgFromMassage(String message, int index) {
         try {

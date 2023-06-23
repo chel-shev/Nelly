@@ -9,7 +9,7 @@ import dev.chel_shev.fast.inquiry.FastInquiry;
 import dev.chel_shev.fast.inquiry.FastInquiryFactory;
 import dev.chel_shev.fast.inquiry.command.start.StartInquiry;
 import dev.chel_shev.fast.inquiry.command.unknownUser.UnknownUserConfig;
-import dev.chel_shev.fast.repository.FastBotInquiryRepository;
+import dev.chel_shev.fast.repository.FastInquiryRepository;
 import dev.chel_shev.fast.type.FastBotCommandLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FastInquiryServiceImpl<I extends FastInquiry> implements FastInquiryService<I> {
 
-    private final FastBotInquiryRepository repository;
+    private final FastInquiryRepository repository;
     private final FastInquiryFactory<I> inquiryFactory;
     private final FastCommandService commandService;
     private final FastKeyboardService keyboardService;
@@ -39,7 +39,7 @@ public class FastInquiryServiceImpl<I extends FastInquiry> implements FastInquir
         if (user.isEmpty())
             throw new FastBotException(answerService.generateAnswer(FastBotCommandLevel.FIRST, unknownUserConfig), chatId);
         var inquiryEntity = getInquiry(chatId, messageId);
-        var inquiry = inquiryFactory.getInquiry(inquiryEntity.getCommand().getName());
+        I inquiry = getInquiryEmpty(inquiryEntity.getCommand().getName());
         inquiry.init(inquiryEntity, user.get());
         return inquiry;
     }
@@ -51,7 +51,7 @@ public class FastInquiryServiceImpl<I extends FastInquiry> implements FastInquir
             throw new FastBotException(answerService.generateAnswer(FastBotCommandLevel.FIRST, unknownUserConfig), chatId);
         try {
             var inquiryEntity = getInquiry(chatId);
-            I inquiry = inquiryFactory.getInquiry(inquiryEntity.getCommand().getName());
+            I inquiry = getInquiryEmpty(inquiryEntity.getCommand().getName());
             inquiry.init(inquiryEntity, user.get());
             if (inquiry.isClosed()) return getKeyboardInquiry(message);
             return inquiry;
@@ -63,7 +63,7 @@ public class FastInquiryServiceImpl<I extends FastInquiry> implements FastInquir
     public I getCommandInquiry(Message message) {
         String chatId = message.getChatId().toString();
         var command = commandService.getCommandByLabelOrName(message.getText());
-        var inquiry = inquiryFactory.getInquiry(command.getName());
+        var inquiry = getInquiryEmpty(command.getName());
         Optional<FastUserEntity> user = userService.getFastUserByChatId(chatId);
         if (user.isEmpty() && !(inquiry instanceof StartInquiry))
             throw new FastBotException(answerService.generateAnswer(FastBotCommandLevel.FIRST, unknownUserConfig), chatId);
@@ -73,13 +73,13 @@ public class FastInquiryServiceImpl<I extends FastInquiry> implements FastInquir
 
     public I getKeyboardInquiry(Message message) {
         String chatId = message.getChatId().toString();
-        String text = message.getText();
+        String text = message.getText().replace("\uD83D\uDD15", "").trim();
         Optional<FastUserEntity> user = userService.getFastUserByChatId(chatId);
         if (user.isEmpty())
             throw new FastBotException(answerService.generateAnswer(FastBotCommandLevel.FIRST, unknownUserConfig), chatId);
         FastCommandEntity commandByLabel = commandService.getCommandByLabel(text);
         I inquiry = inquiryFactory.getInquiry(commandByLabel.getName());
-        inquiry.init(text, message.getMessageId(), user.get(), inquiry.getCommand());
+        inquiry.init(text, message.getMessageId(), user.get(), commandByLabel);
         return inquiry;
     }
 
@@ -111,6 +111,10 @@ public class FastInquiryServiceImpl<I extends FastInquiry> implements FastInquir
 
     private FastInquiryEntity getInquiry(String chatId, Integer messageId) {
         return repository.findByUser_ChatIdAndAnswerMessageId(chatId, messageId).orElseThrow(() -> new FastBotException("Inquiry not found!"));
+    }
+
+    public I getInquiryEmpty(String name){
+        return inquiryFactory.getInquiry(name);
     }
 
     private FastInquiryEntity getInquiry(String chatId) {

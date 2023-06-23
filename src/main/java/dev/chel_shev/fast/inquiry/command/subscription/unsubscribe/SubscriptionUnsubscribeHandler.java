@@ -40,7 +40,7 @@ public class SubscriptionUnsubscribeHandler extends FastInquiryHandler<Subscript
     public void inlineExecutionLogic(SubscriptionUnsubscribeInquiry i, CallbackQuery callbackQuery) {
         if (!isNull(i.getSubscription())) {
             subscriptionService.removeSubscription(i.getUser(), i.getSubscription());
-            i.setAnswerMessage("Подписка удалена!");
+            i.setAnswerMessage("Подписка удалена\\!");
             i.setKeyboardType(FastKeyboardType.REPLY);
             i.setKeyboardButtons(keyboardService.getButtons(SubscriptionKeyboardInquiry.class));
             i.setClosed(true);

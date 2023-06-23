@@ -2,6 +2,7 @@ package dev.chel_shev.fast.inquiry;
 
 import dev.chel_shev.fast.FastSender;
 import dev.chel_shev.fast.FastUtils;
+import dev.chel_shev.fast.repository.FastInquiryRepository;
 import dev.chel_shev.fast.service.FastAnswerService;
 import dev.chel_shev.fast.service.FastInquiryService;
 import dev.chel_shev.fast.service.FastKeyboardService;
@@ -17,6 +18,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public abstract class FastInquiryHandler<I extends FastInquiry> {
 
     protected FastInquiryService<I> inquiryService;
+    protected FastInquiryRepository inquiryRepository;
     protected FastAnswerService answerService;
     protected FastKeyboardService keyboardService;
     protected FastUtils fastUtils;
@@ -130,7 +132,7 @@ public abstract class FastInquiryHandler<I extends FastInquiry> {
 
     public void closeLastInquiry(Message m) {
         I lastInquiry = inquiryService.getLastInquiry(m);
-        if (!lastInquiry.isClosed())
+        if (!lastInquiry.isClosed() && null != lastInquiry.getAnswerMessageId() )
             sender.deleteMessage(lastInquiry.getUser().getChatId(), lastInquiry.getAnswerMessageId());
     }
 
@@ -138,5 +140,8 @@ public abstract class FastInquiryHandler<I extends FastInquiry> {
     }
 
     public void inlinePreparationLogic(I i, CallbackQuery callbackQuery) {
+    }
+
+    public void init(FastInquiry inquiry) {
     }
 }

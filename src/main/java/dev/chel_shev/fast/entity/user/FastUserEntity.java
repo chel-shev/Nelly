@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.time.ZoneOffset;
+
 
 @Setter
 @Getter
@@ -21,6 +23,8 @@ public class FastUserEntity {
     private String secondName;
     private String userName;
     private String chatId;
+
+    private ZoneOffset zoneOffset = ZoneOffset.of("+3");
 
     public FastUserEntity(Message message) {
         this.firstName = message.getFrom().getFirstName();

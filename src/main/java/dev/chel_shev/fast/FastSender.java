@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -16,7 +17,6 @@ import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 
 @Slf4j
@@ -27,35 +27,41 @@ public class FastSender {
     private final ApplicationContext applicationContext;
     private final FastBotKeyboardFactory keyboardFactory;
 
-    public Message sendMessage(String chatId, String textMessage, boolean markdown) {
-        SendMessage sendMessage = SendMessage.builder().chatId(chatId).text(textMessage).build();
-        sendMessage.enableMarkdown(markdown);
+    public Message sendMessage(String chatId, String textMessage, boolean markdown, boolean mute) {
+        SendMessage.SendMessageBuilder builder = SendMessage.builder();
+        if (markdown) builder.parseMode(ParseMode.MARKDOWNV2);
+        SendMessage sendMessage = builder.disableNotification(mute).chatId(chatId).text(textMessage).build();
         return sendMessage(sendMessage);
     }
 
-    public Message sendMessage(String chatId, String textMessage, FastKeyboardType type, List<String> buttons, boolean markdown) {
-        SendMessage message = SendMessage.builder().chatId(chatId).text(textMessage).build();
-        message.enableMarkdown(markdown);
+    public Message sendMessage(String chatId, String textMessage, FastKeyboardType type, List<String> buttons, boolean markdown, boolean mute) {
+        SendMessage.SendMessageBuilder builder = SendMessage.builder();
+        if (markdown) builder.parseMode(ParseMode.MARKDOWNV2);
+        SendMessage message = builder.disableNotification(mute).chatId(chatId).text(textMessage).build();
         message.setReplyMarkup(keyboardFactory.getKeyBoard(type, buttons));
         return sendMessage(message);
     }
 
     public void updateMessage(String chatId, Integer messageId, String textMessage, FastKeyboardType type, List<String> buttons, boolean markdown) {
         var builder = EditMessageText.builder();
-        if (markdown) builder.parseMode("Markdown");
+        if (markdown) builder.parseMode(ParseMode.MARKDOWNV2);
         EditMessageText message = builder.text(textMessage).chatId(chatId).messageId(messageId).build();
         message.setReplyMarkup((InlineKeyboardMarkup) keyboardFactory.getKeyBoard(type, buttons));
         updateMessage(message);
     }
 
-    public Message sendPhoto(String chatId, String textMessage, InputFile photo, FastKeyboardType type, List<String> buttons) {
-        SendPhoto message = SendPhoto.builder().parseMode("Markdown").chatId(chatId).photo(photo).caption(textMessage).build();
+    public Message sendPhoto(String chatId, String textMessage, InputFile photo, FastKeyboardType type, List<String> buttons, boolean markdown) {
+        SendPhoto.SendPhotoBuilder builder = SendPhoto.builder();
+        if (markdown) builder.parseMode(ParseMode.MARKDOWNV2);
+        SendPhoto message = builder.parseMode(ParseMode.MARKDOWNV2).chatId(chatId).photo(photo).caption(textMessage).build();
         message.setReplyMarkup(keyboardFactory.getKeyBoard(type, buttons));
         return sendMessage(message);
     }
 
-    public void updatePhoto(String chatId, Integer messageId, String textMessage, InputFile photo, FastKeyboardType type, List<String> buttons) {
-        InputMediaPhoto media = InputMediaPhoto.builder().parseMode("Markdown").media(photo.getAttachName()).caption(textMessage).build();
+    public void updatePhoto(String chatId, Integer messageId, String textMessage, InputFile photo, FastKeyboardType type, List<String> buttons, boolean markdown) {
+        InputMediaPhoto.InputMediaPhotoBuilder builder = InputMediaPhoto.builder();
+        if (markdown) builder.parseMode(ParseMode.MARKDOWNV2);
+        InputMediaPhoto media = builder.media(photo.getAttachName()).caption(textMessage).build();
         EditMessageMedia message = EditMessageMedia.builder().chatId(chatId).messageId(messageId).media(media).build();
         message.setReplyMarkup((InlineKeyboardMarkup) keyboardFactory.getKeyBoard(type, buttons));
         updateMessage(message);

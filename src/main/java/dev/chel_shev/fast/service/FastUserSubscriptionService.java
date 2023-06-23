@@ -4,6 +4,7 @@ import dev.chel_shev.fast.entity.FastCommandEntity;
 import dev.chel_shev.fast.entity.user.FastUserEntity;
 import dev.chel_shev.fast.entity.user.FastUserSubscriptionEntity;
 import dev.chel_shev.fast.repository.UserSubscriptionRepository;
+import dev.chel_shev.fast.type.SubscriptionStatusType;
 import dev.chel_shev.fast.type.SubscriptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,14 @@ public class FastUserSubscriptionService {
     }
 
     public List<String> getSubscriptions(FastUserEntity user) {
-        return repository.findAllByFastUserAndType(user, SubscriptionType.MAIN).stream().map(FastUserSubscriptionEntity::getCommand).map(FastCommandEntity::getLabel).toList();
+        return repository.findAllByFastUserAndType(user, SubscriptionType.MAIN)
+                .stream()
+                .map(e -> {
+                    if(e.getStatus() == SubscriptionStatusType.ACTIVE)
+                        return e.getCommand().getLabel();
+                    else
+                        return e.getCommand().getLabel() + " \uD83D\uDD15";
+                }).toList();
     }
 
     public List<String> getAvailableSubscriptions(FastUserEntity user) {
@@ -32,11 +40,15 @@ public class FastUserSubscriptionService {
     }
 
     public void addSubscription(FastUserEntity user, FastCommandEntity subscription, FastCommandEntity parentCommand, SubscriptionType type, String name) {
-        repository.save(new FastUserSubscriptionEntity(user, subscription, parentCommand, type, name));
+        repository.save(new FastUserSubscriptionEntity(user, subscription, parentCommand, type, SubscriptionStatusType.ACTIVE, name));
     }
 
     public void removeSubscription(FastUserEntity user, FastCommandEntity subscription) {
         FastUserSubscriptionEntity userSubscription = getSubscription(user, subscription, SubscriptionType.MAIN, SubscriptionType.SUB);
         repository.delete(userSubscription);
+    }
+
+    public void save(FastUserSubscriptionEntity subscription) {
+        repository.save(subscription);
     }
 }

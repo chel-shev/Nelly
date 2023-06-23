@@ -2,6 +2,7 @@ package dev.chel_shev.fast.service;
 
 import dev.chel_shev.fast.entity.user.FastUserEntity;
 import dev.chel_shev.fast.inquiry.FastInquiry;
+import dev.chel_shev.fast.inquiry.FastInquiryHandler;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -14,6 +15,6 @@ public interface FastInquiryService<I extends FastInquiry> {
     I getInquiry(CallbackQuery callbackQuery);
     I save(I inquiry);
     void updateInquiry(I i, Message reply);
-
     void deleteByUser(FastUserEntity userEntity);
+    I getInquiryEmpty(String name);
 }
