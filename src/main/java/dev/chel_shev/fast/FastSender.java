@@ -75,7 +75,6 @@ public class FastSender {
     private Message sendMessage(SendMessage message) {
         FastBot telegramBot = (FastBot) applicationContext.getBean("fastBot");
         try {
-//            message.setReplyMarkup(keyboardFactory.createKeyboard(keyboardType, user));
 //            message.disableWebPagePreview();
             return telegramBot.execute(message);
         } catch (TelegramApiException e) {
@@ -87,7 +86,6 @@ public class FastSender {
     private Message sendMessage(SendPhoto photo) {
         FastBot telegramBot = (FastBot) applicationContext.getBean("fastBot");
         try {
-//            photo.setReplyMarkup(keyboardFactory.createKeyboard(keyboardType, user, workoutEvent));
             return telegramBot.execute(photo);
         } catch (TelegramApiException e) {
             e.printStackTrace();
@@ -98,7 +96,6 @@ public class FastSender {
     private void updateMessage(EditMessageText text) {
         FastBot telegramBot = (FastBot) applicationContext.getBean("fastBot");
         try {
-//            text.setReplyMarkup((InlineKeyboardMarkup) keyboardFactory.createKeyboard(keyboardType, user));
             telegramBot.execute(text);
         } catch (TelegramApiException e) {
             e.printStackTrace();
@@ -108,7 +105,6 @@ public class FastSender {
     private void updateMessage(EditMessageMedia media) {
         FastBot telegramBot = (FastBot) applicationContext.getBean("fastBot");
         try {
-//            media.setReplyMarkup((InlineKeyboardMarkup) keyboardFactory.createKeyboard(keyboardType, user, workoutEvent));
             telegramBot.execute(media);
         } catch (TelegramApiException e) {
             e.printStackTrace();

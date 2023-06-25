@@ -11,4 +11,9 @@ import org.springframework.stereotype.Component;
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @FastInquiryId(type = FastInquiryType.COMMAND, command = "/stop", label = "")
 public class StopInquiry extends FastCommandInquiry {
+    @Override
+    public String toString() {
+        return super.toString() +
+                '}';
+    }
 }

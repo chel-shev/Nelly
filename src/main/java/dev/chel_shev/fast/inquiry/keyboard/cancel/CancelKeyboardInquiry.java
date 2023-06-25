@@ -6,4 +6,9 @@ import dev.chel_shev.fast.type.FastInquiryType;
 
 @FastInquiryId(command = "/cancel", buttons = {}, type = FastInquiryType.KEYBOARD, label = "❌Отмена")
 public class CancelKeyboardInquiry extends FastKeyboardInquiry {
+    @Override
+    public String toString() {
+        return super.toString() +
+                '}';
+    }
 }

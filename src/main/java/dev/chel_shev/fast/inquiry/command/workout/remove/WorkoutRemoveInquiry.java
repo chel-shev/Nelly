@@ -27,4 +27,11 @@ public class WorkoutRemoveInquiry extends FastCommandInquiry {
     public FastInquiryEntity getEntity() {
         return new FastWorkoutInquiryEntity(this);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", workoutName=" + workoutName +
+                '}';
+    }
 }

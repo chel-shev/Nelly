@@ -28,4 +28,11 @@ public class ReminderRemoveInquiry extends FastInquiry {
     public FastInquiryEntity getEntity() {
         return new FastReminderInquiryEntity(this);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", name=" + name +
+                '}';
+    }
 }

@@ -18,4 +18,9 @@ import dev.chel_shev.fast.type.FastInquiryType;
                 SubscriptionKeyboardInquiry.class
         })
 public class LanguageKeyboardInquiry extends FastInquiry {
+    @Override
+    public String toString() {
+        return super.toString() +
+                '}';
+    }
 }

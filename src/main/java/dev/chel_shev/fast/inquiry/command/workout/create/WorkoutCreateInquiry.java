@@ -38,4 +38,13 @@ public class WorkoutCreateInquiry extends FastInquiry {
     public boolean isNotReadyForExecute() {
         return isNullOrEmpty(workoutName) || isNull(workoutTime) || isNull(periodType);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", periodType=" + periodType +
+                ", workoutTime=" + workoutTime +
+                ", workoutName=" + workoutName +
+                '}';
+    }
 }

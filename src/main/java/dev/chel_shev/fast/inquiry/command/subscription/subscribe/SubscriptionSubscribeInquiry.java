@@ -30,4 +30,11 @@ public class SubscriptionSubscribeInquiry extends FastCommandInquiry {
     public boolean isNotReadyForExecute() {
         return isNull(subscription);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", subscription=" + subscription.getName() +
+                '}';
+    }
 }

@@ -34,4 +34,13 @@ public class ReminderAddInquiry extends FastInquiry {
     public FastInquiryEntity getEntity() {
         return new FastReminderInquiryEntity(this);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", periodType=" + periodType +
+                ", time=" + time +
+                ", name=" + name +
+                '}';
+    }
 }

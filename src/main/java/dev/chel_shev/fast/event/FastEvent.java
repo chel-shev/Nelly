@@ -54,4 +54,20 @@ public abstract class FastEvent {
     public boolean hasMedia() {
         return null != file;
     }
+
+    @Override
+    public String toString() {
+        return "FastEvent{" +
+                "id=" + id +
+                ", am=" + answerMessage +
+                ", amId=" + answerMessageId +
+                ", date=" + dateTime +
+                ", closed=" + closed +
+                ", kbButtons=" + keyboardButtons +
+                ", kbType=" + keyboardType +
+                ", periodType=" + periodType +
+                ", user=" + userSubscription.getFastUser().getUserName() +
+                ", command=" + command.getName() +
+                ", pCommand=" + userSubscription.getParentCommand().getName();
+    }
 }

@@ -19,7 +19,7 @@ public class FastLanguageEvent extends FastEvent {
     private WordEntity word;
     private FastStudyTimeType time;
     private FastStudyTimelineType timeline;
-
+    private boolean unknownWord = false;
 
     @Override
     public void init(FastEventEntity event, FastUserSubscriptionEntity user) {
@@ -31,5 +31,20 @@ public class FastLanguageEvent extends FastEvent {
 
     public FastEventEntity getEntity() {
         return new FastWordEventEntity(this);
+    }
+
+    @Override
+    public boolean isNotReadyForExecute() {
+        return !unknownWord;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", word=" + word +
+                ", time=" + time +
+                ", timeline=" + timeline +
+                ", unknownWord=" + unknownWord +
+                '}';
     }
 }

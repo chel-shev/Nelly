@@ -26,4 +26,12 @@ public class BdayEvent extends FastEvent {
     public FastEventEntity getEntity() {
         return new FastBdayEventEntity(this);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", name=" + name +
+                ", date=" + date +
+                '}';
+    }
 }

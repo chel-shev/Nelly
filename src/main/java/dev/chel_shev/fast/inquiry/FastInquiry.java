@@ -77,7 +77,19 @@ public abstract class FastInquiry {
         return new FastCommonInquiryEntity(this);
     }
 
+    @Override
     public String toString() {
-        return "Inquiry(id=" + this.getId() + ", message=" + this.getMessage() + ", messageId=" + this.getMessageId() + ", date=" + this.getDate() + ", closed=" + this.isClosed() + ", user=" + this.getUser() + ", command=" + this.getCommand() + ", answerMessage=" + this.getAnswerMessage() + ", answerMessageId=" + this.getAnswerMessageId() + ")";
+        return "FastInquiry{" +
+                "id=" + id +
+                ", message=" + message  +
+                ", messageId=" + messageId +
+                ", answerMessage=" + answerMessage +
+                ", answerMessageId=" + answerMessageId +
+                ", date=" + date +
+                ", closed=" + closed +
+                ", user=" + user.getUserName() +
+                ", command=" + command.getName() +
+                ", keyboardButtons=" + keyboardButtons +
+                ", keyboardType=" + keyboardType;
     }
 }

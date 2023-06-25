@@ -37,4 +37,11 @@ public class BdayRemoveInquiry extends FastInquiry {
     public FastInquiryEntity getEntity() {
         return new FastBdayInquiryEntity(this);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", name=" + name +
+                '}';
+    }
 }

@@ -10,4 +10,9 @@ import dev.chel_shev.fast.type.FastInquiryType;
 
 @FastInquiryId(command = "/common", type = FastInquiryType.KEYBOARD, label = "Общая", buttons = {BdayKeyboardInquiry.class, FinanceKeyboardInquiry.class, WorkoutKeyboardInquiry.class, SubscriptionKeyboardInquiry.class})
 public class CommonKeyboardInquiry extends FastInquiry {
+    @Override
+    public String toString() {
+        return super.toString() +
+                '}';
+    }
 }

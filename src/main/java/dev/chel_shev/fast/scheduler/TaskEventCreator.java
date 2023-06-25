@@ -66,7 +66,7 @@ public class TaskEventCreator {
             event.init(languageEvent, userSubscription);
             task = new WordTask(eventService, languageService, sender, event, calendar);
         }
-        log.info("Task created with time = " + calendar);
+        log.info("Task created with time = " + calendar.getTime());
         time.schedule(task, calendar.getTime());
     }
 }

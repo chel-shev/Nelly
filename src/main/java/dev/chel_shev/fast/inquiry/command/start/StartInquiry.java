@@ -11,4 +11,10 @@ import org.springframework.stereotype.Component;
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @FastInquiryId(command = "/start", type = FastInquiryType.COMMAND, label = "")
 public class StartInquiry extends FastCommandInquiry {
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                '}';
+    }
 }

@@ -32,4 +32,12 @@ public abstract class InquiryFinance extends FastCommandInquiry {
     public FastInquiryEntity getEntity() {
         return new FastFinanceInquiryEntity(this, null);
     }
+
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", amount=" + amount +
+                ", account=" + account.getName();
+    }
 }

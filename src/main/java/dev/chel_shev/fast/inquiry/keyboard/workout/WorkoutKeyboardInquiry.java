@@ -9,4 +9,9 @@ import dev.chel_shev.fast.type.FastInquiryType;
 
 @FastInquiryId(command = "/workout", buttons = {WorkoutAddInquiry.class, WorkoutRemoveInquiry.class, CancelKeyboardInquiry.class}, type = FastInquiryType.KEYBOARD_SUBSCRIPTION, label = "\uD83E\uDD38\u200D♀️ Спорт")
 public class WorkoutKeyboardInquiry extends FastKeyboardInquiry {
+    @Override
+    public String toString() {
+        return super.toString() +
+                '}';
+    }
 }

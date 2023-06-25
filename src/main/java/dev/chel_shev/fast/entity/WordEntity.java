@@ -32,4 +32,12 @@ public class WordEntity {
         this.locale = locale;
         this.transcription = transcription;
     }
+
+    @Override
+    public String toString() {
+        return "WordEntity{" +
+                ", word=" + word +
+                ", locale=" + locale +
+                '}';
+    }
 }

@@ -44,4 +44,13 @@ public class FastWorkoutEvent extends FastEvent {
     public void decStep() {
         if (step > 0) step--;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", step=" + step +
+                ", level=" + level +
+                ", workout=" + workout.getName() +
+                '}';
+    }
 }

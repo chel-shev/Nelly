@@ -42,4 +42,12 @@ public class BdayAddInquiry extends FastCommandInquiry {
     public FastInquiryEntity getEntity() {
         return new FastBdayInquiryEntity(this);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", bdayDate=" + bdayDate +
+                ", name=" + name +
+                '}';
+    }
 }

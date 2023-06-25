@@ -11,4 +11,9 @@ import org.springframework.stereotype.Component;
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @FastInquiryId(type = FastInquiryType.COMMAND, command = "/unknown_user", label = "")
 public class UnknownUserInquiry extends FastCommandInquiry {
+    @Override
+    public String toString() {
+        return super.toString() +
+                '}';
+    }
 }

@@ -43,4 +43,13 @@ public class WorkoutAddInquiry extends FastInquiry {
     public FastInquiryEntity getEntity() {
         return new FastWorkoutInquiryEntity(this);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", periodType=" + periodType +
+                ", workoutTime=" + workoutTime +
+                ", workoutName=" + workoutName +
+                '}';
+    }
 }

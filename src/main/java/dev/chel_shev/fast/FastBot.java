@@ -117,7 +117,7 @@ public class FastBot<I extends FastInquiry, E extends FastEvent> extends Telegra
                 sender.updatePhoto(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessageId(), event.getAnswerMessage(), event.getFile(), event.getKeyboardType(), event.getKeyboardButtons(), true);
             else {
                 sender.deleteMessage(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessageId());
-                sender.sendMessage(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessage(), true, false);
+                reply = sender.sendMessage(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessage(), event.getKeyboardType(), event.getKeyboardButtons(), true, false);
             }
         } catch (FastBotException ex) {
             reply = sender.sendMessage(ex.getChatId(), ex.getMessage(), true, false);

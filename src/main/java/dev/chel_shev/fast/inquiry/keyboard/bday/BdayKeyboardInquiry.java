@@ -9,4 +9,10 @@ import dev.chel_shev.fast.type.FastInquiryType;
 
 @FastInquiryId(command = "/bday", buttons = {BdayAddInquiry.class, BdayRemoveInquiry.class, CancelKeyboardInquiry.class}, type = FastInquiryType.KEYBOARD_SUBSCRIPTION, label = "\uD83D\uDCC6 ДР")
 public class BdayKeyboardInquiry extends FastKeyboardInquiry {
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                '}';
+    }
 }

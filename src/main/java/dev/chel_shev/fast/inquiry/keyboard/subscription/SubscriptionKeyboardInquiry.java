@@ -9,4 +9,9 @@ import dev.chel_shev.fast.type.FastInquiryType;
 
 @FastInquiryId(command = "/subscription", buttons = {SubscriptionSubscribeInquiry.class, SubscriptionUnsubscribeInquiry.class, CancelKeyboardInquiry.class}, type = FastInquiryType.KEYBOARD, label = "Подписки")
 public class SubscriptionKeyboardInquiry extends FastKeyboardInquiry {
+    @Override
+    public String toString() {
+        return super.toString() +
+                '}';
+    }
 }

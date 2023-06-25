@@ -30,4 +30,11 @@ public class SubscriptionUnsubscribeInquiry extends FastCommandInquiry {
     public FastInquiryEntity getEntity() {
         return new SubscriptionInquiryEntity(this);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", subscription=" + subscription.getName() +
+                '}';
+    }
 }

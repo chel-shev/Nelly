@@ -39,4 +39,11 @@ public class TransferInquiryFinance extends InquiryFinance {
     public boolean isNotReadyForExecute() {
         return isNull(getAccount()) || isNull(accountOut) || isNull(getMessage());
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", accountOut=" + accountOut.getName() +
+                '}';
+    }
 }

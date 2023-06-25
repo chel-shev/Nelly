@@ -11,4 +11,9 @@ import dev.chel_shev.fast.type.FastInquiryType;
 
 @FastInquiryId(command = "/finance", buttons = {ExpenseInquiryFinance.class, IncomeInquiryFinance.class, LoanInquiryFinance.class, TransferInquiryFinance.class, CancelKeyboardInquiry.class}, type = FastInquiryType.KEYBOARD_SUBSCRIPTION, label = "\uD83D\uDCB0 Финансы")
 public class FinanceKeyboardInquiry extends FastKeyboardInquiry {
+    @Override
+    public String toString() {
+        return super.toString() +
+                '}';
+    }
 }

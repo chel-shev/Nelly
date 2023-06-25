@@ -46,7 +46,8 @@ public class WordTask extends TimerTask {
                 message = sender.sendMessage(chatId, String.format(text,
                         FastMarkdown.bolt(event.getWord().getWord()),
                         FastMarkdown.italic(event.getWord().getTranscription()),
-                        FastMarkdown.spoiler(ru1.getWord())), true, mute);
+                        FastMarkdown.spoiler(ru1.getWord())), FastKeyboardType.INLINE,
+                        List.of("Учим", "Знаю"), true, mute);
             } else {
                 List<WordEntity> ru = languageService.getRandomWords(5, new Locale("ru"));
                 Set<String> answer = new HashSet<>(ru.stream().map(WordEntity::getWord).toList());
@@ -57,19 +58,8 @@ public class WordTask extends TimerTask {
                         FastKeyboardType.INLINE, answer.stream().toList(), true, mute);
             }
             event.setAnswerMessageId(message.getMessageId());
-            event.setClosed(true);
             eventService.save(event);
             if (event.getTimeline() == FastStudyTimelineType.T_0) {
-                for (FastStudyTimelineType timeline : FastStudyTimelineType.values()) {
-                    if (timeline == FastStudyTimelineType.T_0) continue;
-                    LocalDateTime dateTime = event.getDateTime();
-                    event.setDateTime(dateTime.plus(timeline.getMin()));
-                    event.setClosed(false);
-                    event.setTimeline(timeline);
-                    event.setAnswerMessageId(null);
-                    event.setId(null);
-                    eventService.save(event);
-                }
                 FastStudyTimeType next = event.getTime().getNext();
                 LocalDate eventDate = next.ordinal() < event.getTime().ordinal() ? LocalDate.now().plusDays(1) : LocalDate.now();
                 LocalDateTime eventDateTime = LocalDateTime.of(eventDate, next.getTimeEvent());
