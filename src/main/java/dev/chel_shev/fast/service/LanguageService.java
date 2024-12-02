@@ -10,6 +10,7 @@ import dev.chel_shev.fast.repository.FastWordTranslateRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -27,9 +28,9 @@ public class LanguageService {
 
     public WordEntity getUnknownWord(FastUserEntity user) {
         Set<WordEntity> allByLocale = repository.findAllByLocale(Locale.ENGLISH);
-        List<WordEntity> list = userWordRepository.findAllByUser(user).stream().map(UserWordEntity::getWord).toList();
-        list.forEach(allByLocale::remove);
-        return allByLocale.stream().skip(new Random().nextInt(allByLocale.size())).limit(1).findFirst().get();
+        List<String> list = userWordRepository.findAllByUser(user).stream().map(userWordEntity -> userWordEntity.getWord().getWord()).toList();
+        List<WordEntity> unknown = allByLocale.stream().filter(e -> !list.contains(e.getWord())).toList();
+        return unknown.stream().skip(new Random().nextInt(unknown.size())).limit(1).findFirst().get();
     }
 
     public List<WordEntity> getRandomWords(int count, Locale locale) {

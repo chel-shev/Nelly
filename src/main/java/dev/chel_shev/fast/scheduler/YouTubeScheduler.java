@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -41,6 +42,7 @@ public class YouTubeScheduler {
     private static final String URL_VIDEO = "https://www.youtube.com/watch?v=";
     private static final String VERSION = " v.6";
 
+    @Transactional()
     @Scheduled(cron = DateTimeUtils.EVERY_MINUTE)
     public void schedule() {
         log.debug("YouTubeScheduler" + VERSION + " is started!");

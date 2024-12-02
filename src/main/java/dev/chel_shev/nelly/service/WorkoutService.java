@@ -61,9 +61,9 @@ public class WorkoutService {
     }
 
     public String getWorkoutTitle(ExerciseEntity exercise, int countExercise, int step, int level) {
-        return FastMarkdown.code((step + 1) + " / " + countExercise) + " | " +
+        return FastMarkdown.code((step + 1) + " / " + countExercise) + " \\| " +
                 FastMarkdown.code(exercise.getName()) +
-                FastMarkdown.code((!isNull(exercise.getComment()) ? ("(" + exercise.getComment() + ")") : "")) + " | " +
+                FastMarkdown.code((!isNull(exercise.getComment()) ? ("(" + exercise.getComment() + ")") : "")) + " \\| " +
                 FastMarkdown.code(exercise.getReps() * level + exercise.getType().getLabel());
     }
 
@@ -74,19 +74,27 @@ public class WorkoutService {
 
     public List<String> getWorkoutProcess(FastWorkoutEvent event) {
         List<String> buttons = new ArrayList<>();
-        int amountExercises = event.getWorkout().getCountExercise();
-        int step = event.getStep();
-        buttons.add(INLINE_CANCEL.label);
-        if (amountExercises > 0 && step == -1) {
-            buttons.add(INLINE_START.label);
-        } else if (amountExercises > step + 1 && step > 0) {
-            buttons.add(INLINE_PREV.label);
-            buttons.add(INLINE_NEXT.label);
-        } else if (amountExercises > step + 1) {
-            buttons.add(INLINE_NEXT.label);
+        int allSteps = event.getWorkout().getCountExercise();
+        int step;
+        if (event.getWorkout().isProgressable())
+            step = event.getStep();
+        else
+            step = event.getStep() + 1;
+        if (allSteps > 0 && step == -1) {
+            buttons.add(INLINE_START.getLabel());
+        } else if (allSteps > step && step > 0) {
+            buttons.add(INLINE_PREV.getLabel());
+            buttons.add(INLINE_NEXT.getLabel());
+        } else if (allSteps > step) {
+            buttons.add(INLINE_NEXT.getLabel());
         } else {
-            buttons.add(INLINE_PREV.label);
-            buttons.add(INLINE_DONE.label);
+            if (event.getWorkout().isProgressable()) {
+                buttons.add(INLINE_UP.getLabel());
+                buttons.add(INLINE_DOWN.getLabel());
+            } else {
+                buttons.add(INLINE_PREV.getLabel());
+            }
+            buttons.add(INLINE_DONE.getLabel());
         }
         return buttons;
     }

@@ -34,11 +34,17 @@ public class FastWorkoutEvent extends FastEvent {
 
     @Override
     public boolean isNotReadyForExecute() {
+        if (workout.isProgressable())
+            return !step.equals(workout.getCountExercise() + 1);
         return !step.equals(workout.getCountExercise());
     }
 
     public void incStep() {
-        if (step < workout.getCountExercise() - 1) step++;
+        if (workout.isProgressable()) {
+            if (step < workout.getCountExercise() + 1) step++;
+        } else {
+            if (step < workout.getCountExercise() - 1) step++;
+        }
     }
 
     public void decStep() {
@@ -50,7 +56,15 @@ public class FastWorkoutEvent extends FastEvent {
         return super.toString() +
                 ", step=" + step +
                 ", level=" + level +
-                ", workout=" + workout.getName() +
+                ", workout=" + (workout != null ? workout.getName() : "") +
                 '}';
+    }
+
+    public void incLevel() {
+        level++;
+    }
+
+    public void decLevel() {
+        level--;
     }
 }

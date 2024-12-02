@@ -16,63 +16,65 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class WordTask extends TimerTask {
+import static dev.chel_shev.fast.type.FastStudyTimeType.T_10_15;
 
-    private final FastEventService<FastLanguageEvent> eventService;
+public class WordTask<E extends FastLanguageEvent> extends TimerTask {
+
+    private final FastEventService<E> eventService;
     private final LanguageService languageService;
     private final FastSender sender;
     private final String chatId;
-    private final FastLanguageEvent event;
+    private final E e;
     private final Calendar calendar;
 
 
-    public WordTask(FastEventService<FastLanguageEvent> eventService, LanguageService languageService, FastSender sender, FastLanguageEvent event, Calendar calendar) {
+    public WordTask(FastEventService<E> eventService, LanguageService languageService, FastSender sender, E e, Calendar calendar) {
         this.eventService = eventService;
         this.languageService = languageService;
         this.sender = sender;
-        this.chatId = event.getUserSubscription().getFastUser().getChatId();
-        this.event = event;
+        this.chatId = e.getUserSubscription().getFastUser().getChatId();
+        this.e = e;
         this.calendar = calendar;
     }
 
     @Override
     public void run() {
         try {
-            WordEntity ru1 = languageService.getTranslation(event.getWord(), new Locale("ru"));
+            WordEntity ru1 = languageService.getTranslation(e.getWord(), new Locale("ru"));
             boolean mute = calendar.get(Calendar.HOUR_OF_DAY) > 0 && calendar.get(Calendar.HOUR_OF_DAY) < 8;
             Message message;
-            if (event.getTimeline() == FastStudyTimelineType.T_0) {
-                String text = "Запомни \uD83C\uDDEC\uD83C\uDDE7%s \\- \\[%s\\] \\- \uD83C\uDDF7\uD83C\uDDFA%s";
+            if (e.getTimeline() == FastStudyTimelineType.T_0) {
+                String text = "Запомни \uD83C\uDDEC\uD83C\uDDE7%s — \\[%s\\] — \uD83C\uDDF7\uD83C\uDDFA%s";
                 message = sender.sendMessage(chatId, String.format(text,
-                        FastMarkdown.bolt(event.getWord().getWord()),
-                        FastMarkdown.italic(event.getWord().getTranscription()),
-                        FastMarkdown.spoiler(ru1.getWord())), FastKeyboardType.INLINE,
+                                FastMarkdown.bolt(e.getWord().getWord()),
+                                FastMarkdown.italic(e.getWord().getTranscription()),
+                                FastMarkdown.spoiler(ru1.getWord())), FastKeyboardType.INLINE,
                         List.of("Учим", "Знаю"), true, mute);
             } else {
                 List<WordEntity> ru = languageService.getRandomWords(5, new Locale("ru"));
                 Set<String> answer = new HashSet<>(ru.stream().map(WordEntity::getWord).toList());
                 answer.add(ru1.getWord());
-                String text = "Выберите перевод слова %s";
+                String text = "Выберите перевод слова %s — \\[%s\\]";
                 message = sender.sendMessage(chatId, String.format(text,
-                                FastMarkdown.bolt(event.getWord().getWord())),
+                                FastMarkdown.bolt(e.getWord().getWord()),
+                                FastMarkdown.italic(e.getWord().getTranscription())),
                         FastKeyboardType.INLINE, answer.stream().toList(), true, mute);
             }
-            event.setAnswerMessageId(message.getMessageId());
-            eventService.save(event);
-            if (event.getTimeline() == FastStudyTimelineType.T_0) {
-                FastStudyTimeType next = event.getTime().getNext();
-                LocalDate eventDate = next.ordinal() < event.getTime().ordinal() ? LocalDate.now().plusDays(1) : LocalDate.now();
-                LocalDateTime eventDateTime = LocalDateTime.of(eventDate, next.getTimeEvent());
-                event.setDateTime(eventDateTime);
-                FastUserEntity fastUser = event.getUserSubscription().getFastUser();
+            e.setAnswerMessageId(message.getMessageId());
+            eventService.save(e);
+            if (e.getTimeline() == FastStudyTimelineType.T_0) {
+                FastStudyTimeType next = T_10_15;
+                LocalDateTime eventDateTime = LocalDateTime.of(LocalDate.now().plusDays(1), next.getTimeEvent());
+                e.setDateTime(eventDateTime);
+                FastUserEntity fastUser = e.getUserSubscription().getFastUser();
                 WordEntity unknownWord = languageService.getUnknownWord(fastUser);
-                event.setWord(unknownWord);
-                event.setTime(next);
-                event.setClosed(false);
-                event.setTimeline(FastStudyTimelineType.T_0);
-                event.setAnswerMessageId(null);
-                event.setId(null);
-                eventService.save(event);
+                e.setWord(unknownWord);
+                e.setTime(next);
+                e.setClosed(false);
+                e.setTimeline(FastStudyTimelineType.T_0);
+                e.setAnswerMessageId(null);
+                e.setId(null);
+                eventService.save(e);
                 languageService.saveNewUserWord(eventDateTime, unknownWord, fastUser);
             }
         } catch (Exception ex) {

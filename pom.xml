@@ -5,19 +5,19 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.4</version>
+        <version>3.4.0</version>
         <relativePath/>
     </parent>
 
     <groupId>dev.chel_shev</groupId>
     <artifactId>Nelly</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.5-SNAPSHOT</version>
     <name>Nelly</name>
     <description>Nelly not bot</description>
     <properties>
         <java.version>17</java.version>
         <jjwt.version>0.9.1</jjwt.version>
-        <lombok.version>1.18.22</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <javase.version>3.4.1</javase.version>
         <david-webb.version>1.3.0</david-webb.version>
     </properties>
@@ -25,24 +25,31 @@
     <!--        SPRING        -->
     <dependencies>
         <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client-jackson2</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-plus</artifactId>
+            <version>v1-rev590-1.25.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-youtube</artifactId>
             <version>v3-rev20230502-2.0.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
             <version>2.2.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client-jetty -->
         <dependency>
             <groupId>com.google.oauth-client</groupId>
             <artifactId>google-oauth-client-jetty</artifactId>
             <version>1.34.1</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.google.api/api-common -->
         <dependency>
             <groupId>com.google.api</groupId>
             <artifactId>api-common</artifactId>
@@ -53,8 +60,8 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.springframework.boot</groupId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -74,7 +81,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>20.0</version>
+            <version>32.0.0-android</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -83,11 +90,10 @@
         </dependency>
 
         <!--        TELEGRAM        -->
-
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots</artifactId>
-            <version>6.5.0</version>
+            <version>6.9.7.1</version>
         </dependency>
 
         <dependency>
@@ -99,7 +105,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20220924</version>
+            <version>20231013</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -121,6 +127,15 @@
             <groupId>com.goebl</groupId>
             <artifactId>david-webb</artifactId>
             <version>${david-webb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 

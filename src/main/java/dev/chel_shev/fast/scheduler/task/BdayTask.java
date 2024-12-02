@@ -26,7 +26,7 @@ public class BdayTask extends TimerTask {
     @Override
     public void run() {
         try {
-            String textMessage = FastMarkdown.bolt(event.getName()) + " празднует свой День Рождения, поздравь, если уместно!";
+            String textMessage = FastMarkdown.bolt(event.getName()) + " празднует свой День Рождения, поздравь, если уместно\\!";
             Message message = sender.sendMessage(chatId, textMessage, true, false);
             event.setAnswerMessageId(message.getMessageId());
             eventService.updateEvent(event.getEntity());

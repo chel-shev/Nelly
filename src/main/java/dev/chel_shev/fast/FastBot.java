@@ -6,8 +6,8 @@ import dev.chel_shev.fast.event.FastEventHandlerFactory;
 import dev.chel_shev.fast.inquiry.FastInquiry;
 import dev.chel_shev.fast.inquiry.FastInquiryHandler;
 import dev.chel_shev.fast.inquiry.FastInquiryHandlerFactory;
-import dev.chel_shev.fast.service.FastEventServiceImpl;
 import dev.chel_shev.fast.service.FastEventService;
+import dev.chel_shev.fast.service.FastEventServiceImpl;
 import dev.chel_shev.fast.service.FastInquiryService;
 import jakarta.annotation.PostConstruct;
 import lombok.Data;
@@ -22,6 +22,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+
+import java.util.Objects;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -53,8 +55,19 @@ public class FastBot<I extends FastInquiry, E extends FastEvent> extends Telegra
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(this);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            log.info(e.getMessage());
         }
+//        eventService.getAllEvents().forEach(entity -> {
+//            if (entity.getClosed() && entity.getAnswerMessageId() != null) {
+//                try {
+//                    sender.deleteMessage(entity.getUser().getFastUser().getChatId(), entity.getAnswerMessageId(), 5);
+//                } catch (Exception ignored) {
+//                    ignored.printStackTrace();
+//                }
+//                if (entity.getAnswerMessage() != null && !entity.getAnswerMessage().startsWith("Запомни"))
+//                    eventService.delete(entity);
+//            }
+//        });
     }
 
     @Override
@@ -108,19 +121,25 @@ public class FastBot<I extends FastInquiry, E extends FastEvent> extends Telegra
         E event = eventService.getEvent(callbackQuery);
         Message reply = null;
         FastEventHandler<E> eventHandler = eventHandlerFactory.getHandler(event.getClass());
+        String chatId = event.getUserSubscription().getFastUser().getChatId();
         try {
             if (event.isNotReadyForExecute()) event = eventHandler.inlinePrepare(event, callbackQuery);
             if (!event.isNotReadyForExecute()) event = eventHandler.inlineExecute(event, callbackQuery);
             if (event.hasMedia() && event.getFile().isNew())
-                reply = sender.sendPhoto(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessage(), event.getFile(), event.getKeyboardType(), event.getKeyboardButtons(), true);
+                reply = sender.sendPhoto(chatId, event.getAnswerMessage(), event.getFile(), event.getKeyboardType(), event.getKeyboardButtons(), true);
             if (event.hasMedia())
-                sender.updatePhoto(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessageId(), event.getAnswerMessage(), event.getFile(), event.getKeyboardType(), event.getKeyboardButtons(), true);
+                sender.updatePhoto(chatId, event.getAnswerMessageId(), event.getAnswerMessage(), event.getFile(), event.getKeyboardType(), event.getKeyboardButtons(), true);
             else {
-                sender.deleteMessage(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessageId());
-                reply = sender.sendMessage(event.getUserSubscription().getFastUser().getChatId(), event.getAnswerMessage(), event.getKeyboardType(), event.getKeyboardButtons(), true, false);
+                sender.deleteMessage(chatId, event.getAnswerMessageId());
+                reply = sender.sendMessage(chatId, event.getAnswerMessage(), event.getKeyboardType(), event.getKeyboardButtons(), true, false);
             }
         } catch (FastBotException ex) {
             reply = sender.sendMessage(ex.getChatId(), ex.getMessage(), true, false);
+        }
+        if (event.getClosed() && !event.getAnswerMessage().startsWith("Запомни")) {
+            sender.deleteMessage(chatId, Objects.requireNonNull(reply).getMessageId(), 60);
+            if (event.getAnswerMessage() != null && !event.getAnswerMessage().startsWith("Запомни"))
+                eventService.delete(event.getEntity());
         }
         eventHandler.updateEvent(event, reply);
     }

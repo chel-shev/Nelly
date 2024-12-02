@@ -19,6 +19,7 @@ public class WorkoutEntity {
     private String fileId;
     private Integer countExercise;
     private LocalTime basicTime = LocalTime.of(8, 0);
+    private boolean progressable = false;
     @ManyToOne
     private FastCommandEntity command;
 }

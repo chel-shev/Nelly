@@ -1,5 +1,6 @@
 package dev.chel_shev.fast;
 
+import dev.chel_shev.fast.scheduler.task.DeleteTask;
 import dev.chel_shev.fast.type.FastKeyboardType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,10 @@ import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.time.ZonedDateTime;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Timer;
 
 @Slf4j
 @Component
@@ -72,10 +76,17 @@ public class FastSender {
         deleteMessage(editMessageText);
     }
 
+    public void deleteMessage(String chatId, Integer messageId, Integer duration) {
+        Timer time = new Timer();
+        GregorianCalendar calendar = GregorianCalendar.from(ZonedDateTime.now().plusSeconds(duration));
+        DeleteTask task = new DeleteTask(this, messageId, chatId);
+        time.schedule(task, calendar.getTime());
+    }
+
     private Message sendMessage(SendMessage message) {
         FastBot telegramBot = (FastBot) applicationContext.getBean("fastBot");
         try {
-//            message.disableWebPagePreview();
+            message.disableWebPagePreview();
             return telegramBot.execute(message);
         } catch (TelegramApiException e) {
             e.printStackTrace();

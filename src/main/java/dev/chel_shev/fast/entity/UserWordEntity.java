@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.ArrayUtils;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,6 +24,8 @@ public class UserWordEntity {
     private Long id;
 
     private LocalDateTime time;
+
+    private Integer exam;
 
     @ManyToOne
     private FastUserEntity user;

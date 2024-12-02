@@ -4,6 +4,7 @@ import dev.chel_shev.fast.entity.FastCommandEntity;
 import dev.chel_shev.fast.entity.user.FastUserEntity;
 import dev.chel_shev.fast.entity.user.FastUserSubscriptionEntity;
 import dev.chel_shev.fast.repository.UserSubscriptionRepository;
+import dev.chel_shev.fast.repository.event.EventRepository;
 import dev.chel_shev.fast.type.SubscriptionStatusType;
 import dev.chel_shev.fast.type.SubscriptionType;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ public class FastUserSubscriptionService {
 
     private final UserSubscriptionRepository repository;
     private final FastCommandService commandService;
+    private final EventRepository eventRepository;
+    private final FastEventService eventService;
 
     public FastUserSubscriptionEntity getSubscription(FastUserEntity user, FastCommandEntity command, SubscriptionType ... types) {
         return repository.findByFastUser_ChatIdAndCommandAndTypeIn(user.getChatId(), command, List.of(types));
@@ -45,6 +48,7 @@ public class FastUserSubscriptionService {
 
     public void removeSubscription(FastUserEntity user, FastCommandEntity subscription) {
         FastUserSubscriptionEntity userSubscription = getSubscription(user, subscription, SubscriptionType.MAIN, SubscriptionType.SUB);
+        eventService.deleteByUserSubscription(userSubscription);
         repository.delete(userSubscription);
     }
 

@@ -8,5 +8,5 @@ import java.util.Collection;
 
 public interface LoanRepository extends JpaRepository<LoanEntity, Long> {
 
-    Collection<LoanEntity> findAllByAccountUser(String chatId);
+    Collection<LoanEntity> findAllByAccount_User_ChatId(Long chatId);
 }

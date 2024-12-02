@@ -35,8 +35,8 @@ public class WordEntity {
 
     @Override
     public String toString() {
-        return "WordEntity{" +
-                ", word=" + word +
+        return "Word{" +
+                "word=" + word +
                 ", locale=" + locale +
                 '}';
     }

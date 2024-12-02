@@ -34,7 +34,7 @@ public class SubscriptionUnsubscribeInquiry extends FastCommandInquiry {
     @Override
     public String toString() {
         return super.toString() +
-                ", subscription=" + subscription.getName() +
+                ", subscription=" + (subscription != null ? subscription.getName() : "") +
                 '}';
     }
 }

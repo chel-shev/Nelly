@@ -81,14 +81,14 @@ public abstract class FastInquiry {
     public String toString() {
         return "FastInquiry{" +
                 "id=" + id +
-                ", message=" + message  +
+                ", message=" + message +
                 ", messageId=" + messageId +
                 ", answerMessage=" + answerMessage +
                 ", answerMessageId=" + answerMessageId +
                 ", date=" + date +
                 ", closed=" + closed +
                 ", user=" + user.getUserName() +
-                ", command=" + command.getName() +
+                ", command=" + (command != null ? command.getName() : "") +
                 ", keyboardButtons=" + keyboardButtons +
                 ", keyboardType=" + keyboardType;
     }

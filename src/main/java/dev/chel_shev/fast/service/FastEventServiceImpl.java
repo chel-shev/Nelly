@@ -2,6 +2,7 @@ package dev.chel_shev.fast.service;
 
 import dev.chel_shev.fast.FastBotException;
 import dev.chel_shev.fast.entity.event.FastEventEntity;
+import dev.chel_shev.fast.entity.event.FastWordEventEntity;
 import dev.chel_shev.fast.entity.user.FastUserEntity;
 import dev.chel_shev.fast.entity.user.FastUserSubscriptionEntity;
 import dev.chel_shev.fast.event.FastEvent;
@@ -20,6 +21,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static dev.chel_shev.fast.type.FastBotCommandLevel.FIRST;
@@ -94,7 +96,25 @@ public class FastEventServiceImpl<E extends FastEvent> implements FastEventServi
     }
 
     @Override
-    public void deleteByUser(FastUserEntity userEntity) {
+    public List<FastEventEntity> getAllEvents() {
+        return repository.findAll().stream().filter(e -> e instanceof FastWordEventEntity).toList();
 
+    }
+
+    @Override
+    public void deleteByUserSubscription(FastUserSubscriptionEntity userEntity) {
+        List<FastEventEntity> allByUser = repository.findAllByUser(userEntity);
+        repository.deleteAllInBatch(allByUser);
+    }
+
+    @Override
+    public void deleteByUser(FastUserEntity user) {
+        List<FastEventEntity> allByUser = repository.findAllByUser_FastUser(user);
+        repository.deleteAll(allByUser);
+    }
+
+    @Override
+    public void delete(FastEventEntity eventEntity) {
+        repository.delete(eventEntity);
     }
 }

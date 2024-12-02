@@ -2,11 +2,12 @@ package dev.chel_shev.fast.service;
 
 import dev.chel_shev.fast.entity.user.FastUserEntity;
 import dev.chel_shev.fast.entity.event.FastEventEntity;
+import dev.chel_shev.fast.entity.user.FastUserSubscriptionEntity;
 import dev.chel_shev.fast.event.FastEvent;
-import dev.chel_shev.fast.event.FastEventHandler;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface FastEventService<E extends FastEvent> {
 
@@ -20,7 +21,13 @@ public interface FastEventService<E extends FastEvent> {
 
     Long save(FastEventEntity e);
 
-    void deleteByUser(FastUserEntity userEntity);
+    List<FastEventEntity> getAllEvents();
+
+    void deleteByUserSubscription(FastUserSubscriptionEntity userSubscription);
+
+    void deleteByUser(FastUserEntity user);
+
+    void delete(FastEventEntity eventEntity);
 
     void updateEvent(FastEventEntity eventEntity);
 

@@ -64,9 +64,9 @@ public class SubscriptionsApi {
     private SubscriptionDTO getSubscription(JSONObject item) throws JSONException {
         try {
             String channelId = item.getJSONObject("snippet").getJSONObject("resourceId").getString("channelId");
-            String title = item.getJSONObject("snippet").getString("title");
+//            String title = item.getJSONObject("snippet").getString("description");
             Integer totalItemCount = item.getJSONObject("contentDetails").getInt("totalItemCount");
-            return new SubscriptionDTO(channelId, null, title, totalItemCount);
+            return new SubscriptionDTO(channelId, null, "", totalItemCount);
         } catch (Exception e) {
             log.info("ERROR item: " + item);
             return null;

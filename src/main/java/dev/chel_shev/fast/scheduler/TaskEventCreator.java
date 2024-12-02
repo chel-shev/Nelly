@@ -7,6 +7,7 @@ import dev.chel_shev.fast.entity.event.FastEventEntity;
 import dev.chel_shev.fast.entity.event.FastWordEventEntity;
 import dev.chel_shev.fast.entity.event.FastWorkoutEventEntity;
 import dev.chel_shev.fast.entity.user.FastUserSubscriptionEntity;
+import dev.chel_shev.fast.event.FastEvent;
 import dev.chel_shev.fast.event.bday.BdayEvent;
 import dev.chel_shev.fast.event.language.FastLanguageEvent;
 import dev.chel_shev.fast.event.workout.FastWorkoutEvent;
@@ -25,7 +26,6 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 
 import java.io.ByteArrayInputStream;
 import java.time.ZoneOffset;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,7 +37,7 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class TaskEventCreator {
 
-    private final FastEventService eventService;
+    private final FastEventService<? extends FastEvent> eventService;
     private final LanguageService languageService;
     private final WorkoutService workoutService;
     private final WorkoutEventService workoutEventService;

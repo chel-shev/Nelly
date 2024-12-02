@@ -18,9 +18,11 @@ public enum KeyboardType {
     WORKOUT_PROCESS("", ""),
     INLINE_CANCEL("⏹", ""),
     INLINE_NEXT("⏩", ""),
-    INLINE_START("▶", ""),
+    INLINE_START("▶\uFE0F", ""),
     INLINE_PREV("⏪", ""),
     INLINE_DONE("✅", ""),
+    INLINE_UP("\uD83D\uDD3C", ""),
+    INLINE_DOWN("\uD83D\uDD3D", ""),
 
     // list keyboard
     ACCOUNT_LIST("", ""),

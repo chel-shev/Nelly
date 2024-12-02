@@ -3,12 +3,12 @@ package dev.chel_shev.fast.service;
 import dev.chel_shev.fast.entity.event.FastBdayEventEntity;
 import dev.chel_shev.fast.entity.event.FastEventEntity;
 import dev.chel_shev.fast.entity.user.FastUserEntity;
-import dev.chel_shev.fast.event.FastEvent;
-import dev.chel_shev.fast.event.FastEventHandler;
 import dev.chel_shev.fast.event.bday.BdayEvent;
+import dev.chel_shev.fast.inquiry.command.unknownUser.UnknownUserConfig;
+import dev.chel_shev.fast.repository.FastEventRepository;
+import dev.chel_shev.fast.repository.UserSubscriptionRepository;
 import dev.chel_shev.fast.repository.event.BdayEventRepository;
 import dev.chel_shev.nelly.entity.users.UserEntity;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
@@ -16,10 +16,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public class FastBdayEventService implements FastEventService<BdayEvent> {
+public class FastBdayEventService extends FastEventServiceImpl<BdayEvent> {
 
     private final BdayEventRepository repository;
+
+    public FastBdayEventService(FastEventRepository repository, FastUserService userService, FastAnswerService answerService, UnknownUserConfig unknownUserConfig, UserSubscriptionRepository userSubscriptionRepository, BdayEventRepository repository1) {
+        super(repository, userService, answerService, unknownUserConfig, userSubscriptionRepository);
+        this.repository = repository1;
+    }
 
     public boolean isExist(String name, LocalDateTime date, UserEntity user) {
         return repository.existsByNameAndDate(name, date);
@@ -60,7 +64,12 @@ public class FastBdayEventService implements FastEventService<BdayEvent> {
     }
 
     @Override
-    public void deleteByUser(FastUserEntity userEntity) {
+    public List<FastEventEntity> getAllEvents() {
+        return null;
+    }
+
+    @Override
+    public void delete(FastEventEntity eventEntity) {
 
     }
 

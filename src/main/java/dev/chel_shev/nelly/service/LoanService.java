@@ -5,7 +5,6 @@ import dev.chel_shev.nelly.entity.finance.AccountHistoryEntity;
 import dev.chel_shev.nelly.entity.finance.LoanEntity;
 import dev.chel_shev.nelly.repository.user.ClientHistoryRepository;
 import dev.chel_shev.nelly.repository.finance.LoanRepository;
-import dev.chel_shev.nelly.type.InquiryType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ public class LoanService {
     private final ClientHistoryRepository cliHisR;
 
     public Collection<LoanEntity> getLoanByClient(String chatId) {
-        return loaR.findAllByAccountUser(chatId);
+        return loaR.findAllByAccount_User_ChatId(Long.valueOf(chatId));
     }
 
     public void save(LoanEntity loan, AccountEntity account) {
